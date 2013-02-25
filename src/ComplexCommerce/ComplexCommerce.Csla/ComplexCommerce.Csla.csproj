@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7507FC2A-83E4-4A37-A556-832A3B976184}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ComplexCommerce.Csla</RootNamespace>
+    <AssemblyName>ComplexCommerce.Csla</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla">
+      <HintPath>..\packages\CSLA-Core.4.5.10\lib\net45\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="Csla.XmlSerializers">
+      <HintPath>..\packages\CSLA-Core.4.5.10\lib\net45\Csla.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CslaBusinessBase.cs" />
+    <Compile Include="CslaBusinessBindingListBase.cs" />
+    <Compile Include="CslaBusinessListBase.cs" />
+    <Compile Include="CslaDynamicListBase.cs" />
+    <Compile Include="CslaNameValueListBase.cs" />
+    <Compile Include="CslaReadOnlyBase.cs" />
+    <Compile Include="CslaReadOnlyBindingListBase.cs" />
+    <Compile Include="CslaReadOnlyListBase.cs" />
+    <Compile Include="DI\IoC.cs" />
+    <Compile Include="DI\IResolver.cs" />
+    <Compile Include="DI\ServerInjectableBusinessBase.cs" />
+    <Compile Include="DI\ServerInjectableBusinessBindingListBase.cs" />
+    <Compile Include="DI\ServerInjectableBusinessListBase.cs" />
+    <Compile Include="DI\ServerInjectableCommandBase.cs" />
+    <Compile Include="DI\ServerInjectableDynamicBindingListBase.cs" />
+    <Compile Include="DI\ServerInjectableDynamicListBase.cs" />
+    <Compile Include="DI\ServerInjectableNameValueListBase.cs" />
+    <Compile Include="DI\ServerInjectableReadOnlyBase.cs" />
+    <Compile Include="DI\ServerInjectableReadOnlyBindingListBase.cs" />
+    <Compile Include="DI\ServerInjectableReadOnlyListBase.cs" />
+    <Compile Include="Persistence\ContextualBusinessBase.cs" />
+    <Compile Include="Persistence\ContextualBusinessBindingListBase.cs" />
+    <Compile Include="Persistence\ContextualBusinessListBase.cs" />
+    <Compile Include="Persistence\ContextualCommandBase.cs" />
+    <Compile Include="Persistence\ContextualDynamicBindingListBase.cs" />
+    <Compile Include="Persistence\ContextualDynamicListBase.cs" />
+    <Compile Include="Persistence\ContextualNameValueListBase.cs" />
+    <Compile Include="Persistence\ContextualReadOnlyBase.cs" />
+    <Compile Include="Persistence\ContextualReadOnlyBindingListBase.cs" />
+    <Compile Include="Persistence\ContextualReadOnlyListBase.cs" />
+    <Compile Include="CslaCommandBase.cs" />
+    <Compile Include="CslaDynamicBindingListBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ComplexCommerce.Data\ComplexCommerce.Data.csproj">
+      <Project>{8828e388-19c6-496a-9f28-c34673eb6fa2}</Project>
+      <Name>ComplexCommerce.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
