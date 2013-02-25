@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="32a1ae9aead44c4c9daa9cabbf5dcbcd" Name="Diagram1">
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Category" Width="1.5" PointX="8.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.CategoryXProduct" Width="2.25" PointX="8.5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Chain" Width="1.5" PointX="0.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Product" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.ProductXStoreXLocale" Width="2" PointX="5.125" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Store" Width="1.5" PointX="2.75" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="ComplexCommerce.Model.ChainStore" />
+        <AssociationConnector Association="ComplexCommerce.Model.ChainProduct" />
+        <AssociationConnector Association="ComplexCommerce.Model.ProductProductXStoreXLocale" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.StoreLocale" Width="1.5" PointX="5.375" PointY="0.625" />
+        <AssociationConnector Association="ComplexCommerce.Model.StoreStoreLocale" />
+        <AssociationConnector Association="ComplexCommerce.Model.StoreLocaleProductXStoreXLocale" />
+        <AssociationConnector Association="ComplexCommerce.Model.StoreLocaleCategory" />
+        <AssociationConnector Association="ComplexCommerce.Model.CategoryCategoryXProduct" />
+        <AssociationConnector Association="ComplexCommerce.Model.ProductCategoryXProduct" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

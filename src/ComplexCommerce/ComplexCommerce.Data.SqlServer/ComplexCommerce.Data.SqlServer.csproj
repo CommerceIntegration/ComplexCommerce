@@ -39,8 +39,14 @@
     <Reference Include="Csla.XmlSerializers">
       <HintPath>..\packages\CSLA-Core.4.5.10\lib\net45\Csla.XmlSerializers.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,9 +54,63 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Category.cs">
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CategoryXProduct.cs">
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Chain.cs">
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ComplexCommerce.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ComplexCommerce.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ComplexCommerce.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ComplexCommerce.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Product.cs">
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ProductXStoreXLocale.cs">
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Store.cs">
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\StoreLocale.cs">
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="Model\ComplexCommerce.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ComplexCommerce.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="App.Config" />
+    <None Include="Model\ComplexCommerce.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ComplexCommerce.edmx</DependentUpon>
+      <LastGenOutput>ComplexCommerce.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Model\ComplexCommerce.edmx.diagram">
+      <DependentUpon>ComplexCommerce.edmx</DependentUpon>
+    </None>
+    <None Include="Model\ComplexCommerce.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ComplexCommerce.edmx</DependentUpon>
+      <LastGenOutput>ComplexCommerce.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +118,12 @@
       <Project>{8828e388-19c6-496a-9f28-c34673eb6fa2}</Project>
       <Name>ComplexCommerce.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\ComplexCommerce.edmx.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
