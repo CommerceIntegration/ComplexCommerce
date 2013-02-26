@@ -14,8 +14,17 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
     public partial class Chain
     {
+        public Chain()
+        {
+            this.Store = new HashSet<Store>();
+            this.Product = new HashSet<Product>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+    
+        public virtual ICollection<Store> Store { get; set; }
+        public virtual ICollection<Product> Product { get; set; }
     }
 }

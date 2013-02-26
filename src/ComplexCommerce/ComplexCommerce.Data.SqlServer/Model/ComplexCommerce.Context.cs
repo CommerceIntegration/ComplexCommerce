@@ -25,12 +25,12 @@ namespace ComplexCommerce.Data.SqlServer.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<CategoryXProduct> CategoryXProducts { get; set; }
-        public DbSet<Chain> Chains { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ProductXStoreXLocale> ProductXStoreXLocales { get; set; }
-        public DbSet<Store> Stores { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<CategoryXProductXStoreLocale> CategoryXProductXStoreLocale { get; set; }
+        public DbSet<Chain> Chain { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductXStoreLocale> ProductXStoreLocale { get; set; }
+        public DbSet<Store> Store { get; set; }
         public DbSet<StoreLocale> StoreLocale { get; set; }
     }
 }

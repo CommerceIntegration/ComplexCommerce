@@ -12,10 +12,14 @@ namespace ComplexCommerce.Data.SqlServer.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CategoryXProduct
+    public partial class CategoryXProductXStoreLocale
     {
+        public System.Guid Id { get; set; }
         public System.Guid CategoryId { get; set; }
-        public System.Guid ProductId { get; set; }
+        public System.Guid ProductXStoreLocaleId { get; set; }
         public string RouteUrl { get; set; }
+    
+        public virtual Category Category { get; set; }
+        public virtual ProductXStoreLocale ProductXStoreLocale { get; set; }
     }
 }

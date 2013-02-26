@@ -57,7 +57,7 @@
     <Compile Include="Model\Category.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\CategoryXProduct.cs">
+    <Compile Include="Model\CategoryXProductXStoreLocale.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Chain.cs">
@@ -81,7 +81,7 @@
     <Compile Include="Model\Product.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ProductXStoreXLocale.cs">
+    <Compile Include="Model\ProductXStoreLocale.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Store.cs">

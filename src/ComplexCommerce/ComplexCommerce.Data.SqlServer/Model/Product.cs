@@ -14,10 +14,18 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
     public partial class Product
     {
+        public Product()
+        {
+            this.ProductXStoreLocale = new HashSet<ProductXStoreLocale>();
+        }
+    
         public System.Guid Id { get; set; }
         public int ChainId { get; set; }
         public string SKU { get; set; }
         public string ImageUrl { get; set; }
         public Nullable<decimal> Price { get; set; }
+    
+        public virtual Chain Chain { get; set; }
+        public virtual ICollection<ProductXStoreLocale> ProductXStoreLocale { get; set; }
     }
 }

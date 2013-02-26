@@ -5,21 +5,21 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="32a1ae9aead44c4c9daa9cabbf5dcbcd" Name="Diagram1">
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Category" Width="1.5" PointX="8.625" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.CategoryXProduct" Width="2.25" PointX="8.5" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Chain" Width="1.5" PointX="0.625" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Product" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.ProductXStoreXLocale" Width="2" PointX="5.125" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Store" Width="1.5" PointX="2.75" PointY="0.5" IsExpanded="true" />
-        <AssociationConnector Association="ComplexCommerce.Model.ChainStore" />
-        <AssociationConnector Association="ComplexCommerce.Model.ChainProduct" />
-        <AssociationConnector Association="ComplexCommerce.Model.ProductProductXStoreXLocale" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.StoreLocale" Width="1.5" PointX="5.375" PointY="0.625" />
-        <AssociationConnector Association="ComplexCommerce.Model.StoreStoreLocale" />
-        <AssociationConnector Association="ComplexCommerce.Model.StoreLocaleProductXStoreXLocale" />
-        <AssociationConnector Association="ComplexCommerce.Model.StoreLocaleCategory" />
-        <AssociationConnector Association="ComplexCommerce.Model.CategoryCategoryXProduct" />
-        <AssociationConnector Association="ComplexCommerce.Model.ProductCategoryXProduct" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Category" Width="1.5" PointX="9.5" PointY="0.625" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.CategoryXProductXStoreLocale" Width="2.5" PointX="9.125" PointY="3.875" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Chain" Width="1.5" PointX="1" PointY="0.625" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Product" Width="1.5" PointX="3.125" PointY="4" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.ProductXStoreLocale" Width="2.125" PointX="6.125" PointY="3.75" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Store" Width="1.5" PointX="3.625" PointY="0.625" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.StoreLocale" Width="1.5" PointX="6.375" PointY="0.625" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_Category_ProductXCategory" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_Category" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_ProductXStoreLocale_CategoryXProductXStoreLocale" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_Chain_Store" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_ChainProduct" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_Product_ProductXStoreLocale" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_Store_StoreLocale" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

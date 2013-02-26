@@ -14,9 +14,19 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
     public partial class StoreLocale
     {
+        public StoreLocale()
+        {
+            this.Category = new HashSet<Category>();
+            this.ProductXStoreLocale = new HashSet<ProductXStoreLocale>();
+        }
+    
         public System.Guid Id { get; set; }
         public System.Guid StoreId { get; set; }
         public int LocaleId { get; set; }
         public string SiteMap { get; set; }
+    
+        public virtual ICollection<Category> Category { get; set; }
+        public virtual ICollection<ProductXStoreLocale> ProductXStoreLocale { get; set; }
+        public virtual Store Store { get; set; }
     }
 }

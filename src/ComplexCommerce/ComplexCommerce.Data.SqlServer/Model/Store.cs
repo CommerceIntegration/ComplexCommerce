@@ -14,11 +14,19 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
     public partial class Store
     {
+        public Store()
+        {
+            this.StoreLocale = new HashSet<StoreLocale>();
+        }
+    
         public System.Guid Id { get; set; }
         public int ChainId { get; set; }
         public string Name { get; set; }
         public string LogoUrl { get; set; }
         public string Domain { get; set; }
         public Nullable<int> DefaultLocaleId { get; set; }
+    
+        public virtual Chain Chain { get; set; }
+        public virtual ICollection<StoreLocale> StoreLocale { get; set; }
     }
 }

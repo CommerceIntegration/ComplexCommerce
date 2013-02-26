@@ -12,12 +12,21 @@ namespace ComplexCommerce.Data.SqlServer.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductXStoreXLocale
+    public partial class ProductXStoreLocale
     {
+        public ProductXStoreLocale()
+        {
+            this.CategoryXProductXStoreLocale = new HashSet<CategoryXProductXStoreLocale>();
+        }
+    
+        public System.Guid Id { get; set; }
         public System.Guid ProductId { get; set; }
-        public System.Guid StoreId { get; set; }
-        public int LocaleId { get; set; }
+        public System.Guid StoreLocaleId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+    
+        public virtual ICollection<CategoryXProductXStoreLocale> CategoryXProductXStoreLocale { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual StoreLocale StoreLocale { get; set; }
     }
 }
