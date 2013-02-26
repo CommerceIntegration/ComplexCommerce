@@ -10,18 +10,18 @@
         <EntityTypeShape EntityType="ComplexCommerce.Model.Chain" Width="1.5" PointX="1" PointY="0.625" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.Product" Width="1.5" PointX="3.125" PointY="5.75" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.ProductXStoreLocale" Width="2.125" PointX="6.125" PointY="5.75" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Store" Width="1.5" PointX="3.625" PointY="0.625" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.StoreLocale" Width="1.5" PointX="6.375" PointY="0.625" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_Category_ProductXCategory" />
-        <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_Category" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_ProductXStoreLocale_CategoryXProductXStoreLocale" />
-        <AssociationConnector Association="ComplexCommerce.Model.FK_Chain_Store" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_ChainProduct" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_Product_ProductXStoreLocale" />
-        <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" />
-        <AssociationConnector Association="ComplexCommerce.Model.FK_Store_StoreLocale" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.Page" Width="1.5" PointX="9" PointY="0.5" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Store" Width="1.5" PointX="3.375" PointY="0.625" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.StoreLocale" Width="1.5" PointX="6.375" PointY="2.125" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_Category" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_Chain_Store" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_Page" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_Store" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -56,6 +56,8 @@
   <ItemGroup>
     <Compile Include="Context\IEntityFrameworkObjectContext.cs" />
     <Compile Include="Context\IObjectContextManager.cs" />
+    <Compile Include="Context\PersistenceDetails.cs" />
+    <Compile Include="DataInitializer.cs" />
     <Compile Include="Model\Category.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
@@ -79,6 +81,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ComplexCommerce.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ComplexCommerceMock.cs">
+      <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ComplexCommerceMock.ObjectContext.cs">
+      <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ComplexCommerceMock.ObjectSet.cs">
+      <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\IComplexCommerce.cs">
+      <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\IObjectContext.cs">
+      <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Page.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>

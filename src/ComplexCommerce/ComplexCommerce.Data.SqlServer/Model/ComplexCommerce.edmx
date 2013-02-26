@@ -34,10 +34,6 @@
             <End Role="ProductXStoreLocale" EntitySet="ProductXStoreLocale" />
             <End Role="CategoryXProductXStoreLocale" EntitySet="CategoryXProductXStoreLocale" />
           </AssociationSet>
-          <AssociationSet Name="FK_Store_StoreLocale" Association="ComplexCommerce.Model.Store.FK_Store_StoreLocale">
-            <End Role="Store" EntitySet="Store" />
-            <End Role="StoreLocale" EntitySet="StoreLocale" />
-          </AssociationSet>
           <AssociationSet Name="FK_StoreLocale_Category" Association="ComplexCommerce.Model.Store.FK_StoreLocale_Category">
             <End Role="StoreLocale" EntitySet="StoreLocale" />
             <End Role="Category" EntitySet="Category" />
@@ -49,6 +45,10 @@
           <AssociationSet Name="FK_StoreLocale_ProductXStoreLocale" Association="ComplexCommerce.Model.Store.FK_StoreLocale_ProductXStoreLocale">
             <End Role="StoreLocale" EntitySet="StoreLocale" />
             <End Role="ProductXStoreLocale" EntitySet="ProductXStoreLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreLocale_Store" Association="ComplexCommerce.Model.Store.FK_StoreLocale_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreLocale" EntitySet="StoreLocale" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
@@ -113,7 +113,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ChainId" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="LogoUrl" Type="nvarchar" MaxLength="1024" />
@@ -125,7 +125,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="StoreId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StoreId" Type="int" Nullable="false" />
           <Property Name="LocaleId" Type="int" Nullable="false" />
           <Property Name="SiteMap" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
@@ -189,18 +189,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Store_StoreLocale">
-          <End Role="Store" Type="ComplexCommerce.Model.Store.Store" Multiplicity="1" />
-          <End Role="StoreLocale" Type="ComplexCommerce.Model.Store.StoreLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StoreLocale">
-              <PropertyRef Name="StoreId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_StoreLocale_Category">
           <End Role="StoreLocale" Type="ComplexCommerce.Model.Store.StoreLocale" Multiplicity="1" />
           <End Role="Category" Type="ComplexCommerce.Model.Store.Category" Multiplicity="*" />
@@ -237,6 +225,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StoreLocale_Store">
+          <End Role="Store" Type="ComplexCommerce.Model.Store.Store" Multiplicity="1" />
+          <End Role="StoreLocale" Type="ComplexCommerce.Model.Store.StoreLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StoreLocale">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -247,23 +247,13 @@
           <EntitySet Name="Chain" EntityType="ComplexCommerce.Model.Chain" />
           <EntitySet Name="Product" EntityType="ComplexCommerce.Model.Product" />
           <EntitySet Name="ProductXStoreLocale" EntityType="ComplexCommerce.Model.ProductXStoreLocale" />
-          <EntitySet Name="Store" EntityType="ComplexCommerce.Model.Store" />
-          <EntitySet Name="StoreLocale" EntityType="ComplexCommerce.Model.StoreLocale" />
           <AssociationSet Name="FK_Category_ProductXCategory" Association="ComplexCommerce.Model.FK_Category_ProductXCategory">
             <End Role="Category" EntitySet="Category" />
             <End Role="CategoryXProductXStoreLocale" EntitySet="CategoryXProductXStoreLocale" />
           </AssociationSet>
-          <AssociationSet Name="FK_StoreLocale_Category" Association="ComplexCommerce.Model.FK_StoreLocale_Category">
-            <End Role="StoreLocale" EntitySet="StoreLocale" />
-            <End Role="Category" EntitySet="Category" />
-          </AssociationSet>
           <AssociationSet Name="FK_ProductXStoreLocale_CategoryXProductXStoreLocale" Association="ComplexCommerce.Model.FK_ProductXStoreLocale_CategoryXProductXStoreLocale">
             <End Role="ProductXStoreLocale" EntitySet="ProductXStoreLocale" />
             <End Role="CategoryXProductXStoreLocale" EntitySet="CategoryXProductXStoreLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Chain_Store" Association="ComplexCommerce.Model.FK_Chain_Store">
-            <End Role="Chain" EntitySet="Chain" />
-            <End Role="Store" EntitySet="Store" />
           </AssociationSet>
           <AssociationSet Name="FK_ChainProduct" Association="ComplexCommerce.Model.FK_ChainProduct">
             <End Role="Chain" EntitySet="Chain" />
@@ -273,18 +263,28 @@
             <End Role="Product" EntitySet="Product" />
             <End Role="ProductXStoreLocale" EntitySet="ProductXStoreLocale" />
           </AssociationSet>
+          <EntitySet Name="Page" EntityType="ComplexCommerce.Model.Page" />
+          <EntitySet Name="Store" EntityType="ComplexCommerce.Model.Store" />
+          <EntitySet Name="StoreLocale" EntityType="ComplexCommerce.Model.StoreLocale" />
+          <AssociationSet Name="FK_StoreLocale_Category" Association="ComplexCommerce.Model.FK_StoreLocale_Category">
+            <End Role="StoreLocale" EntitySet="StoreLocale" />
+            <End Role="Category" EntitySet="Category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chain_Store" Association="ComplexCommerce.Model.FK_Chain_Store">
+            <End Role="Chain" EntitySet="Chain" />
+            <End Role="Store" EntitySet="Store" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreLocale_Page" Association="ComplexCommerce.Model.FK_StoreLocale_Page">
+            <End Role="StoreLocale" EntitySet="StoreLocale" />
+            <End Role="Page" EntitySet="Page" />
+          </AssociationSet>
           <AssociationSet Name="FK_StoreLocale_ProductXStoreLocale" Association="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale">
             <End Role="StoreLocale" EntitySet="StoreLocale" />
             <End Role="ProductXStoreLocale" EntitySet="ProductXStoreLocale" />
           </AssociationSet>
-          <AssociationSet Name="FK_Store_StoreLocale" Association="ComplexCommerce.Model.FK_Store_StoreLocale">
+          <AssociationSet Name="FK_StoreLocale_Store" Association="ComplexCommerce.Model.FK_StoreLocale_Store">
             <End Role="Store" EntitySet="Store" />
             <End Role="StoreLocale" EntitySet="StoreLocale" />
-          </AssociationSet>
-          <EntitySet Name="Page" EntityType="ComplexCommerce.Model.Page" />
-          <AssociationSet Name="FK_StoreLocale_Page" Association="ComplexCommerce.Model.FK_StoreLocale_Page">
-            <End Role="StoreLocale" EntitySet="StoreLocale" />
-            <End Role="Page" EntitySet="Page" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
@@ -317,8 +317,8 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Description" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Store" Relationship="ComplexCommerce.Model.FK_Chain_Store" FromRole="Chain" ToRole="Store" />
           <NavigationProperty Name="Product" Relationship="ComplexCommerce.Model.FK_ChainProduct" FromRole="Chain" ToRole="Product" />
+          <NavigationProperty Name="Store" Relationship="ComplexCommerce.Model.FK_Chain_Store" FromRole="Chain" ToRole="Store" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -345,32 +345,6 @@
           <NavigationProperty Name="Product" Relationship="ComplexCommerce.Model.FK_Product_ProductXStoreLocale" FromRole="ProductXStoreLocale" ToRole="Product" />
           <NavigationProperty Name="StoreLocale" Relationship="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" FromRole="ProductXStoreLocale" ToRole="StoreLocale" />
         </EntityType>
-        <EntityType Name="Store">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Int32" Name="ChainId" Nullable="false" />
-          <Property Type="String" Name="Name" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="LogoUrl" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Domain" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="DefaultLocaleId" />
-          <NavigationProperty Name="Chain" Relationship="ComplexCommerce.Model.FK_Chain_Store" FromRole="Store" ToRole="Chain" />
-          <NavigationProperty Name="StoreLocale" Relationship="ComplexCommerce.Model.FK_Store_StoreLocale" FromRole="Store" ToRole="StoreLocale" />
-        </EntityType>
-        <EntityType Name="StoreLocale">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Guid" Name="StoreId" Nullable="false" />
-          <Property Type="Int32" Name="LocaleId" Nullable="false" />
-          <Property Type="String" Name="SiteMap" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Category" Relationship="ComplexCommerce.Model.FK_StoreLocale_Category" FromRole="StoreLocale" ToRole="Category" />
-          <NavigationProperty Name="ProductXStoreLocale" Relationship="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" FromRole="StoreLocale" ToRole="ProductXStoreLocale" />
-          <NavigationProperty Name="Store" Relationship="ComplexCommerce.Model.FK_Store_StoreLocale" FromRole="StoreLocale" ToRole="Store" />
-          <NavigationProperty Name="Page" Relationship="ComplexCommerce.Model.FK_StoreLocale_Page" FromRole="StoreLocale" ToRole="Page" />
-        </EntityType>
         <Association Name="FK_Category_ProductXCategory">
           <End Type="ComplexCommerce.Model.Category" Role="Category" Multiplicity="1" />
           <End Type="ComplexCommerce.Model.CategoryXProductXStoreLocale" Role="CategoryXProductXStoreLocale" Multiplicity="*" />
@@ -383,18 +357,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_StoreLocale_Category">
-          <End Type="ComplexCommerce.Model.StoreLocale" Role="StoreLocale" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.Category" Role="Category" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StoreLocale">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Category">
-              <PropertyRef Name="StoreLocaleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ProductXStoreLocale_CategoryXProductXStoreLocale">
           <End Type="ComplexCommerce.Model.ProductXStoreLocale" Role="ProductXStoreLocale" Multiplicity="1" />
           <End Type="ComplexCommerce.Model.CategoryXProductXStoreLocale" Role="CategoryXProductXStoreLocale" Multiplicity="*" />
@@ -404,18 +366,6 @@
             </Principal>
             <Dependent Role="CategoryXProductXStoreLocale">
               <PropertyRef Name="ProductXStoreLocaleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Chain_Store">
-          <End Type="ComplexCommerce.Model.Chain" Role="Chain" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.Store" Role="Store" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Chain">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Store">
-              <PropertyRef Name="ChainId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -443,30 +393,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_StoreLocale_ProductXStoreLocale">
-          <End Type="ComplexCommerce.Model.StoreLocale" Role="StoreLocale" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.ProductXStoreLocale" Role="ProductXStoreLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StoreLocale">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProductXStoreLocale">
-              <PropertyRef Name="StoreLocaleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Store_StoreLocale">
-          <End Type="ComplexCommerce.Model.Store" Role="Store" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.StoreLocale" Role="StoreLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StoreLocale">
-              <PropertyRef Name="StoreId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Page">
           <Key>
             <PropertyRef Name="Id" />
@@ -479,6 +405,56 @@
           <Property Type="Guid" Name="ContentId" Nullable="false" />
           <NavigationProperty Name="StoreLocale" Relationship="ComplexCommerce.Model.FK_StoreLocale_Page" FromRole="Page" ToRole="StoreLocale" />
         </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ChainId" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LogoUrl" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Domain" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="DefaultLocaleId" />
+          <NavigationProperty Name="Chain" Relationship="ComplexCommerce.Model.FK_Chain_Store" FromRole="Store" ToRole="Chain" />
+          <NavigationProperty Name="StoreLocale" Relationship="ComplexCommerce.Model.FK_StoreLocale_Store" FromRole="Store" ToRole="StoreLocale" />
+        </EntityType>
+        <EntityType Name="StoreLocale">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="StoreId" Nullable="false" />
+          <Property Type="Int32" Name="LocaleId" Nullable="false" />
+          <Property Type="String" Name="SiteMap" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Category" Relationship="ComplexCommerce.Model.FK_StoreLocale_Category" FromRole="StoreLocale" ToRole="Category" />
+          <NavigationProperty Name="Page" Relationship="ComplexCommerce.Model.FK_StoreLocale_Page" FromRole="StoreLocale" ToRole="Page" />
+          <NavigationProperty Name="ProductXStoreLocale" Relationship="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" FromRole="StoreLocale" ToRole="ProductXStoreLocale" />
+          <NavigationProperty Name="Store" Relationship="ComplexCommerce.Model.FK_StoreLocale_Store" FromRole="StoreLocale" ToRole="Store" />
+        </EntityType>
+        <Association Name="FK_StoreLocale_Category">
+          <End Type="ComplexCommerce.Model.StoreLocale" Role="StoreLocale" Multiplicity="1" />
+          <End Type="ComplexCommerce.Model.Category" Role="Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StoreLocale">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="StoreLocaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chain_Store">
+          <End Type="ComplexCommerce.Model.Chain" Role="Chain" Multiplicity="1" />
+          <End Type="ComplexCommerce.Model.Store" Role="Store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chain">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Store">
+              <PropertyRef Name="ChainId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_StoreLocale_Page">
           <End Type="ComplexCommerce.Model.StoreLocale" Role="StoreLocale" Multiplicity="1" />
           <End Type="ComplexCommerce.Model.Page" Role="Page" Multiplicity="*" />
@@ -488,6 +464,30 @@
             </Principal>
             <Dependent Role="Page">
               <PropertyRef Name="StoreLocaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreLocale_ProductXStoreLocale">
+          <End Type="ComplexCommerce.Model.StoreLocale" Role="StoreLocale" Multiplicity="1" />
+          <End Type="ComplexCommerce.Model.ProductXStoreLocale" Role="ProductXStoreLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StoreLocale">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductXStoreLocale">
+              <PropertyRef Name="StoreLocaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreLocale_Store">
+          <End Type="ComplexCommerce.Model.Store" Role="Store" Multiplicity="1" />
+          <End Type="ComplexCommerce.Model.StoreLocale" Role="StoreLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StoreLocale">
+              <PropertyRef Name="StoreId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -549,28 +549,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Store">
-      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.Store)">
-        <MappingFragment StoreEntitySet="Store">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="ChainId" ColumnName="ChainId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
-          <ScalarProperty Name="Domain" ColumnName="Domain" />
-          <ScalarProperty Name="DefaultLocaleId" ColumnName="DefaultLocaleId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StoreLocale">
-      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.StoreLocale)">
-        <MappingFragment StoreEntitySet="StoreLocale">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-          <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
-          <ScalarProperty Name="SiteMap" ColumnName="SiteMap" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
           <EntitySetMapping Name="Page">
             <EntityTypeMapping TypeName="ComplexCommerce.Model.Page">
               <MappingFragment StoreEntitySet="Page">
@@ -579,6 +557,28 @@
                 <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
                 <ScalarProperty Name="StoreLocaleId" ColumnName="StoreLocaleId" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Store">
+            <EntityTypeMapping TypeName="ComplexCommerce.Model.Store">
+              <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="DefaultLocaleId" ColumnName="DefaultLocaleId" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ChainId" ColumnName="ChainId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StoreLocale">
+            <EntityTypeMapping TypeName="ComplexCommerce.Model.StoreLocale">
+              <MappingFragment StoreEntitySet="StoreLocale">
+                <ScalarProperty Name="SiteMap" ColumnName="SiteMap" />
+                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

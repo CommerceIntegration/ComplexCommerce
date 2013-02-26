@@ -49,6 +49,9 @@
       <HintPath>..\packages\CSLA-Core.4.5.10\lib\net45\Csla.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -167,11 +170,22 @@
   <ItemGroup>
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\CslaConfig.cs" />
+    <Compile Include="App_Start\DIConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DI\Conventions\ConnectionStringConvention.cs" />
+    <Compile Include="DI\Conventions\RepositoryConvention.cs" />
+    <Compile Include="DI\Conventions\SingletonConvention.cs" />
+    <Compile Include="DI\Registries\CslaClientRegistry.cs" />
+    <Compile Include="DI\Registries\CslaDataPortalRegistry.cs" />
+    <Compile Include="DI\Registries\CslaGlobalRegistry.cs" />
+    <Compile Include="DI\Registries\PresentationRegistry.cs" />
+    <Compile Include="DI\StructureMapContainer.cs" />
+    <Compile Include="DI\StructureMapResolver.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -296,6 +310,36 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ComplexCommerce.Business\ComplexCommerce.Business.csproj">
+      <Project>{da65d9c8-0f7d-46ec-a024-1f255cd70a8e}</Project>
+      <Name>ComplexCommerce.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComplexCommerce.Csla\ComplexCommerce.Csla.csproj">
+      <Project>{7507fc2a-83e4-4a37-a556-832a3b976184}</Project>
+      <Name>ComplexCommerce.Csla</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComplexCommerce.Data.SqlServer\ComplexCommerce.Data.SqlServer.csproj">
+      <Project>{3b045ab0-eb1e-4834-9ca4-5f1629d45bcd}</Project>
+      <Name>ComplexCommerce.Data.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComplexCommerce.Data\ComplexCommerce.Data.csproj">
+      <Project>{8828e388-19c6-496a-9f28-c34673eb6fa2}</Project>
+      <Name>ComplexCommerce.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComplexCommerce.Shared\ComplexCommerce.Shared.csproj">
+      <Project>{504a88ab-4631-411b-83b0-1e40bf4bba97}</Project>
+      <Name>ComplexCommerce.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComplexCommerce.Web.Mvc\ComplexCommerce.Web.Mvc.csproj">
+      <Project>{66209dbb-bae6-49c2-8ec7-48604565f137}</Project>
+      <Name>ComplexCommerce.Web.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComplexCommerce.Web\ComplexCommerce.Web.csproj">
+      <Project>{b573d0cf-fa1f-471e-86ee-9b6630cb3858}</Project>
+      <Name>ComplexCommerce.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
