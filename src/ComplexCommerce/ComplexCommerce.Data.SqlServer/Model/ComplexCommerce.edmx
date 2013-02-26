@@ -9,6 +9,7 @@
           <EntitySet Name="Category" EntityType="ComplexCommerce.Model.Store.Category" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CategoryXProductXStoreLocale" EntityType="ComplexCommerce.Model.Store.CategoryXProductXStoreLocale" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Chain" EntityType="ComplexCommerce.Model.Store.Chain" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Page" EntityType="ComplexCommerce.Model.Store.Page" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Product" EntityType="ComplexCommerce.Model.Store.Product" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ProductXStoreLocale" EntityType="ComplexCommerce.Model.Store.ProductXStoreLocale" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Store" EntityType="ComplexCommerce.Model.Store.Store" store:Type="Tables" Schema="dbo" />
@@ -72,6 +73,16 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="Page">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParentId" Type="uniqueidentifier" />
+          <Property Name="RouteUrl" Type="nvarchar" Nullable="false" MaxLength="1024" />
+          <Property Name="ContentTypeId" Type="int" Nullable="false" />
+          <Property Name="ContentId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -438,8 +449,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="RouteUrl" Nullable="false" MaxLength="1024" />
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ParentId" />
+          <Property Type="String" Name="RouteUrl" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ContentTypeId" Nullable="false" />
           <Property Type="Guid" Name="ContentId" Nullable="false" />
         </EntityType>
@@ -449,81 +461,92 @@
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="ComplexCommerceModelStoreContainer" CdmEntityContainer="ComplexCommerce">
-          <EntitySetMapping Name="Category">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.Category">
-              <MappingFragment StoreEntitySet="Category">
+    <EntitySetMapping Name="Category">
+      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.Category)">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StoreLocaleId" ColumnName="StoreLocaleId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CategoryXProductXStoreLocale">
+      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.CategoryXProductXStoreLocale)">
+        <MappingFragment StoreEntitySet="CategoryXProductXStoreLocale">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="ProductXStoreLocaleId" ColumnName="ProductXStoreLocaleId" />
+          <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Chain">
+      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.Chain)">
+        <MappingFragment StoreEntitySet="Chain">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Product">
+      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.Product)">
+        <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ChainId" ColumnName="ChainId" />
+          <ScalarProperty Name="SKU" ColumnName="SKU" />
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductXStoreLocale">
+      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.ProductXStoreLocale)">
+        <MappingFragment StoreEntitySet="ProductXStoreLocale">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="StoreLocaleId" ColumnName="StoreLocaleId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Store">
+      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.Store)">
+        <MappingFragment StoreEntitySet="Store">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ChainId" ColumnName="ChainId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
+          <ScalarProperty Name="Domain" ColumnName="Domain" />
+          <ScalarProperty Name="DefaultLocaleId" ColumnName="DefaultLocaleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StoreLocale">
+      <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.StoreLocale)">
+        <MappingFragment StoreEntitySet="StoreLocale">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+          <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
+          <ScalarProperty Name="SiteMap" ColumnName="SiteMap" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+          <EntitySetMapping Name="Page">
+            <EntityTypeMapping TypeName="ComplexCommerce.Model.Page">
+              <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+                <ScalarProperty Name="ContentTypeId" ColumnName="ContentTypeId" />
                 <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="StoreLocaleId" ColumnName="StoreLocaleId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CategoryXProductXStoreLocale">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.CategoryXProductXStoreLocale">
-              <MappingFragment StoreEntitySet="CategoryXProductXStoreLocale">
-                <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
-                <ScalarProperty Name="ProductXStoreLocaleId" ColumnName="ProductXStoreLocaleId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Chain">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.Chain">
-              <MappingFragment StoreEntitySet="Chain">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Product">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="SKU" ColumnName="SKU" />
-                <ScalarProperty Name="ChainId" ColumnName="ChainId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProductXStoreLocale">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.ProductXStoreLocale">
-              <MappingFragment StoreEntitySet="ProductXStoreLocale">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="StoreLocaleId" ColumnName="StoreLocaleId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Store">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.Store">
-              <MappingFragment StoreEntitySet="Store">
-                <ScalarProperty Name="DefaultLocaleId" ColumnName="DefaultLocaleId" />
-                <ScalarProperty Name="Domain" ColumnName="Domain" />
-                <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ChainId" ColumnName="ChainId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StoreLocale">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.StoreLocale">
-              <MappingFragment StoreEntitySet="StoreLocale">
-                <ScalarProperty Name="SiteMap" ColumnName="SiteMap" />
-                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
-                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
+  </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->

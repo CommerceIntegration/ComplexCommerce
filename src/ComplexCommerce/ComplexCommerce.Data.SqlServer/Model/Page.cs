@@ -15,6 +15,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
     public partial class Page
     {
         public System.Guid Id { get; set; }
+        public Nullable<System.Guid> ParentId { get; set; }
         public string RouteUrl { get; set; }
         public int ContentTypeId { get; set; }
         public System.Guid ContentId { get; set; }
