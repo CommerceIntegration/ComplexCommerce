@@ -5,11 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="32a1ae9aead44c4c9daa9cabbf5dcbcd" Name="Diagram1">
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Category" Width="1.5" PointX="9.5" PointY="0.625" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.CategoryXProductXStoreLocale" Width="2.5" PointX="9.125" PointY="3.875" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Category" Width="1.5" PointX="9.25" PointY="3.25" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.CategoryXProductXStoreLocale" Width="2.5" PointX="9.125" PointY="6" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.Chain" Width="1.5" PointX="1" PointY="0.625" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Product" Width="1.5" PointX="3.125" PointY="4" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.ProductXStoreLocale" Width="2.125" PointX="6.125" PointY="3.75" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Product" Width="1.5" PointX="3.125" PointY="5.75" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.ProductXStoreLocale" Width="2.125" PointX="6.125" PointY="5.75" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.Store" Width="1.5" PointX="3.625" PointY="0.625" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.StoreLocale" Width="1.5" PointX="6.375" PointY="0.625" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_Category_ProductXCategory" />
@@ -20,7 +20,8 @@
         <AssociationConnector Association="ComplexCommerce.Model.FK_Product_ProductXStoreLocale" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_Store_StoreLocale" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Page" Width="1.5" PointX="0.5" PointY="6.25" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Page" Width="1.5" PointX="9" PointY="0.5" />
+        <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_Page" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -16,8 +16,11 @@ namespace ComplexCommerce.Data.SqlServer.Model
     {
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> ParentId { get; set; }
+        public System.Guid StoreLocaleId { get; set; }
         public string RouteUrl { get; set; }
         public int ContentTypeId { get; set; }
         public System.Guid ContentId { get; set; }
+    
+        public virtual StoreLocale StoreLocale { get; set; }
     }
 }

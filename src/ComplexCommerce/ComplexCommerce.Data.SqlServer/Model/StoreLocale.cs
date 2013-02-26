@@ -18,6 +18,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
         {
             this.Category = new HashSet<Category>();
             this.ProductXStoreLocale = new HashSet<ProductXStoreLocale>();
+            this.Page = new HashSet<Page>();
         }
     
         public System.Guid Id { get; set; }
@@ -28,5 +29,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public virtual ICollection<Category> Category { get; set; }
         public virtual ICollection<ProductXStoreLocale> ProductXStoreLocale { get; set; }
         public virtual Store Store { get; set; }
+        public virtual ICollection<Page> Page { get; set; }
     }
 }
