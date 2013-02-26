@@ -32,5 +32,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public DbSet<ProductXStoreLocale> ProductXStoreLocale { get; set; }
         public DbSet<Store> Store { get; set; }
         public DbSet<StoreLocale> StoreLocale { get; set; }
+        public DbSet<Page> Page { get; set; }
     }
 }

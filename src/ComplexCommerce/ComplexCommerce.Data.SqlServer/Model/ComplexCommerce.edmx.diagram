@@ -20,6 +20,7 @@
         <AssociationConnector Association="ComplexCommerce.Model.FK_Product_ProductXStoreLocale" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_Store_StoreLocale" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Page" Width="1.5" PointX="1.25" PointY="6.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

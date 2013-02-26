@@ -78,6 +78,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ComplexCommerce.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\Page.cs">
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Product.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
