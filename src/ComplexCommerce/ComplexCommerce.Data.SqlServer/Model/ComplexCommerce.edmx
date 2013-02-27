@@ -59,7 +59,6 @@
           <Property Name="StoreLocaleId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="RouteUrl" Type="nvarchar" Nullable="false" MaxLength="1024" />
         </EntityType>
         <EntityType Name="CategoryXProductXStoreLocale">
           <Key>
@@ -68,7 +67,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CategoryId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ProductXStoreLocaleId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="RouteUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RouteUrl" Type="nvarchar" Nullable="false" MaxLength="1024" />
         </EntityType>
         <EntityType Name="Chain">
           <Key>
@@ -108,6 +107,7 @@
           <Property Name="StoreLocaleId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
           <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="UrlSlug" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Store">
           <Key>
@@ -295,7 +295,6 @@
           <Property Type="Guid" Name="StoreLocaleId" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Description" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="RouteUrl" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CategoryXProductXStoreLocale" Relationship="ComplexCommerce.Model.FK_Category_ProductXCategory" FromRole="Category" ToRole="CategoryXProductXStoreLocale" />
           <NavigationProperty Name="StoreLocale" Relationship="ComplexCommerce.Model.FK_StoreLocale_Category" FromRole="Category" ToRole="StoreLocale" />
         </EntityType>
@@ -306,7 +305,7 @@
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="CategoryId" Nullable="false" />
           <Property Type="Guid" Name="ProductXStoreLocaleId" Nullable="false" />
-          <Property Type="String" Name="RouteUrl" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="RouteUrl" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Category" Relationship="ComplexCommerce.Model.FK_Category_ProductXCategory" FromRole="CategoryXProductXStoreLocale" ToRole="Category" />
           <NavigationProperty Name="ProductXStoreLocale" Relationship="ComplexCommerce.Model.FK_ProductXStoreLocale_CategoryXProductXStoreLocale" FromRole="CategoryXProductXStoreLocale" ToRole="ProductXStoreLocale" />
         </EntityType>
@@ -344,6 +343,7 @@
           <NavigationProperty Name="CategoryXProductXStoreLocale" Relationship="ComplexCommerce.Model.FK_ProductXStoreLocale_CategoryXProductXStoreLocale" FromRole="ProductXStoreLocale" ToRole="CategoryXProductXStoreLocale" />
           <NavigationProperty Name="Product" Relationship="ComplexCommerce.Model.FK_Product_ProductXStoreLocale" FromRole="ProductXStoreLocale" ToRole="Product" />
           <NavigationProperty Name="StoreLocale" Relationship="ComplexCommerce.Model.FK_StoreLocale_ProductXStoreLocale" FromRole="ProductXStoreLocale" ToRole="StoreLocale" />
+          <Property Type="String" Name="UrlSlug" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Category_ProductXCategory">
           <End Type="ComplexCommerce.Model.Category" Role="Category" Multiplicity="1" />
@@ -504,7 +504,6 @@
           <ScalarProperty Name="StoreLocaleId" ColumnName="StoreLocaleId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -541,7 +540,8 @@
     <EntitySetMapping Name="ProductXStoreLocale">
       <EntityTypeMapping TypeName="IsTypeOf(ComplexCommerce.Model.ProductXStoreLocale)">
         <MappingFragment StoreEntitySet="ProductXStoreLocale">
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UrlSlug" ColumnName="UrlSlug" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ProductId" ColumnName="ProductId" />
           <ScalarProperty Name="StoreLocaleId" ColumnName="StoreLocaleId" />
           <ScalarProperty Name="Name" ColumnName="Name" />

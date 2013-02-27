@@ -53,12 +53,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
             get;
             set;
         }
-    
-        public virtual string RouteUrl
-        {
-            get;
-            set;
-        }
 
         #endregion
 
