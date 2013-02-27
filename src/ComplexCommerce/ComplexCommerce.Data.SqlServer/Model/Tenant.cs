@@ -65,6 +65,12 @@ namespace ComplexCommerce.Data.SqlServer.Model
             get;
             set;
         }
+    
+        public virtual int TenantType
+        {
+            get;
+            set;
+        }
 
         #endregion
 

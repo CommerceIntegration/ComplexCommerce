@@ -54,7 +54,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
             set;
         }
     
-        public virtual int ContentTypeId
+        public virtual int ContentType
         {
             get;
             set;

@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="ComplexCommerce.Model.Chain" Width="1.5" PointX="1" PointY="0.625" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.Product" Width="1.5" PointX="3.125" PointY="5.75" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_ChainProduct" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.CategoryXProductXTenantLocale" Width="2.5" PointX="9.5" PointY="6.5" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.CategoryXProductXTenantLocale" Width="2.5" PointX="8.875" PointY="6.5" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.ProductXTenantLocale" Width="1.875" PointX="6.125" PointY="5.75" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.Tenant" Width="1.5" PointX="3.5" PointY="0.625" />
         <EntityTypeShape EntityType="ComplexCommerce.Model.TenantLocale" Width="1.5" PointX="6.25" PointY="1.75" />
@@ -17,10 +17,10 @@
         <AssociationConnector Association="ComplexCommerce.Model.FK_Product_ProductXTenantLocale" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_TenantLocale_Tenant" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Category" Width="1.5" PointX="10" PointY="3.75" />
-        <EntityTypeShape EntityType="ComplexCommerce.Model.Page" Width="1.5" PointX="9.875" PointY="0.875" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Category" Width="1.5" PointX="9.25" PointY="3.625" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_Category_ProductXCategory" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_TenantLocale_Category" />
+        <EntityTypeShape EntityType="ComplexCommerce.Model.Page" Width="1.5" PointX="9.25" PointY="0.625" />
         <AssociationConnector Association="ComplexCommerce.Model.FK_TenantLocale_Page" />
       </Diagram>
     </edmx:Diagrams>

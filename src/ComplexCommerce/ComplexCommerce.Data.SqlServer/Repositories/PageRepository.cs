@@ -39,7 +39,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                                  Id = page.Id,
                                  ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
                                  RouteUrl = page.RouteUrl,
-                                 ContentTypeId = page.ContentTypeId,
+                                 ContentType = page.ContentType,
                                  ContentId = page.ContentId
                              }).ToList();
 
@@ -57,7 +57,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                          Id = page.Id,
                          ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
                          RouteUrl = page.RouteUrl,
-                         ContentTypeId = page.ContentTypeId,
+                         ContentType = page.ContentType,
                          ContentId = page.ContentId
                      }).ToList();
                 }

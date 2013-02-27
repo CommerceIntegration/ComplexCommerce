@@ -13,7 +13,7 @@ namespace ComplexCommerce.Data.Dto
         public int LocaleId { get; set; }
         public string Title { get; set; }
         public string RouteUrl { get; set; }
-        public int ContentTypeId { get; set; }
+        public int ContentType { get; set; }
         public Guid ContentId { get; set; }
     }
 }

@@ -124,7 +124,7 @@ namespace ComplexCommerce.Business
             LocaleId = item.LocaleId;
             Title = item.Title;
             RouteUrl = item.RouteUrl;
-            ContentType = (ContentTypeEnum)item.ContentTypeId;
+            ContentType = (ContentTypeEnum)item.ContentType;
             ContentId = item.ContentId;
 
             ChildPages = DataPortal.FetchChild<SiteMapPageList>(item.Id, list);
