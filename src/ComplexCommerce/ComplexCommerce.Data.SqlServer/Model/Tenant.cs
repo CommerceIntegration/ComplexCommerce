@@ -54,7 +54,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
             set;
         }
     
-        public virtual string Domain
+        public virtual string Host
         {
             get;
             set;

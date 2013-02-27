@@ -48,11 +48,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
             get { return _productXTenantLocale  ?? (_productXTenantLocale = new MockObjectSet<ProductXTenantLocale>()); }
         }
         private IObjectSet<ProductXTenantLocale> _productXTenantLocale;
-        public virtual IObjectSet<Tenant> Tenant
-        {
-            get { return _tenant  ?? (_tenant = new MockObjectSet<Tenant>()); }
-        }
-        private IObjectSet<Tenant> _tenant;
         public virtual IObjectSet<TenantLocale> TenantLocale
         {
             get { return _tenantLocale  ?? (_tenantLocale = new MockObjectSet<TenantLocale>()); }
@@ -68,5 +63,10 @@ namespace ComplexCommerce.Data.SqlServer.Model
             get { return _page  ?? (_page = new MockObjectSet<Page>()); }
         }
         private IObjectSet<Page> _page;
+        public virtual IObjectSet<Tenant> Tenant
+        {
+            get { return _tenant  ?? (_tenant = new MockObjectSet<Tenant>()); }
+        }
+        private IObjectSet<Tenant> _tenant;
     }
 }

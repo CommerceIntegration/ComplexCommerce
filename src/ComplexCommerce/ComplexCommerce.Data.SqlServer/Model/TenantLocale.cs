@@ -90,21 +90,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
         }
         private ICollection<ProductXTenantLocale> _productXTenantLocale;
     
-        public virtual Tenant Tenant
-        {
-            get { return _tenant; }
-            set
-            {
-                if (!ReferenceEquals(_tenant, value))
-                {
-                    var previousValue = _tenant;
-                    _tenant = value;
-                    FixupTenant(previousValue);
-                }
-            }
-        }
-        private Tenant _tenant;
-    
         public virtual ICollection<Category> Category
         {
             get
@@ -168,6 +153,21 @@ namespace ComplexCommerce.Data.SqlServer.Model
             }
         }
         private ICollection<Page> _page;
+    
+        public virtual Tenant Tenant
+        {
+            get { return _tenant; }
+            set
+            {
+                if (!ReferenceEquals(_tenant, value))
+                {
+                    var previousValue = _tenant;
+                    _tenant = value;
+                    FixupTenant(previousValue);
+                }
+            }
+        }
+        private Tenant _tenant;
 
         #endregion
 

@@ -30,9 +30,9 @@ namespace ComplexCommerce.Data.SqlServer.Model
         IObjectSet<Product> Product { get; }
         IObjectSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale { get; }
         IObjectSet<ProductXTenantLocale> ProductXTenantLocale { get; }
-        IObjectSet<Tenant> Tenant { get; }
         IObjectSet<TenantLocale> TenantLocale { get; }
         IObjectSet<Category> Category { get; }
         IObjectSet<Page> Page { get; }
+        IObjectSet<Tenant> Tenant { get; }
     }
 }
