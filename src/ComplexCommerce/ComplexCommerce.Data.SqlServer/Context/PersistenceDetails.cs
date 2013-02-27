@@ -14,7 +14,9 @@ namespace ComplexCommerce.Data.SqlServer.Context
 
         public PersistenceDetails(string location)
         {
-            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(location));
+            //Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(location));
+            if (string.IsNullOrEmpty(location))
+                throw new ArgumentNullException("location");
 
             this.location = location;
         }

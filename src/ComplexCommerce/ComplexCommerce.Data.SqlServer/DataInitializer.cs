@@ -4,16 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using ComplexCommerce.Data.SqlServer.Model;
+using ComplexCommerce.Data.Dto;
 
 namespace ComplexCommerce.Data.SqlServer
 {
     public class DataInitializer
+        : IDataInitializer
     {
         public DataInitializer()
         {
             // Configure all mappings between EF and DTO
-            //Mapper.CreateMap<Store, StoreDto>();
-            //Mapper.CreateMap<StoreDto, Store>();
+            Mapper.CreateMap<Tenant, TenantDto>();
+            Mapper.CreateMap<TenantDto, Tenant>();
 
             //Mapper.CreateMap<Product, ProductDto>();
             //Mapper.CreateMap<ProductDto, Product>();

@@ -14,7 +14,7 @@ namespace ComplexCommerce
 {
     public class DIConfig
     {
-        public static void RegisterDependencyInjectionContainer()
+        public static IDependencyInjectionContainer RegisterDependencyInjectionContainer()
         {
             // Create the DI container
             var container = new Container();
@@ -45,6 +45,9 @@ namespace ComplexCommerce
 
             // Configure AutoMapper - all work done in constructor
             container.GetInstance<IDataInitializer>();
+
+            // Return our DI container instance
+            return diContainer;
         }
     }
 }

@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ComplexCommerce.Business;
+using CslaLibrary = Csla;
+
 
 namespace ComplexCommerce.Business.Context
 {
     public class ApplicationContext
     {
-        // TODO: Fix this for the store type.
 
-        //public static StoreView CurrentStore
-        //{
-        //    get
-        //    {
-        //        var obj = (StoreView)Csla.ApplicationContext.ClientContext["mainland.store"];
-        //        if (obj != null)
-        //            return obj;
-        //        else
-        //            return StoreView.NewStoreView();
-        //    }
-        //    set
-        //    {
-        //        Csla.ApplicationContext.ClientContext["mainland.store"] = value;
-        //    }
-        //}
+        const string CurrentTenantName = "complexcommerce.tenant";
+
+        public static ITenant CurrentTenant
+        {
+            get
+            {
+                var obj = (Tenant)CslaLibrary.ApplicationContext.ClientContext[CurrentTenantName];
+                if (obj != null)
+                    return obj;
+                else
+                    return Tenant.NewTenant();
+            }
+            set
+            {
+                CslaLibrary.ApplicationContext.ClientContext[CurrentTenantName] = value;
+            }
+        }
     }
 }

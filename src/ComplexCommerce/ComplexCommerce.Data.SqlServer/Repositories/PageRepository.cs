@@ -18,7 +18,9 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
         public PageRepository(IPersistenceContextFactory contextFactory)
         {
-            Contract.Requires<ArgumentNullException>(contextFactory == null);
+            //Contract.Requires<ArgumentNullException>(contextFactory == null);
+            if (contextFactory == null)
+                throw new ArgumentNullException("contextFactory");
 
             this.contextFactory = contextFactory;
         }

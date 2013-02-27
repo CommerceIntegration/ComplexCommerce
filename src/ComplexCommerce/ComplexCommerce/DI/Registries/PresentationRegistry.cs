@@ -5,6 +5,7 @@ using System.Web;
 using StructureMap.Configuration.DSL;
 using ComplexCommerce.Shared.DI;
 using ComplexCommerce.Csla.DI;
+using ComplexCommerce.Web;
 
 namespace ComplexCommerce.DI.Registries
 {
@@ -18,6 +19,12 @@ namespace ComplexCommerce.DI.Registries
 
             //this.For<IResolver>()
             //    .Use<StructureMapResolver>();
+
+            this.Scan(scan =>
+            {
+                scan.AssemblyContainingType<IContextUtilities>();
+                scan.WithDefaultConventions();
+            });
         }
     }
 }
