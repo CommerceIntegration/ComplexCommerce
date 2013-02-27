@@ -25,8 +25,7 @@ namespace ComplexCommerce.DI.Registries
             // Get Configuration Settings to Inject
             string persistenceDetailsTypeName = ConfigurationManager.AppSettings["PersistenceDetailsType"];
             string persistenceContextTypeName = ConfigurationManager.AppSettings["PersistenceContextType"];
-            //string dalInitializerType = ConfigurationManager.AppSettings["DalInitializerType"];
-            string connectionString = ConfigurationManager.ConnectionStrings["MainlandCommerce"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["ComplexCommerce"].ConnectionString;
 
 
             Type persistenceDetailsType = Type.GetType(persistenceDetailsTypeName);
@@ -50,25 +49,6 @@ namespace ComplexCommerce.DI.Registries
                 .Singleton()
                 .Use(persistenceDetails);
 
-            //this.For<Mainland.Commerce.Dal.IPersistenceDetails>()
-            //    .Use<Mainland.Commerce.DalEf.PersistenceDetails>();
-
-            //// Setup the persistanceDetails injection for the repositories.
-            //this.Scan(scan =>
-            //{
-            //    //scan.AssemblyContainingType<Mainland.Commerce.Dal.IPersistenceDetails>();
-            //    scan.AssemblyContainingType(persistenceContextType);
-            //    scan.Include(t => typeof(Mainland.Commerce.Dal.IPersistenceDetails).IsAssignableFrom(t));
-            //    scan.WithDefaultConventions();
-            //    scan.SingleImplementationsOfInterface();
-            //    //scan.Convention<SingletonConvention>();
-            //    //scan.Convention<HttpContextScopedConvention>(); // NOTE: we won't want singleton because we need to inject multiple data layers
-            //});
-
-            //this.For<Mainland.Commerce.Dal.IPersistenceContext>()
-            //    .Use<Mainland.Commerce.DalEf.PersistenceContext>();
-
-
             // Setup the connection string injection
             this.Scan(scan =>
             {
@@ -76,26 +56,7 @@ namespace ComplexCommerce.DI.Registries
                 scan.With(new ConnectionStringConvention(connectionString));
             });
 
-            //// Setup the persistanceLocation injection for the repositories.
-            //this.Scan(scan =>
-            //{
-            //    scan.Assembly("Mainland.Commerce.DalEf");
-            //    scan.Include(t => t.Name.EndsWith("Repository"));
-            //    scan.With(new PersistanceConvention(persistanceLocation));
-            //});
-
-            // Setup the persistence context factory for BOs
-            //this.Scan(scan =>
-            //{
-            //    scan.AssemblyContainingType(persistanceDetailsType);
-            //    scan.Include(t => typeof(Mainland.Commerce.Dal.IPersistenceContextFactory).IsAssignableFrom(t));
-            //    scan.WithDefaultConventions();
-            //    scan.SingleImplementationsOfInterface();
-            //    scan.With(new PersistenceContextFactoryConvention(
-            //});
-
-            //var contextFactory = new PersistenceContextFactory(persistenceContextTypeName, container);
-
+            // Setup the persistanceLocation injection for the repositories.
             this.For<IPersistenceContextFactory>()
                 .Singleton()
                 .Use(new PersistenceContextFactory(persistenceContextTypeName, container));
