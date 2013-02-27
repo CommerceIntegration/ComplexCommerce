@@ -28,16 +28,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
             : base(objectContext)
         {
         }
-        public virtual IObjectSet<Category> Category
-        {
-            get { return _category  ?? (_category = new MockObjectSet<Category>()); }
-        }
-        private IObjectSet<Category> _category;
-        public virtual IObjectSet<CategoryXProductXStoreLocale> CategoryXProductXStoreLocale
-        {
-            get { return _categoryXProductXStoreLocale  ?? (_categoryXProductXStoreLocale = new MockObjectSet<CategoryXProductXStoreLocale>()); }
-        }
-        private IObjectSet<CategoryXProductXStoreLocale> _categoryXProductXStoreLocale;
         public virtual IObjectSet<Chain> Chain
         {
             get { return _chain  ?? (_chain = new MockObjectSet<Chain>()); }
@@ -48,25 +38,35 @@ namespace ComplexCommerce.Data.SqlServer.Model
             get { return _product  ?? (_product = new MockObjectSet<Product>()); }
         }
         private IObjectSet<Product> _product;
-        public virtual IObjectSet<ProductXStoreLocale> ProductXStoreLocale
+        public virtual IObjectSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale
         {
-            get { return _productXStoreLocale  ?? (_productXStoreLocale = new MockObjectSet<ProductXStoreLocale>()); }
+            get { return _categoryXProductXTenantLocale  ?? (_categoryXProductXTenantLocale = new MockObjectSet<CategoryXProductXTenantLocale>()); }
         }
-        private IObjectSet<ProductXStoreLocale> _productXStoreLocale;
+        private IObjectSet<CategoryXProductXTenantLocale> _categoryXProductXTenantLocale;
+        public virtual IObjectSet<ProductXTenantLocale> ProductXTenantLocale
+        {
+            get { return _productXTenantLocale  ?? (_productXTenantLocale = new MockObjectSet<ProductXTenantLocale>()); }
+        }
+        private IObjectSet<ProductXTenantLocale> _productXTenantLocale;
+        public virtual IObjectSet<Tenant> Tenant
+        {
+            get { return _tenant  ?? (_tenant = new MockObjectSet<Tenant>()); }
+        }
+        private IObjectSet<Tenant> _tenant;
+        public virtual IObjectSet<TenantLocale> TenantLocale
+        {
+            get { return _tenantLocale  ?? (_tenantLocale = new MockObjectSet<TenantLocale>()); }
+        }
+        private IObjectSet<TenantLocale> _tenantLocale;
+        public virtual IObjectSet<Category> Category
+        {
+            get { return _category  ?? (_category = new MockObjectSet<Category>()); }
+        }
+        private IObjectSet<Category> _category;
         public virtual IObjectSet<Page> Page
         {
             get { return _page  ?? (_page = new MockObjectSet<Page>()); }
         }
         private IObjectSet<Page> _page;
-        public virtual IObjectSet<Store> Store
-        {
-            get { return _store  ?? (_store = new MockObjectSet<Store>()); }
-        }
-        private IObjectSet<Store> _store;
-        public virtual IObjectSet<StoreLocale> StoreLocale
-        {
-            get { return _storeLocale  ?? (_storeLocale = new MockObjectSet<StoreLocale>()); }
-        }
-        private IObjectSet<StoreLocale> _storeLocale;
     }
 }

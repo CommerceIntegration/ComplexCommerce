@@ -31,22 +31,22 @@ namespace ComplexCommerce.Data.SqlServer.Model
             set;
         }
     
-        public virtual System.Guid StoreLocaleId
+        public virtual System.Guid TenantLocaleId
         {
-            get { return _storeLocaleId; }
+            get { return _tenantLocaleId; }
             set
             {
-                if (_storeLocaleId != value)
+                if (_tenantLocaleId != value)
                 {
-                    if (StoreLocale != null && StoreLocale.Id != value)
+                    if (TenantLocale != null && TenantLocale.Id != value)
                     {
-                        StoreLocale = null;
+                        TenantLocale = null;
                     }
-                    _storeLocaleId = value;
+                    _tenantLocaleId = value;
                 }
             }
         }
-        private System.Guid _storeLocaleId;
+        private System.Guid _tenantLocaleId;
     
         public virtual string RouteUrl
         {
@@ -70,41 +70,41 @@ namespace ComplexCommerce.Data.SqlServer.Model
 
         #region Navigation Properties
     
-        public virtual StoreLocale StoreLocale
+        public virtual TenantLocale TenantLocale
         {
-            get { return _storeLocale; }
+            get { return _tenantLocale; }
             set
             {
-                if (!ReferenceEquals(_storeLocale, value))
+                if (!ReferenceEquals(_tenantLocale, value))
                 {
-                    var previousValue = _storeLocale;
-                    _storeLocale = value;
-                    FixupStoreLocale(previousValue);
+                    var previousValue = _tenantLocale;
+                    _tenantLocale = value;
+                    FixupTenantLocale(previousValue);
                 }
             }
         }
-        private StoreLocale _storeLocale;
+        private TenantLocale _tenantLocale;
 
         #endregion
 
         #region Association Fixup
     
-        private void FixupStoreLocale(StoreLocale previousValue)
+        private void FixupTenantLocale(TenantLocale previousValue)
         {
             if (previousValue != null && previousValue.Page.Contains(this))
             {
                 previousValue.Page.Remove(this);
             }
     
-            if (StoreLocale != null)
+            if (TenantLocale != null)
             {
-                if (!StoreLocale.Page.Contains(this))
+                if (!TenantLocale.Page.Contains(this))
                 {
-                    StoreLocale.Page.Add(this);
+                    TenantLocale.Page.Add(this);
                 }
-                if (StoreLocaleId != StoreLocale.Id)
+                if (TenantLocaleId != TenantLocale.Id)
                 {
-                    StoreLocaleId = StoreLocale.Id;
+                    TenantLocaleId = TenantLocale.Id;
                 }
             }
         }

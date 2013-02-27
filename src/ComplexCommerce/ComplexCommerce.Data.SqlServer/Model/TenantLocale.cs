@@ -15,7 +15,7 @@ using System.Collections.Specialized;
 
 namespace ComplexCommerce.Data.SqlServer.Model
 {
-    public partial class StoreLocale
+    public partial class TenantLocale
     {
         #region Primitive Properties
     
@@ -25,22 +25,22 @@ namespace ComplexCommerce.Data.SqlServer.Model
             set;
         }
     
-        public virtual int StoreId
+        public virtual int TenantId
         {
-            get { return _storeId; }
+            get { return _tenantId; }
             set
             {
-                if (_storeId != value)
+                if (_tenantId != value)
                 {
-                    if (Store != null && Store.Id != value)
+                    if (Tenant != null && Tenant.Id != value)
                     {
-                        Store = null;
+                        Tenant = null;
                     }
-                    _storeId = value;
+                    _tenantId = value;
                 }
             }
         }
-        private int _storeId;
+        private int _tenantId;
     
         public virtual int LocaleId
         {
@@ -57,6 +57,53 @@ namespace ComplexCommerce.Data.SqlServer.Model
         #endregion
 
         #region Navigation Properties
+    
+        public virtual ICollection<ProductXTenantLocale> ProductXTenantLocale
+        {
+            get
+            {
+                if (_productXTenantLocale == null)
+                {
+                    var newCollection = new FixupCollection<ProductXTenantLocale>();
+                    newCollection.CollectionChanged += FixupProductXTenantLocale;
+                    _productXTenantLocale = newCollection;
+                }
+                return _productXTenantLocale;
+            }
+            set
+            {
+                if (!ReferenceEquals(_productXTenantLocale, value))
+                {
+                    var previousValue = _productXTenantLocale as FixupCollection<ProductXTenantLocale>;
+                    if (previousValue != null)
+                    {
+                        previousValue.CollectionChanged -= FixupProductXTenantLocale;
+                    }
+                    _productXTenantLocale = value;
+                    var newValue = value as FixupCollection<ProductXTenantLocale>;
+                    if (newValue != null)
+                    {
+                        newValue.CollectionChanged += FixupProductXTenantLocale;
+                    }
+                }
+            }
+        }
+        private ICollection<ProductXTenantLocale> _productXTenantLocale;
+    
+        public virtual Tenant Tenant
+        {
+            get { return _tenant; }
+            set
+            {
+                if (!ReferenceEquals(_tenant, value))
+                {
+                    var previousValue = _tenant;
+                    _tenant = value;
+                    FixupTenant(previousValue);
+                }
+            }
+        }
+        private Tenant _tenant;
     
         public virtual ICollection<Category> Category
         {
@@ -121,74 +168,49 @@ namespace ComplexCommerce.Data.SqlServer.Model
             }
         }
         private ICollection<Page> _page;
-    
-        public virtual ICollection<ProductXStoreLocale> ProductXStoreLocale
-        {
-            get
-            {
-                if (_productXStoreLocale == null)
-                {
-                    var newCollection = new FixupCollection<ProductXStoreLocale>();
-                    newCollection.CollectionChanged += FixupProductXStoreLocale;
-                    _productXStoreLocale = newCollection;
-                }
-                return _productXStoreLocale;
-            }
-            set
-            {
-                if (!ReferenceEquals(_productXStoreLocale, value))
-                {
-                    var previousValue = _productXStoreLocale as FixupCollection<ProductXStoreLocale>;
-                    if (previousValue != null)
-                    {
-                        previousValue.CollectionChanged -= FixupProductXStoreLocale;
-                    }
-                    _productXStoreLocale = value;
-                    var newValue = value as FixupCollection<ProductXStoreLocale>;
-                    if (newValue != null)
-                    {
-                        newValue.CollectionChanged += FixupProductXStoreLocale;
-                    }
-                }
-            }
-        }
-        private ICollection<ProductXStoreLocale> _productXStoreLocale;
-    
-        public virtual Store Store
-        {
-            get { return _store; }
-            set
-            {
-                if (!ReferenceEquals(_store, value))
-                {
-                    var previousValue = _store;
-                    _store = value;
-                    FixupStore(previousValue);
-                }
-            }
-        }
-        private Store _store;
 
         #endregion
 
         #region Association Fixup
     
-        private void FixupStore(Store previousValue)
+        private void FixupTenant(Tenant previousValue)
         {
-            if (previousValue != null && previousValue.StoreLocale.Contains(this))
+            if (previousValue != null && previousValue.TenantLocale.Contains(this))
             {
-                previousValue.StoreLocale.Remove(this);
+                previousValue.TenantLocale.Remove(this);
             }
     
-            if (Store != null)
+            if (Tenant != null)
             {
-                if (!Store.StoreLocale.Contains(this))
+                if (!Tenant.TenantLocale.Contains(this))
                 {
-                    Store.StoreLocale.Add(this);
+                    Tenant.TenantLocale.Add(this);
                 }
-                if (StoreId != Store.Id)
+                if (TenantId != Tenant.Id)
                 {
-                    StoreId = Store.Id;
+                    TenantId = Tenant.Id;
+                }
+            }
+        }
+    
+        private void FixupProductXTenantLocale(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (ProductXTenantLocale item in e.NewItems)
+                {
+                    item.TenantLocale = this;
+                }
+            }
+    
+            if (e.OldItems != null)
+            {
+                foreach (ProductXTenantLocale item in e.OldItems)
+                {
+                    if (ReferenceEquals(item.TenantLocale, this))
+                    {
+                        item.TenantLocale = null;
+                    }
                 }
             }
         }
@@ -199,7 +221,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
             {
                 foreach (Category item in e.NewItems)
                 {
-                    item.StoreLocale = this;
+                    item.TenantLocale = this;
                 }
             }
     
@@ -207,9 +229,9 @@ namespace ComplexCommerce.Data.SqlServer.Model
             {
                 foreach (Category item in e.OldItems)
                 {
-                    if (ReferenceEquals(item.StoreLocale, this))
+                    if (ReferenceEquals(item.TenantLocale, this))
                     {
-                        item.StoreLocale = null;
+                        item.TenantLocale = null;
                     }
                 }
             }
@@ -221,7 +243,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
             {
                 foreach (Page item in e.NewItems)
                 {
-                    item.StoreLocale = this;
+                    item.TenantLocale = this;
                 }
             }
     
@@ -229,31 +251,9 @@ namespace ComplexCommerce.Data.SqlServer.Model
             {
                 foreach (Page item in e.OldItems)
                 {
-                    if (ReferenceEquals(item.StoreLocale, this))
+                    if (ReferenceEquals(item.TenantLocale, this))
                     {
-                        item.StoreLocale = null;
-                    }
-                }
-            }
-        }
-    
-        private void FixupProductXStoreLocale(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems != null)
-            {
-                foreach (ProductXStoreLocale item in e.NewItems)
-                {
-                    item.StoreLocale = this;
-                }
-            }
-    
-            if (e.OldItems != null)
-            {
-                foreach (ProductXStoreLocale item in e.OldItems)
-                {
-                    if (ReferenceEquals(item.StoreLocale, this))
-                    {
-                        item.StoreLocale = null;
+                        item.TenantLocale = null;
                     }
                 }
             }

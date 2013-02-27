@@ -26,13 +26,13 @@ namespace ComplexCommerce.Data.SqlServer.Model
     /// </summary>
     public interface IComplexCommerce : IObjectContext
     {
-        IObjectSet<Category> Category { get; }
-        IObjectSet<CategoryXProductXStoreLocale> CategoryXProductXStoreLocale { get; }
         IObjectSet<Chain> Chain { get; }
         IObjectSet<Product> Product { get; }
-        IObjectSet<ProductXStoreLocale> ProductXStoreLocale { get; }
+        IObjectSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale { get; }
+        IObjectSet<ProductXTenantLocale> ProductXTenantLocale { get; }
+        IObjectSet<Tenant> Tenant { get; }
+        IObjectSet<TenantLocale> TenantLocale { get; }
+        IObjectSet<Category> Category { get; }
         IObjectSet<Page> Page { get; }
-        IObjectSet<Store> Store { get; }
-        IObjectSet<StoreLocale> StoreLocale { get; }
     }
 }

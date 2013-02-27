@@ -73,37 +73,37 @@ namespace ComplexCommerce.Data.SqlServer.Model
         }
         private ICollection<Product> _product;
     
-        public virtual ICollection<Store> Store
+        public virtual ICollection<Tenant> Tenant
         {
             get
             {
-                if (_store == null)
+                if (_tenant == null)
                 {
-                    var newCollection = new FixupCollection<Store>();
-                    newCollection.CollectionChanged += FixupStore;
-                    _store = newCollection;
+                    var newCollection = new FixupCollection<Tenant>();
+                    newCollection.CollectionChanged += FixupTenant;
+                    _tenant = newCollection;
                 }
-                return _store;
+                return _tenant;
             }
             set
             {
-                if (!ReferenceEquals(_store, value))
+                if (!ReferenceEquals(_tenant, value))
                 {
-                    var previousValue = _store as FixupCollection<Store>;
+                    var previousValue = _tenant as FixupCollection<Tenant>;
                     if (previousValue != null)
                     {
-                        previousValue.CollectionChanged -= FixupStore;
+                        previousValue.CollectionChanged -= FixupTenant;
                     }
-                    _store = value;
-                    var newValue = value as FixupCollection<Store>;
+                    _tenant = value;
+                    var newValue = value as FixupCollection<Tenant>;
                     if (newValue != null)
                     {
-                        newValue.CollectionChanged += FixupStore;
+                        newValue.CollectionChanged += FixupTenant;
                     }
                 }
             }
         }
-        private ICollection<Store> _store;
+        private ICollection<Tenant> _tenant;
 
         #endregion
 
@@ -131,11 +131,11 @@ namespace ComplexCommerce.Data.SqlServer.Model
             }
         }
     
-        private void FixupStore(object sender, NotifyCollectionChangedEventArgs e)
+        private void FixupTenant(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
-                foreach (Store item in e.NewItems)
+                foreach (Tenant item in e.NewItems)
                 {
                     item.Chain = this;
                 }
@@ -143,7 +143,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
             if (e.OldItems != null)
             {
-                foreach (Store item in e.OldItems)
+                foreach (Tenant item in e.OldItems)
                 {
                     if (ReferenceEquals(item.Chain, this))
                     {

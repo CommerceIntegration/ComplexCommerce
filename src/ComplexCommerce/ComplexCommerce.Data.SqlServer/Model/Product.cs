@@ -79,37 +79,37 @@ namespace ComplexCommerce.Data.SqlServer.Model
         }
         private Chain _chain;
     
-        public virtual ICollection<ProductXStoreLocale> ProductXStoreLocale
+        public virtual ICollection<ProductXTenantLocale> ProductXTenantLocale
         {
             get
             {
-                if (_productXStoreLocale == null)
+                if (_productXTenantLocale == null)
                 {
-                    var newCollection = new FixupCollection<ProductXStoreLocale>();
-                    newCollection.CollectionChanged += FixupProductXStoreLocale;
-                    _productXStoreLocale = newCollection;
+                    var newCollection = new FixupCollection<ProductXTenantLocale>();
+                    newCollection.CollectionChanged += FixupProductXTenantLocale;
+                    _productXTenantLocale = newCollection;
                 }
-                return _productXStoreLocale;
+                return _productXTenantLocale;
             }
             set
             {
-                if (!ReferenceEquals(_productXStoreLocale, value))
+                if (!ReferenceEquals(_productXTenantLocale, value))
                 {
-                    var previousValue = _productXStoreLocale as FixupCollection<ProductXStoreLocale>;
+                    var previousValue = _productXTenantLocale as FixupCollection<ProductXTenantLocale>;
                     if (previousValue != null)
                     {
-                        previousValue.CollectionChanged -= FixupProductXStoreLocale;
+                        previousValue.CollectionChanged -= FixupProductXTenantLocale;
                     }
-                    _productXStoreLocale = value;
-                    var newValue = value as FixupCollection<ProductXStoreLocale>;
+                    _productXTenantLocale = value;
+                    var newValue = value as FixupCollection<ProductXTenantLocale>;
                     if (newValue != null)
                     {
-                        newValue.CollectionChanged += FixupProductXStoreLocale;
+                        newValue.CollectionChanged += FixupProductXTenantLocale;
                     }
                 }
             }
         }
-        private ICollection<ProductXStoreLocale> _productXStoreLocale;
+        private ICollection<ProductXTenantLocale> _productXTenantLocale;
 
         #endregion
 
@@ -135,11 +135,11 @@ namespace ComplexCommerce.Data.SqlServer.Model
             }
         }
     
-        private void FixupProductXStoreLocale(object sender, NotifyCollectionChangedEventArgs e)
+        private void FixupProductXTenantLocale(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
-                foreach (ProductXStoreLocale item in e.NewItems)
+                foreach (ProductXTenantLocale item in e.NewItems)
                 {
                     item.Product = this;
                 }
@@ -147,7 +147,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
             if (e.OldItems != null)
             {
-                foreach (ProductXStoreLocale item in e.OldItems)
+                foreach (ProductXTenantLocale item in e.OldItems)
                 {
                     if (ReferenceEquals(item.Product, this))
                     {

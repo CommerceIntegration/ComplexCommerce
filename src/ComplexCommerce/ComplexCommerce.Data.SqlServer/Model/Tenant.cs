@@ -15,7 +15,7 @@ using System.Collections.Specialized;
 
 namespace ComplexCommerce.Data.SqlServer.Model
 {
-    public partial class Store
+    public partial class Tenant
     {
         #region Primitive Properties
     
@@ -85,37 +85,37 @@ namespace ComplexCommerce.Data.SqlServer.Model
         }
         private Chain _chain;
     
-        public virtual ICollection<StoreLocale> StoreLocale
+        public virtual ICollection<TenantLocale> TenantLocale
         {
             get
             {
-                if (_storeLocale == null)
+                if (_tenantLocale == null)
                 {
-                    var newCollection = new FixupCollection<StoreLocale>();
-                    newCollection.CollectionChanged += FixupStoreLocale;
-                    _storeLocale = newCollection;
+                    var newCollection = new FixupCollection<TenantLocale>();
+                    newCollection.CollectionChanged += FixupTenantLocale;
+                    _tenantLocale = newCollection;
                 }
-                return _storeLocale;
+                return _tenantLocale;
             }
             set
             {
-                if (!ReferenceEquals(_storeLocale, value))
+                if (!ReferenceEquals(_tenantLocale, value))
                 {
-                    var previousValue = _storeLocale as FixupCollection<StoreLocale>;
+                    var previousValue = _tenantLocale as FixupCollection<TenantLocale>;
                     if (previousValue != null)
                     {
-                        previousValue.CollectionChanged -= FixupStoreLocale;
+                        previousValue.CollectionChanged -= FixupTenantLocale;
                     }
-                    _storeLocale = value;
-                    var newValue = value as FixupCollection<StoreLocale>;
+                    _tenantLocale = value;
+                    var newValue = value as FixupCollection<TenantLocale>;
                     if (newValue != null)
                     {
-                        newValue.CollectionChanged += FixupStoreLocale;
+                        newValue.CollectionChanged += FixupTenantLocale;
                     }
                 }
             }
         }
-        private ICollection<StoreLocale> _storeLocale;
+        private ICollection<TenantLocale> _tenantLocale;
 
         #endregion
 
@@ -123,16 +123,16 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
         private void FixupChain(Chain previousValue)
         {
-            if (previousValue != null && previousValue.Store.Contains(this))
+            if (previousValue != null && previousValue.Tenant.Contains(this))
             {
-                previousValue.Store.Remove(this);
+                previousValue.Tenant.Remove(this);
             }
     
             if (Chain != null)
             {
-                if (!Chain.Store.Contains(this))
+                if (!Chain.Tenant.Contains(this))
                 {
-                    Chain.Store.Add(this);
+                    Chain.Tenant.Add(this);
                 }
                 if (ChainId != Chain.Id)
                 {
@@ -141,23 +141,23 @@ namespace ComplexCommerce.Data.SqlServer.Model
             }
         }
     
-        private void FixupStoreLocale(object sender, NotifyCollectionChangedEventArgs e)
+        private void FixupTenantLocale(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
-                foreach (StoreLocale item in e.NewItems)
+                foreach (TenantLocale item in e.NewItems)
                 {
-                    item.Store = this;
+                    item.Tenant = this;
                 }
             }
     
             if (e.OldItems != null)
             {
-                foreach (StoreLocale item in e.OldItems)
+                foreach (TenantLocale item in e.OldItems)
                 {
-                    if (ReferenceEquals(item.Store, this))
+                    if (ReferenceEquals(item.Tenant, this))
                     {
-                        item.Store = null;
+                        item.Tenant = null;
                     }
                 }
             }

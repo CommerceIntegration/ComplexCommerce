@@ -15,7 +15,7 @@ using System.Collections.Specialized;
 
 namespace ComplexCommerce.Data.SqlServer.Model
 {
-    public partial class ProductXStoreLocale
+    public partial class ProductXTenantLocale
     {
         #region Primitive Properties
     
@@ -42,22 +42,22 @@ namespace ComplexCommerce.Data.SqlServer.Model
         }
         private System.Guid _productId;
     
-        public virtual System.Guid StoreLocaleId
+        public virtual System.Guid TenantLocaleId
         {
-            get { return _storeLocaleId; }
+            get { return _tenantLocaleId; }
             set
             {
-                if (_storeLocaleId != value)
+                if (_tenantLocaleId != value)
                 {
-                    if (StoreLocale != null && StoreLocale.Id != value)
+                    if (TenantLocale != null && TenantLocale.Id != value)
                     {
-                        StoreLocale = null;
+                        TenantLocale = null;
                     }
-                    _storeLocaleId = value;
+                    _tenantLocaleId = value;
                 }
             }
         }
-        private System.Guid _storeLocaleId;
+        private System.Guid _tenantLocaleId;
     
         public virtual string Name
         {
@@ -81,37 +81,37 @@ namespace ComplexCommerce.Data.SqlServer.Model
 
         #region Navigation Properties
     
-        public virtual ICollection<CategoryXProductXStoreLocale> CategoryXProductXStoreLocale
+        public virtual ICollection<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale
         {
             get
             {
-                if (_categoryXProductXStoreLocale == null)
+                if (_categoryXProductXTenantLocale == null)
                 {
-                    var newCollection = new FixupCollection<CategoryXProductXStoreLocale>();
-                    newCollection.CollectionChanged += FixupCategoryXProductXStoreLocale;
-                    _categoryXProductXStoreLocale = newCollection;
+                    var newCollection = new FixupCollection<CategoryXProductXTenantLocale>();
+                    newCollection.CollectionChanged += FixupCategoryXProductXTenantLocale;
+                    _categoryXProductXTenantLocale = newCollection;
                 }
-                return _categoryXProductXStoreLocale;
+                return _categoryXProductXTenantLocale;
             }
             set
             {
-                if (!ReferenceEquals(_categoryXProductXStoreLocale, value))
+                if (!ReferenceEquals(_categoryXProductXTenantLocale, value))
                 {
-                    var previousValue = _categoryXProductXStoreLocale as FixupCollection<CategoryXProductXStoreLocale>;
+                    var previousValue = _categoryXProductXTenantLocale as FixupCollection<CategoryXProductXTenantLocale>;
                     if (previousValue != null)
                     {
-                        previousValue.CollectionChanged -= FixupCategoryXProductXStoreLocale;
+                        previousValue.CollectionChanged -= FixupCategoryXProductXTenantLocale;
                     }
-                    _categoryXProductXStoreLocale = value;
-                    var newValue = value as FixupCollection<CategoryXProductXStoreLocale>;
+                    _categoryXProductXTenantLocale = value;
+                    var newValue = value as FixupCollection<CategoryXProductXTenantLocale>;
                     if (newValue != null)
                     {
-                        newValue.CollectionChanged += FixupCategoryXProductXStoreLocale;
+                        newValue.CollectionChanged += FixupCategoryXProductXTenantLocale;
                     }
                 }
             }
         }
-        private ICollection<CategoryXProductXStoreLocale> _categoryXProductXStoreLocale;
+        private ICollection<CategoryXProductXTenantLocale> _categoryXProductXTenantLocale;
     
         public virtual Product Product
         {
@@ -128,20 +128,20 @@ namespace ComplexCommerce.Data.SqlServer.Model
         }
         private Product _product;
     
-        public virtual StoreLocale StoreLocale
+        public virtual TenantLocale TenantLocale
         {
-            get { return _storeLocale; }
+            get { return _tenantLocale; }
             set
             {
-                if (!ReferenceEquals(_storeLocale, value))
+                if (!ReferenceEquals(_tenantLocale, value))
                 {
-                    var previousValue = _storeLocale;
-                    _storeLocale = value;
-                    FixupStoreLocale(previousValue);
+                    var previousValue = _tenantLocale;
+                    _tenantLocale = value;
+                    FixupTenantLocale(previousValue);
                 }
             }
         }
-        private StoreLocale _storeLocale;
+        private TenantLocale _tenantLocale;
 
         #endregion
 
@@ -149,16 +149,16 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
         private void FixupProduct(Product previousValue)
         {
-            if (previousValue != null && previousValue.ProductXStoreLocale.Contains(this))
+            if (previousValue != null && previousValue.ProductXTenantLocale.Contains(this))
             {
-                previousValue.ProductXStoreLocale.Remove(this);
+                previousValue.ProductXTenantLocale.Remove(this);
             }
     
             if (Product != null)
             {
-                if (!Product.ProductXStoreLocale.Contains(this))
+                if (!Product.ProductXTenantLocale.Contains(this))
                 {
-                    Product.ProductXStoreLocale.Add(this);
+                    Product.ProductXTenantLocale.Add(this);
                 }
                 if (ProductId != Product.Id)
                 {
@@ -167,43 +167,43 @@ namespace ComplexCommerce.Data.SqlServer.Model
             }
         }
     
-        private void FixupStoreLocale(StoreLocale previousValue)
+        private void FixupTenantLocale(TenantLocale previousValue)
         {
-            if (previousValue != null && previousValue.ProductXStoreLocale.Contains(this))
+            if (previousValue != null && previousValue.ProductXTenantLocale.Contains(this))
             {
-                previousValue.ProductXStoreLocale.Remove(this);
+                previousValue.ProductXTenantLocale.Remove(this);
             }
     
-            if (StoreLocale != null)
+            if (TenantLocale != null)
             {
-                if (!StoreLocale.ProductXStoreLocale.Contains(this))
+                if (!TenantLocale.ProductXTenantLocale.Contains(this))
                 {
-                    StoreLocale.ProductXStoreLocale.Add(this);
+                    TenantLocale.ProductXTenantLocale.Add(this);
                 }
-                if (StoreLocaleId != StoreLocale.Id)
+                if (TenantLocaleId != TenantLocale.Id)
                 {
-                    StoreLocaleId = StoreLocale.Id;
+                    TenantLocaleId = TenantLocale.Id;
                 }
             }
         }
     
-        private void FixupCategoryXProductXStoreLocale(object sender, NotifyCollectionChangedEventArgs e)
+        private void FixupCategoryXProductXTenantLocale(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
-                foreach (CategoryXProductXStoreLocale item in e.NewItems)
+                foreach (CategoryXProductXTenantLocale item in e.NewItems)
                 {
-                    item.ProductXStoreLocale = this;
+                    item.ProductXTenantLocale = this;
                 }
             }
     
             if (e.OldItems != null)
             {
-                foreach (CategoryXProductXStoreLocale item in e.OldItems)
+                foreach (CategoryXProductXTenantLocale item in e.OldItems)
                 {
-                    if (ReferenceEquals(item.ProductXStoreLocale, this))
+                    if (ReferenceEquals(item.ProductXTenantLocale, this))
                     {
-                        item.ProductXStoreLocale = null;
+                        item.ProductXTenantLocale = null;
                     }
                 }
             }

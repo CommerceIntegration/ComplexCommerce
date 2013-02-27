@@ -25,15 +25,15 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
         #region IPageRepository Members
 
-        public List<SiteMapPageDto> List(int storeId, int localeId)
+        public List<SiteMapPageDto> List(int tenantId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
-                var result = (from storeLocale in ctx.ObjectContext.StoreLocale
+                var result = (from tenantLocale in ctx.ObjectContext.TenantLocale
                              join page in ctx.ObjectContext.Page
-                                 on storeLocale.Id equals page.StoreLocaleId
-                             where storeLocale.StoreId == storeId
-                             where storeLocale.LocaleId == localeId
+                                 on tenantLocale.Id equals page.TenantLocaleId
+                             where tenantLocale.TenantId == tenantId
+                             where tenantLocale.LocaleId == localeId
                              select new SiteMapPageDto
                              {
                                  Id = page.Id,
@@ -45,13 +45,13 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
                 if (result.Count == 0)
                 {
-                    (from storeLocale in ctx.ObjectContext.StoreLocale
+                    (from tenantLocale in ctx.ObjectContext.TenantLocale
                      join page in ctx.ObjectContext.Page
-                         on storeLocale.Id equals page.StoreLocaleId
-                     join store in ctx.ObjectContext.Store
-                         on storeLocale.StoreId equals store.Id
-                     where storeLocale.StoreId == storeId
-                     where storeLocale.LocaleId == store.DefaultLocaleId
+                         on tenantLocale.Id equals page.TenantLocaleId
+                     join tenant in ctx.ObjectContext.Tenant
+                         on tenantLocale.TenantId equals tenant.Id
+                     where tenantLocale.TenantId == tenantId
+                     where tenantLocale.LocaleId == tenant.DefaultLocaleId
                      select new SiteMapPageDto
                      {
                          Id = page.Id,
@@ -68,15 +68,15 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
 
                 //var result = from product in ctx.ObjectContext.Product
-                //             join storeXproductXlocale in ctx.ObjectContext.StoreXProductXLocale
-                //                 on product.Id equals storeXproductXlocale.ProductId
-                //             where storeXproductXlocale.StoreId == storeId
-                //             where storeXproductXlocale.LocaleId == localeId
+                //             join tenantXproductXlocale in ctx.ObjectContext.StoreXProductXLocale
+                //                 on product.Id equals tenantXproductXlocale.ProductId
+                //             where tenantXproductXlocale.StoreId == tenantId
+                //             where tenantXproductXlocale.LocaleId == localeId
                 //             select new ProductDto
                 //             {
                 //                 Id = product.Id,
-                //                 Name = storeXproductXlocale.Name,
-                //                 Description = storeXproductXlocale.Description,
+                //                 Name = tenantXproductXlocale.Name,
+                //                 Description = tenantXproductXlocale.Description,
                 //                 Sku = product.SKU
                 //             };
 
