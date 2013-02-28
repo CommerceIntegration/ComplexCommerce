@@ -83,7 +83,8 @@ namespace ComplexCommerce.Data.SqlServer.Context
             _connectionString = connectionString;
 
             _context = new Model.ComplexCommerce(connectionString);
-            _context.Connection.Open();
+            //_context.Connection.Open();
+            _context.Database.Connection.Open();
         }
 
         private static string GetContextName(string connectionString, string label)
@@ -129,7 +130,8 @@ namespace ComplexCommerce.Data.SqlServer.Context
                 _refCount -= 1;
                 if (_refCount == 0)
                 {
-                    _context.Connection.Close();
+                    //_context.Connection.Close();
+                    _context.Database.Connection.Close();
                     _context.Dispose();
                     ApplicationContext.LocalContext.Remove(GetContextName(_connectionString, _label));
                 }

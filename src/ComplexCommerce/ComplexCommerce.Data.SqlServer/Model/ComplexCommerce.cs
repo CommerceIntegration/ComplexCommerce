@@ -13,92 +13,42 @@ using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace ComplexCommerce.Data.SqlServer.Model
 {
     /// <summary>
-    /// The functional concrete object context. This is just like the normal
+    /// The functional concrete db context. This is just like the normal
     /// context that would be generated using the POCO artefact generator, 
     /// apart from the fact that this one implements an interface containing 
-    /// the entity set properties and exposes <code>IObjectSet</code>
+    /// the entity set properties and exposes <code>IDbSet</code>
     /// instances for entity set properties.
     /// </summary>
-    public partial class ComplexCommerce : ObjectContext, IComplexCommerce 
+    public partial class ComplexCommerce : DbContext, IComplexCommerce 
     {
-        public const string ConnectionString = "name=ComplexCommerce";
-        public const string ContainerName = "ComplexCommerce";
-    
-        #region Constructors
-    
-        public ComplexCommerce():
-            base(ConnectionString, ContainerName)
+        public ComplexCommerce()
+            : base("name=ComplexCommerce")
         {
-            this.ContextOptions.LazyLoadingEnabled = true;
+            this.Configuration.LazyLoadingEnabled = true;
         }
     
-        public ComplexCommerce(string connectionString):
-            base(connectionString, ContainerName)
+    	public ComplexCommerce(string connectionString)
+            : base(connectionString)
         {
-            this.ContextOptions.LazyLoadingEnabled = true;
+            this.Configuration.LazyLoadingEnabled = true;
         }
     
-        public ComplexCommerce(EntityConnection connection):
-            base(connection, ContainerName)
-        {
-            this.ContextOptions.LazyLoadingEnabled = true;
-        }
-    
-        #endregion
-    
-        #region ObjectSet Properties
-    
-        public IObjectSet<Chain> Chain
-        {
-            get { return _chain ?? (_chain = CreateObjectSet<Chain>("Chain")); }
-        }
-        private ObjectSet<Chain> _chain;
-    
-        public IObjectSet<Product> Product
-        {
-            get { return _product ?? (_product = CreateObjectSet<Product>("Product")); }
-        }
-        private ObjectSet<Product> _product;
-    
-        public IObjectSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale
-        {
-            get { return _categoryXProductXTenantLocale ?? (_categoryXProductXTenantLocale = CreateObjectSet<CategoryXProductXTenantLocale>("CategoryXProductXTenantLocale")); }
-        }
-        private ObjectSet<CategoryXProductXTenantLocale> _categoryXProductXTenantLocale;
-    
-        public IObjectSet<ProductXTenantLocale> ProductXTenantLocale
-        {
-            get { return _productXTenantLocale ?? (_productXTenantLocale = CreateObjectSet<ProductXTenantLocale>("ProductXTenantLocale")); }
-        }
-        private ObjectSet<ProductXTenantLocale> _productXTenantLocale;
-    
-        public IObjectSet<TenantLocale> TenantLocale
-        {
-            get { return _tenantLocale ?? (_tenantLocale = CreateObjectSet<TenantLocale>("TenantLocale")); }
-        }
-        private ObjectSet<TenantLocale> _tenantLocale;
-    
-        public IObjectSet<Category> Category
-        {
-            get { return _category ?? (_category = CreateObjectSet<Category>("Category")); }
-        }
-        private ObjectSet<Category> _category;
-    
-        public IObjectSet<Page> Page
-        {
-            get { return _page ?? (_page = CreateObjectSet<Page>("Page")); }
-        }
-        private ObjectSet<Page> _page;
-    
-        public IObjectSet<Tenant> Tenant
-        {
-            get { return _tenant ?? (_tenant = CreateObjectSet<Tenant>("Tenant")); }
-        }
-        private ObjectSet<Tenant> _tenant;
+        #region IDbSet Properties
+        public IDbSet<Chain> Chain { get; set; }
+        public IDbSet<Product> Product { get; set; }
+        public IDbSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale { get; set; }
+        public IDbSet<ProductXTenantLocale> ProductXTenantLocale { get; set; }
+        public IDbSet<TenantLocale> TenantLocale { get; set; }
+        public IDbSet<Category> Category { get; set; }
+        public IDbSet<Page> Page { get; set; }
+        public IDbSet<Tenant> Tenant { get; set; }
 
         #endregion
 

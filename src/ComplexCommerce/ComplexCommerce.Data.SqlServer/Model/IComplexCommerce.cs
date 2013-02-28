@@ -16,23 +16,26 @@ using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace ComplexCommerce.Data.SqlServer.Model
 {
     /// <summary>
-    /// The interface for the specialised object context. This contains all of
-    /// the <code>ObjectSet</code> properties that are implemented in both the
+    /// The interface for the specialized object context. This contains all of
+    /// the <code>IDbSet</code> properties that are implemented in both the
     /// functional context class and the mock context class.
     /// </summary>
-    public interface IComplexCommerce : IObjectContext
+    public interface IComplexCommerce : IDbContext
     {
-        IObjectSet<Chain> Chain { get; }
-        IObjectSet<Product> Product { get; }
-        IObjectSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale { get; }
-        IObjectSet<ProductXTenantLocale> ProductXTenantLocale { get; }
-        IObjectSet<TenantLocale> TenantLocale { get; }
-        IObjectSet<Category> Category { get; }
-        IObjectSet<Page> Page { get; }
-        IObjectSet<Tenant> Tenant { get; }
+        IDbSet<Chain> Chain { get; set; }
+        IDbSet<Product> Product { get; set; }
+        IDbSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale { get; set; }
+        IDbSet<ProductXTenantLocale> ProductXTenantLocale { get; set; }
+        IDbSet<TenantLocale> TenantLocale { get; set; }
+        IDbSet<Category> Category { get; set; }
+        IDbSet<Page> Page { get; set; }
+        IDbSet<Tenant> Tenant { get; set; }
     }
 }

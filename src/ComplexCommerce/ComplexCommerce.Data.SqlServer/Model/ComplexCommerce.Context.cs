@@ -16,6 +16,9 @@ using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace ComplexCommerce.Data.SqlServer.Model
 {

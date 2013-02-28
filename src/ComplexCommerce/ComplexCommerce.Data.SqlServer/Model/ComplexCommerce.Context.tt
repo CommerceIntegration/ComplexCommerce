@@ -57,7 +57,6 @@ WriteQueryableExtension();
 WriteNamespaceEnd( namespaceName );
 
 fileManager.StartNewFile( "I" + container.Name + ".cs");
-
 WriteHeader();
 WriteHeaderIncludeSystem();
 WriteHeaderIncludeData();
@@ -65,17 +64,14 @@ WriteNamespaceBegin( code, namespaceName );
 WriteInterface( container, code );
 WriteNamespaceEnd( namespaceName );
 
-
-fileManager.StartNewFile( "IObjectContext.cs");
-
+fileManager.StartNewFile( "IDbContext.cs");
 WriteHeader();
 WriteHeaderIncludeSystem();
 WriteHeaderIncludeData();
 WriteHeaderIncludeContainers();
 WriteNamespaceBegin( code, namespaceName );
-WriteObjectContextInterface( container, code );
+WriteDbContextInterface( container, code );
 WriteNamespaceEnd( namespaceName );
-
 
 fileManager.StartNewFile( container.Name + ".cs");
 WriteHeader();
@@ -87,28 +83,28 @@ WriteNamespaceEnd( namespaceName );
 fileManager.StartNewFile( container.Name + "Mock.cs");
 WriteHeader();
 WriteHeaderIncludeData();
-WriteAdditionalUsings( code, new string[] { namespaceName + "." + container + "MockObjectSet" } );
+WriteAdditionalUsings( code, new string[] { namespaceName + "." + container + "MockDbSet" } );
 WriteNamespaceBegin( code, namespaceName );
 WriteMockContextBody( container, code );
 WriteNamespaceEnd( namespaceName );
 
-fileManager.StartNewFile( container.Name + "Mock.ObjectContext.cs");
+fileManager.StartNewFile( container.Name + "Mock.DbContext.cs");
 WriteHeader();
 WriteHeaderIncludeSystem();
 WriteHeaderIncludeData();
 WriteHeaderIncludeContainers();
-//WriteAdditionalUsings( code, new string[] { namespaceName + "." + container + "MockObjectSet" } );
+WriteAdditionalUsings( code, new string[] { namespaceName + "." + container + "MockDbSet" } );
 WriteNamespaceBegin( code, namespaceName );
-WriteObjectContextMockBase( container, code );
+WriteDbContextMockBase( container, code );
 WriteNamespaceEnd( namespaceName );
 
-fileManager.StartNewFile( container.Name + "Mock.ObjectSet.cs");
+fileManager.StartNewFile( container.Name + "Mock.DbSet.cs");
 WriteHeader();
 WriteHeaderIncludeSystem();
 WriteHeaderIncludeContainers();
 WriteHeaderIncludeData();
-WriteNamespaceBegin( code, namespaceName + "." + container + "MockObjectSet" );
-WriteMockObjectSet();
+WriteNamespaceBegin( code, namespaceName + "." + container + "MockDbSet" );
+WriteMockDbSet();
 WriteNamespaceEnd( namespaceName );
 
 fileManager.Process();
@@ -120,17 +116,17 @@ void WriteInterface( EntityContainer container, CodeGenerationTools code )
 {
 #>
 /// <summary>
-/// The interface for the specialised object context. This contains all of
-/// the <code>ObjectSet</code> properties that are implemented in both the
+/// The interface for the specialized object context. This contains all of
+/// the <code>IDbSet</code> properties that are implemented in both the
 /// functional context class and the mock context class.
 /// </summary>
-<#=Accessibility.ForType(container)#> interface I<#=code.Escape(container)#> : IObjectContext
+<#=Accessibility.ForType(container)#> interface I<#=code.Escape(container)#> : IDbContext
 {
 <#+
     foreach (EntitySet entitySet in container.BaseEntitySets.OfType<EntitySet>())
     {
 #>
-    IObjectSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.Escape(entitySet)#> { get; }
+    IDbSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.Escape(entitySet)#> { get; set; }
 <#+
     }
 #>
@@ -141,324 +137,123 @@ void WriteInterface( EntityContainer container, CodeGenerationTools code )
 
 
 <#+
-void WriteObjectContextInterface( EntityContainer container, CodeGenerationTools code )
+void WriteDbContextInterface( EntityContainer container, CodeGenerationTools code )
 {
 #>
 /// <summary>
-/// The interface for the generic object context. This contains all of
-/// the <code>ObjectContext</code> properties that are implemented in the 
-/// concrete ObjectContext class. This interface was created so these members
-/// can be mocked, as ObjectContext doesn't have a default public constructor.
+/// The interface for the generic DB context. This contains all of
+/// the <code>DbContext</code> properties that are implemented in the 
+/// concrete DbContext class. This interface was created so these members
+/// can be mocked, as DbContext doesn't have a default public constructor.
 /// </summary>
-<#=Accessibility.ForType(container)#> interface IObjectContext : IDisposable
+<#=Accessibility.ForType(container)#> interface IDbContext
+        : IDisposable, IObjectContextAdapter
 {
-    void AcceptAllChanges();
-    void AddObject(string entitySetName, object entity);
-    TEntity ApplyCurrentValues<TEntity>(string entitySetName, TEntity currentEntity) where TEntity : class;
-    TEntity ApplyOriginalValues<TEntity>(string entitySetName, TEntity originalEntity) where TEntity : class;
-    void ApplyPropertyChanges(string entitySetName, object changed);
-    void Attach(System.Data.Objects.DataClasses.IEntityWithKey entity);
-    void AttachTo(string entitySetName, object entity);
-    int? CommandTimeout { get; set; }
-    DbConnection Connection { get; }
-    ObjectContextOptions ContextOptions { get; }
-    void CreateDatabase();
-    string CreateDatabaseScript();
-    EntityKey CreateEntityKey(string entitySetName, object entity);
-    T CreateObject<T>() where T : class;
-    ObjectSet<TEntity> CreateObjectSet<TEntity>() where TEntity : class;
-    ObjectSet<TEntity> CreateObjectSet<TEntity>(string entitySetName) where TEntity : class;
-    void CreateProxyTypes(IEnumerable<Type> types);
-    ObjectQuery<T> CreateQuery<T>(string queryString, params ObjectParameter[] parameters);
-    bool DatabaseExists();
-    string DefaultContainerName { get; set; }
-    void DeleteDatabase();
-    void DeleteObject(object entity);
-    void Detach(object entity);
-    void DetectChanges();
-    int ExecuteFunction(string functionName, params ObjectParameter[] parameters);
-    ObjectResult<TElement> ExecuteFunction<TElement>(string functionName, params ObjectParameter[] parameters);
-    ObjectResult<TElement> ExecuteFunction<TElement>(string functionName, MergeOption mergeOption, params ObjectParameter[] parameters);
-    int ExecuteStoreCommand(string commandText, params object[] parameters);
-    ObjectResult<TElement> ExecuteStoreQuery<TElement>(string commandText, params object[] parameters);
-    ObjectResult<TEntity> ExecuteStoreQuery<TEntity>(string commandText, string entitySetName, MergeOption mergeOption, params object[] parameters);
-    object GetObjectByKey(System.Data.EntityKey key);
-    void LoadProperty(object entity, string navigationProperty);
-    void LoadProperty(object entity, string navigationProperty, MergeOption mergeOption);
-    void LoadProperty<TEntity>(TEntity entity, Expression<Func<TEntity, object>> selector);
-    void LoadProperty<TEntity>(TEntity entity, Expression<Func<TEntity, object>> selector, MergeOption mergeOption);
-    System.Data.Metadata.Edm.MetadataWorkspace MetadataWorkspace { get; }
-    ObjectStateManager ObjectStateManager { get; }
-    void Refresh(RefreshMode refreshMode, IEnumerable collection);
-    void Refresh(RefreshMode refreshMode, object entity);
-    int SaveChanges();
-    int SaveChanges(bool acceptChangesDuringSave);
-    int SaveChanges(SaveOptions options);
-    ObjectResult<TElement> Translate<TElement>(DbDataReader reader);
-    ObjectResult<TEntity> Translate<TEntity>(DbDataReader reader, string entitySetName, MergeOption mergeOption);
-    bool TryGetObjectByKey(EntityKey key, out object value);
+	DbChangeTracker ChangeTracker { get; }
+	DbContextConfiguration Configuration { get; }
+	Database Database { get; }
+	DbEntityEntry Entry(object entity);
+	DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
+	bool Equals(object obj);
+	int GetHashCode();
+	Type GetType();
+	IEnumerable<DbEntityValidationResult> GetValidationErrors();
+	int SaveChanges();
+	DbSet Set(Type entityType);
+	DbSet<TEntity> Set<TEntity>() where TEntity : class;
 }
 <#+
 }
 #>
 
+
+
 <#+
-void WriteObjectContextMockBase( EntityContainer container, CodeGenerationTools code )
+void WriteDbContextMockBase( EntityContainer container, CodeGenerationTools code )
 {
 #>
 /// <summary>
-/// The default concrete implementation of IObjectContext that will be used for mocking. 
-/// This contains all of the <code>IObjectContext</code> members that are implemented in the 
-/// concrete ObjectContext class. This class was created so these members
+/// The default concrete implementation of IDbContext that will be used for mocking. 
+/// This contains all of the <code>IDbContext</code> members that are implemented in the 
+/// concrete DbContext class. This class was created so these members
 /// can be mocked.
 /// </summary>
-//<#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#>Mock : IObjectContext
-<#=Accessibility.ForType(container)#> abstract class ObjectContextMockBase : IObjectContext
+<#=Accessibility.ForType(container)#> abstract class DbContextMockBase : IDbContext
 {
-    private readonly IObjectContext _objectContext;
-    public ObjectContextMockBase(IObjectContext objectContext)
+    private readonly IDbContext _dbContext;
+    public DbContextMockBase(IDbContext dbContext)
     {
-        if (objectContext == null)
-            throw new System.ArgumentNullException("objectContext");
-        _objectContext = objectContext;
+        if (dbContext == null)
+            throw new System.ArgumentNullException("dbContext");
+        _dbContext = dbContext;
     }
 
-    public virtual void AcceptAllChanges()
+    #region IDbContext Members
+
+    public virtual DbChangeTracker ChangeTracker
     {
-        _objectContext.AcceptAllChanges();
+        get { return _dbContext.ChangeTracker; }
     }
-    
-    public virtual void AddObject(string entitySetName, object entity)
+
+    public virtual DbContextConfiguration Configuration
     {
-        _objectContext.AddObject(entitySetName, entity);
+        get { return _dbContext.Configuration; }
     }
-    
-    public virtual TEntity ApplyCurrentValues<TEntity>(string entitySetName, TEntity currentEntity) 
-    	where TEntity : class
+
+    public virtual Database Database
     {
-        return _objectContext.ApplyCurrentValues<TEntity>(entitySetName, currentEntity);
+        get { return _dbContext.Database; }
     }
-    
-    public virtual TEntity ApplyOriginalValues<TEntity>(string entitySetName, TEntity originalEntity) 
-    	where TEntity : class
+
+    public virtual DbEntityEntry Entry(object entity)
     {
-    	return ApplyOriginalValues<TEntity>(entitySetName, originalEntity);
+        return _dbContext.Entry(entity);
     }
-    
-    public virtual void ApplyPropertyChanges(string entitySetName, object changed)
+
+    public virtual DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
     {
-        _objectContext.ApplyPropertyChanges(entitySetName, changed);
+        return _dbContext.Entry<TEntity>(entity);
     }
-    
-    public virtual void Attach(System.Data.Objects.DataClasses.IEntityWithKey entity)
+
+    public virtual IEnumerable<DbEntityValidationResult> GetValidationErrors()
     {
-        _objectContext.Attach(entity);
+        return _dbContext.GetValidationErrors();
     }
-    
-    public virtual void AttachTo(string entitySetName, object entity)
+
+	public virtual int SaveChanges()
     {
-        _objectContext.AttachTo(entitySetName, entity);
+        return _dbContext.SaveChanges();
     }
-    
-    public virtual int? CommandTimeout
+
+    public virtual DbSet Set(Type entityType)
     {
-        get { return _objectContext.CommandTimeout; }
-        set { _objectContext.CommandTimeout = value; }
+        return _dbContext.Set(entityType);
     }
-    
-    public virtual DbConnection Connection 
-    { 
-    	get { return _objectContext.Connection; }
-    }
-    
-    public virtual ObjectContextOptions ContextOptions
-    { 
-    	get { return _objectContext.ContextOptions; }
-    }
-    
-    public virtual void CreateDatabase()
+
+    public virtual DbSet<TEntity> Set<TEntity>() where TEntity : class
     {
-        _objectContext.CreateDatabase();
+        return _dbContext.Set<TEntity>();
     }
-    
-    public virtual string CreateDatabaseScript()
+
+    #endregion
+
+    #region IObjectContextAdapter Members
+
+    public virtual ObjectContext ObjectContext
     {
-    	return _objectContext.CreateDatabaseScript();
+        get { return _dbContext.ObjectContext; }
     }
-    
-    public virtual EntityKey CreateEntityKey(string entitySetName, object entity)
+
+    #endregion
+
+	#region IDisposable Members
+
+    public void Dispose()
     {
-    	return _objectContext.CreateEntityKey(entitySetName, entity);
+        _dbContext.Dispose();
     }
-    
-    public virtual T CreateObject<T>() 
-    	where T : class
-    {
-    	return _objectContext.CreateObject<T>();
-    }
-    
-    public virtual ObjectSet<TEntity> CreateObjectSet<TEntity>()
-    	where TEntity : class
-    {
-    	return _objectContext.CreateObjectSet<TEntity>();
-    }
-    
-    public virtual ObjectSet<TEntity> CreateObjectSet<TEntity>(string entitySetName) 
-    	where TEntity : class
-    {
-    	return _objectContext.CreateObjectSet<TEntity>(entitySetName);
-    }
-    
-    public virtual void CreateProxyTypes(IEnumerable<Type> types)
-    {
-        _objectContext.CreateProxyTypes(types);
-    }
-    
-    public virtual ObjectQuery<T> CreateQuery<T>(string queryString, params ObjectParameter[] parameters)
-    {
-    	return _objectContext.CreateQuery<T>(queryString, parameters);
-    }
-    
-    public virtual bool DatabaseExists()
-    {
-    	return _objectContext.DatabaseExists();
-    }
-    
-    public virtual string DefaultContainerName
-    {
-        get { return _objectContext.DefaultContainerName; }
-        set { _objectContext.DefaultContainerName = value; }
-    }
-    
-    public virtual void DeleteDatabase()
-    {
-        _objectContext.DeleteDatabase();
-    }
-    
-    public virtual void DeleteObject(object entity)
-    {
-        _objectContext.DeleteObject(entity);
-    }
-    
-    public virtual void Detach(object entity)
-    {
-        _objectContext.Detach(entity);
-    }
-    
-    public virtual void DetectChanges()
-    {
-        _objectContext.DetectChanges();
-    }
-    
-    public virtual void Dispose()
-    {
-        _objectContext.Dispose();
-    }
-    
-    public virtual int ExecuteFunction(string functionName, params ObjectParameter[] parameters)
-    {
-        return _objectContext.ExecuteFunction(functionName, parameters);
-    }
-    
-    public virtual ObjectResult<TElement> ExecuteFunction<TElement>(string functionName, params ObjectParameter[] parameters)
-    {
-    	return _objectContext.ExecuteFunction<TElement>(functionName, parameters);
-    }
-    
-    public virtual ObjectResult<TElement> ExecuteFunction<TElement>(string functionName, MergeOption mergeOption, params ObjectParameter[] parameters)
-    {
-    	return _objectContext.ExecuteFunction<TElement>(functionName, mergeOption, parameters);
-    }
-    
-    public virtual int ExecuteStoreCommand(string commandText, params object[] parameters)
-    {
-        return _objectContext.ExecuteStoreCommand(commandText, parameters);
-    }
-    
-    public virtual ObjectResult<TElement> ExecuteStoreQuery<TElement>(string commandText, params object[] parameters)
-    {
-    	return _objectContext.ExecuteStoreQuery<TElement>(commandText, parameters);
-    }
-    
-    public virtual ObjectResult<TEntity> ExecuteStoreQuery<TEntity>(string commandText, string entitySetName, MergeOption mergeOption, params object[] parameters)
-    {
-    	return _objectContext.ExecuteStoreQuery<TEntity>(commandText, entitySetName, mergeOption, parameters);
-    }
-    
-    public virtual object GetObjectByKey(EntityKey key)
-    {
-    	return _objectContext.GetObjectByKey(key);
-    }
-    
-    public virtual void LoadProperty(object entity, string navigationProperty)
-    {
-        _objectContext.LoadProperty(entity, navigationProperty);
-    }
-    
-    public virtual void LoadProperty(object entity, string navigationProperty, MergeOption mergeOption)
-    {
-        _objectContext.LoadProperty(entity, navigationProperty, mergeOption);
-    }
-    
-    public virtual void LoadProperty<TEntity>(TEntity entity, Expression<Func<TEntity, object>> selector)
-    {
-        _objectContext.LoadProperty<TEntity>(entity, selector);
-    }
-    
-    public virtual void LoadProperty<TEntity>(TEntity entity, Expression<Func<TEntity, object>> selector, MergeOption mergeOption)
-    {
-        _objectContext.LoadProperty<TEntity>(entity, selector, mergeOption);
-    }
-    
-    public virtual System.Data.Metadata.Edm.MetadataWorkspace MetadataWorkspace
-    {
-    	get { return _objectContext.MetadataWorkspace; }
-    }
-    
-    public virtual ObjectStateManager ObjectStateManager
-    {
-    	get { return _objectContext.ObjectStateManager; }
-    }
-    
-    public virtual void Refresh(RefreshMode refreshMode, IEnumerable collection)
-    {
-        _objectContext.Refresh(refreshMode, collection);
-    }
-    
-    public virtual void Refresh(RefreshMode refreshMode, object entity)
-    {
-        _objectContext.Refresh(refreshMode, entity);
-    }
-    
-    public virtual int SaveChanges()
-    {
-    	return _objectContext.SaveChanges();
-    }
-    
-    public virtual int SaveChanges(bool acceptChangesDuringSave)
-    {
-    	return _objectContext.SaveChanges(acceptChangesDuringSave);
-    }
-    
-    public virtual int SaveChanges(SaveOptions options)
-    {
-    	return _objectContext.SaveChanges(options);
-    }
-    
-    public virtual ObjectResult<TElement> Translate<TElement>(DbDataReader reader)
-    {
-    	return _objectContext.Translate<TElement>(reader);
-    }
-    
-    public virtual ObjectResult<TEntity> Translate<TEntity>(DbDataReader reader, string entitySetName, MergeOption mergeOption)
-    {
-    	return _objectContext.Translate<TEntity>(reader, entitySetName, mergeOption);
-    }
-    
-    public virtual bool TryGetObjectByKey(EntityKey key, out object value)
-    {
-        return _objectContext.TryGetObjectByKey(key, out value);
-    }
+
+    #endregion
 }
 <#+
 }
@@ -476,21 +271,22 @@ void WriteMockContextBody( EntityContainer container, CodeGenerationTools code )
 /// Provide an instance of this mock context class to client logic when testing, 
 /// instead of providing a functional context object.
 /// </summary>
-<#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#>Mock : ObjectContextMockBase, I<#=code.Escape(container)#>
+<#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#>Mock : DbContextMockBase, I<#=code.Escape(container)#>
 {
-	public <#=code.Escape(container)#>Mock(IObjectContext objectContext)
-        : base(objectContext)
+	public <#=code.Escape(container)#>Mock(IDbContext dbContext)
+        : base(dbContext)
     {
     }
 <#+
         foreach (EntitySet entitySet in container.BaseEntitySets.OfType<EntitySet>())
         {
 #>
-    <#=Accessibility.ForReadOnlyProperty(entitySet)#> virtual IObjectSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.Escape(entitySet)#>
+    <#=Accessibility.ForReadOnlyProperty(entitySet)#> virtual IDbSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.Escape(entitySet)#>
     {
-        get { return <#=code.FieldName(entitySet) #>  ?? (<#=code.FieldName(entitySet)#> = new MockObjectSet<<#=code.Escape(entitySet.ElementType)#>>()); }
+        get { return <#=code.FieldName(entitySet) #>  ?? (<#=code.FieldName(entitySet)#> = new MockDbSet<<#=code.Escape(entitySet.ElementType)#>>()); }
+		set { <#=code.FieldName(entitySet) #> = value; }
     }
-    private IObjectSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.FieldName(entitySet)#>;
+    private IDbSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.FieldName(entitySet)#>;
 <#+
         }
 #>
@@ -506,57 +302,38 @@ void WriteConcreteContextBody( EntityContainer container, CodeGenerationTools co
 
 #>
 /// <summary>
-/// The functional concrete object context. This is just like the normal
+/// The functional concrete db context. This is just like the normal
 /// context that would be generated using the POCO artefact generator, 
 /// apart from the fact that this one implements an interface containing 
-/// the entity set properties and exposes <code>IObjectSet</code>
+/// the entity set properties and exposes <code>IDbSet</code>
 /// instances for entity set properties.
 /// </summary>
-<#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#> : ObjectContext, I<#=code.Escape(container)#> 
+<#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#> : DbContext, I<#=code.Escape(container)#> 
 {
-    public const string ConnectionString = "name=<#=container.Name#>";
-    public const string ContainerName = "<#=container.Name#>";
-
-    #region Constructors
-
-    public <#=code.Escape(container)#>():
-        base(ConnectionString, ContainerName)
+    public <#=code.Escape(container)#>()
+        : base("name=<#=container.Name#>")
     {
 <#+
         WriteLazyLoadingEnabled(container);
 #>
     }
 
-    public <#=code.Escape(container)#>(string connectionString):
-        base(connectionString, ContainerName)
+	public ComplexCommerce(string connectionString)
+        : base(connectionString)
     {
 <#+
         WriteLazyLoadingEnabled(container);
 #>
     }
 
-    public <#=code.Escape(container)#>(EntityConnection connection):
-        base(connection, ContainerName)
-    {
 <#+
-        WriteLazyLoadingEnabled(container);
-#>
-    }
+        region.Begin("IDbSet Properties", 2);
 
-    #endregion
-
-<#+
-        region.Begin("ObjectSet Properties", 2);
 
         foreach (EntitySet entitySet in container.BaseEntitySets.OfType<EntitySet>())
         {
 #>
-
-    <#=Accessibility.ForReadOnlyProperty(entitySet)#> IObjectSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.Escape(entitySet)#>
-    {
-        get { return <#=code.FieldName(entitySet) #> ?? (<#=code.FieldName(entitySet)#> = CreateObjectSet<<#=code.Escape(entitySet.ElementType)#>>("<#=entitySet.Name#>")); }
-    }
-    private ObjectSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.FieldName(entitySet)#>;
+    <#=Accessibility.ForReadOnlyProperty(entitySet)#> IDbSet<<#=code.Escape(entitySet.ElementType)#>> <#=code.Escape(entitySet)#> { get; set; }
 <#+
         }
 
@@ -612,106 +389,99 @@ void WriteConcreteContextBody( EntityContainer container, CodeGenerationTools co
 #>
 
 <#+
-void WriteMockObjectSet()
+void WriteMockDbSet()
 {
 #>
-/// <summary>
-/// Concrete object set for use with Mock contexts. Implements all of the
-/// required interfaces, but performs no database functionality; instead
-/// merely stores the data for testing.
-/// </summary>
-public partial class MockObjectSet<T> : IObjectSet <T> 
-    where T : class
-{
-    private readonly IList<T> m_container = new List<T>();
-
-    #region IObjectSet<T> Members
     /// <summary>
-    /// Notifies the set that an object that represents a new entity must 
-    /// be added to the set.
+    /// Concrete data set for use with Mock contexts. Implements all of the
+    /// required interfaces, but performs no database functionality; instead
+    /// merely stores the data for testing.
     /// </summary>
-    public void AddObject(T entity)
+    public partial class MockDbSet<T>
+        : IDbSet<T>
+        where T : class
     {
-        m_container.Add(entity);
-    }
+        private readonly ObservableCollection<T> _container = new ObservableCollection<T>();
 
-    /// <summary>
-    /// Notifies the set that an object that represents an existing entity
-    /// must be added to the set.
-    /// </summary>
-    public void Attach(T entity)
-    {
-        m_container.Add(entity);
-    }
+        #region IDbSet<T> Members
 
-    /// <summary>
-    /// Notifies the set that an object that represents an existing entity 
-    /// must be deleted from the set.
-    /// </summary>
-    public void DeleteObject(T entity)
-    {
-        m_container.Remove(entity);
-    }
+        public virtual T Add(T entity)
+        {
+            _container.Add(entity);
+            return entity;
+        }
 
-    /// <summary>
-    /// Notifies the set that an object that represents an existing entity must be
-    /// detached from the set.
-    /// </summary>
-    /// <param name="entity"></param>
-    public void Detach(T entity)
-    {
-        m_container.Remove(entity);
-    }
-    #endregion
+        public virtual T Attach(T entity)
+        {
+            _container.Add(entity);
+            return entity;
+        }
 
-    #region IEnumerable<T> Members
-    /// <summary>
-    /// Returns an enumerator that iterates through the collection.
-    /// </summary>
-    public IEnumerator<T> GetEnumerator()
-    {
-        return m_container.GetEnumerator();
-    }
-    #endregion
+        public virtual TDerivedEntity Create<TDerivedEntity>() where TDerivedEntity : class, T
+        {
+            return (TDerivedEntity)Activator.CreateInstance(typeof(TDerivedEntity));
+        }
 
-    #region IEnumerable Members
-    /// <summary>
-    /// Returns an enumerator that iterates through the collection.
-    /// </summary>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return m_container.GetEnumerator();
-    }
-    #endregion
+        public virtual T Create()
+        {
+            return (T)Activator.CreateInstance(typeof(T));
+        }
 
-    #region IQueryable<T> Members
-    /// <summary>
-    /// Gets the type of the element(s) that are returned when the expression 
-    /// tree associated with this instance of System.Linq.IQueryable is executed.
-    /// </summary>
-    public Type ElementType
-    {
-        get { return typeof(T); }
-    }
+        public virtual T Find(params object[] keyValues)
+        {
+            throw new NotImplementedException();
+        }
 
-    /// <summary>
-    /// Gets the expression tree that is associated with the instance of 
-    /// <code>System.Linq.IQueryable.</code>
-    /// </summary>
-    public System.Linq.Expressions.Expression Expression
-    {
-        get { return m_container.AsQueryable<T>().Expression; }
-    }
+        public virtual ObservableCollection<T> Local
+        {
+            get { return _container; }
+        }
 
-    /// <summary>
-    /// Gets the query provider that is associated with this data source.
-    /// </summary>
-    public IQueryProvider Provider
-    {
-        get { return m_container.AsQueryable<T>().Provider; }
+        public virtual T Remove(T entity)
+        {
+            _container.Remove(entity);
+            return entity;
+        }
+
+        #endregion
+
+        #region IEnumerable<T> Members
+
+        public virtual IEnumerator<T> GetEnumerator()
+        {
+            return _container.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _container.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IQueryable Members
+
+        public virtual Type ElementType
+        {
+            get { return _container.AsQueryable<T>().ElementType; }
+        }
+
+        public virtual Expression Expression
+        {
+            get { return _container.AsQueryable<T>().Expression; }
+        }
+
+        public virtual IQueryProvider Provider
+        {
+            get { return _container.AsQueryable<T>().Provider; }
+        }
+
+        #endregion
     }
-    #endregion
-}
 <#+
 }
 #>
@@ -727,7 +497,7 @@ private void WriteLazyLoadingEnabled(EntityContainer container)
        if(bool.TryParse(lazyLoadingAttributeValue, out isLazyLoading))
        {
 #>
-        this.ContextOptions.LazyLoadingEnabled = <#=isLazyLoading.ToString().ToLowerInvariant()#>;
+        this.Configuration.LazyLoadingEnabled = <#=isLazyLoading.ToString().ToLowerInvariant()#>;
 <#+
        }
    }
@@ -784,6 +554,9 @@ using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 <#+
 }
 #>

@@ -13,7 +13,10 @@ using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Common;
-using ComplexCommerce.Data.SqlServer.Model.ComplexCommerceMockObjectSet;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
+using ComplexCommerce.Data.SqlServer.Model.ComplexCommerceMockDbSet;
 
 namespace ComplexCommerce.Data.SqlServer.Model
 {
@@ -22,51 +25,59 @@ namespace ComplexCommerce.Data.SqlServer.Model
     /// Provide an instance of this mock context class to client logic when testing, 
     /// instead of providing a functional context object.
     /// </summary>
-    public partial class ComplexCommerceMock : ObjectContextMockBase, IComplexCommerce
+    public partial class ComplexCommerceMock : DbContextMockBase, IComplexCommerce
     {
-    	public ComplexCommerceMock(IObjectContext objectContext)
-            : base(objectContext)
+    	public ComplexCommerceMock(IDbContext dbContext)
+            : base(dbContext)
         {
         }
-        public virtual IObjectSet<Chain> Chain
+        public virtual IDbSet<Chain> Chain
         {
-            get { return _chain  ?? (_chain = new MockObjectSet<Chain>()); }
+            get { return _chain  ?? (_chain = new MockDbSet<Chain>()); }
+    		set { _chain = value; }
         }
-        private IObjectSet<Chain> _chain;
-        public virtual IObjectSet<Product> Product
+        private IDbSet<Chain> _chain;
+        public virtual IDbSet<Product> Product
         {
-            get { return _product  ?? (_product = new MockObjectSet<Product>()); }
+            get { return _product  ?? (_product = new MockDbSet<Product>()); }
+    		set { _product = value; }
         }
-        private IObjectSet<Product> _product;
-        public virtual IObjectSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale
+        private IDbSet<Product> _product;
+        public virtual IDbSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale
         {
-            get { return _categoryXProductXTenantLocale  ?? (_categoryXProductXTenantLocale = new MockObjectSet<CategoryXProductXTenantLocale>()); }
+            get { return _categoryXProductXTenantLocale  ?? (_categoryXProductXTenantLocale = new MockDbSet<CategoryXProductXTenantLocale>()); }
+    		set { _categoryXProductXTenantLocale = value; }
         }
-        private IObjectSet<CategoryXProductXTenantLocale> _categoryXProductXTenantLocale;
-        public virtual IObjectSet<ProductXTenantLocale> ProductXTenantLocale
+        private IDbSet<CategoryXProductXTenantLocale> _categoryXProductXTenantLocale;
+        public virtual IDbSet<ProductXTenantLocale> ProductXTenantLocale
         {
-            get { return _productXTenantLocale  ?? (_productXTenantLocale = new MockObjectSet<ProductXTenantLocale>()); }
+            get { return _productXTenantLocale  ?? (_productXTenantLocale = new MockDbSet<ProductXTenantLocale>()); }
+    		set { _productXTenantLocale = value; }
         }
-        private IObjectSet<ProductXTenantLocale> _productXTenantLocale;
-        public virtual IObjectSet<TenantLocale> TenantLocale
+        private IDbSet<ProductXTenantLocale> _productXTenantLocale;
+        public virtual IDbSet<TenantLocale> TenantLocale
         {
-            get { return _tenantLocale  ?? (_tenantLocale = new MockObjectSet<TenantLocale>()); }
+            get { return _tenantLocale  ?? (_tenantLocale = new MockDbSet<TenantLocale>()); }
+    		set { _tenantLocale = value; }
         }
-        private IObjectSet<TenantLocale> _tenantLocale;
-        public virtual IObjectSet<Category> Category
+        private IDbSet<TenantLocale> _tenantLocale;
+        public virtual IDbSet<Category> Category
         {
-            get { return _category  ?? (_category = new MockObjectSet<Category>()); }
+            get { return _category  ?? (_category = new MockDbSet<Category>()); }
+    		set { _category = value; }
         }
-        private IObjectSet<Category> _category;
-        public virtual IObjectSet<Page> Page
+        private IDbSet<Category> _category;
+        public virtual IDbSet<Page> Page
         {
-            get { return _page  ?? (_page = new MockObjectSet<Page>()); }
+            get { return _page  ?? (_page = new MockDbSet<Page>()); }
+    		set { _page = value; }
         }
-        private IObjectSet<Page> _page;
-        public virtual IObjectSet<Tenant> Tenant
+        private IDbSet<Page> _page;
+        public virtual IDbSet<Tenant> Tenant
         {
-            get { return _tenant  ?? (_tenant = new MockObjectSet<Tenant>()); }
+            get { return _tenant  ?? (_tenant = new MockDbSet<Tenant>()); }
+    		set { _tenant = value; }
         }
-        private IObjectSet<Tenant> _tenant;
+        private IDbSet<Tenant> _tenant;
     }
 }
