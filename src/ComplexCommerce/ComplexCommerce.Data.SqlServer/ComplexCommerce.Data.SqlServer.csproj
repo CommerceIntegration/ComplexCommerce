@@ -92,16 +92,12 @@
     <Compile Include="Model\ComplexCommerceMock.DbSet.cs">
       <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\DbContext.cs" />
-    <Compile Include="Model\DbContextMockBase.cs" />
-    <Compile Include="Model\MockDbSet.cs" />
     <Compile Include="Model\IComplexCommerce.cs">
       <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\IDbContext.cs">
       <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\IDbContext1.cs" />
     <Compile Include="Model\Page.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
