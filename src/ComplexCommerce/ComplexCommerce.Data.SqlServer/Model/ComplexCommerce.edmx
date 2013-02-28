@@ -125,7 +125,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="None" />
           <Property Name="TenantId" Type="int" Nullable="false" />
           <Property Name="LocaleId" Type="int" Nullable="false" />
           <Property Name="SiteMap" Type="nvarchar(max)" Nullable="false" />

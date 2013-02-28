@@ -55,7 +55,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
         void DeleteObject(object entity);
         void Detach(object entity);
         void DetectChanges();
-        void Dispose();
         int ExecuteFunction(string functionName, params ObjectParameter[] parameters);
         ObjectResult<TElement> ExecuteFunction<TElement>(string functionName, params ObjectParameter[] parameters);
         ObjectResult<TElement> ExecuteFunction<TElement>(string functionName, MergeOption mergeOption, params ObjectParameter[] parameters);

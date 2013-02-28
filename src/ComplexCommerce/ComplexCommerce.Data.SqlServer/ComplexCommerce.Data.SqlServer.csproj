@@ -75,8 +75,6 @@
       <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ComplexCommerce.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ComplexCommerce.Designer.cs">
@@ -84,6 +82,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ComplexCommerce.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\ComplexCommerceInitializer.cs" />
     <Compile Include="Model\ComplexCommerceMock.cs">
       <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
     </Compile>
