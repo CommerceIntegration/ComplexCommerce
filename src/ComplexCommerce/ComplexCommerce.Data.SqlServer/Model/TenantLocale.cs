@@ -28,7 +28,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
     
         public virtual ICollection<ProductXTenantLocale> ProductXTenantLocale { get; set; }
         public virtual ICollection<Category> Category { get; set; }
-        public virtual ICollection<Page> Page { get; set; }
         public virtual Tenant Tenant { get; set; }
+        public virtual ICollection<Page> Page { get; set; }
     }
 }

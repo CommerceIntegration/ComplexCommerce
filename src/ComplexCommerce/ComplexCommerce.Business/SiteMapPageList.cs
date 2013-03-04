@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Csla;
-using ComplexCommerce.Csla;
+using CC = ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Data.Dto;
 
@@ -12,7 +12,7 @@ namespace ComplexCommerce.Business
 {
     [Serializable]
     public class SiteMapPageList
-        : CslaReadOnlyListBase<SiteMapPageList, SiteMapPageTree>
+        : CC.ReadOnlyListBase<SiteMapPageList, SiteMapPageTree>
     {
 
         //public static SiteMapPageList EmptySiteMapPageHierarchy()

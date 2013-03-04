@@ -78,6 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI\InjectableControllerFactory.cs" />
+    <Compile Include="LocalizedModelBinder.cs" />
+    <Compile Include="PageRoute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +89,10 @@
     <ProjectReference Include="..\ComplexCommerce.Business\ComplexCommerce.Business.csproj">
       <Project>{da65d9c8-0f7d-46ec-a024-1f255cd70a8e}</Project>
       <Name>ComplexCommerce.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComplexCommerce.Csla\ComplexCommerce.Csla.csproj">
+      <Project>{7507fc2a-83e4-4a37-a556-832a3b976184}</Project>
+      <Name>ComplexCommerce.Csla</Name>
     </ProjectReference>
     <ProjectReference Include="..\ComplexCommerce.Shared\ComplexCommerce.Shared.csproj">
       <Project>{504a88ab-4631-411b-83b0-1e40bf4bba97}</Project>

@@ -8,7 +8,7 @@ namespace ComplexCommerce.Business
 {
     public enum ContentTypeEnum
     {
-        HomePage = 1,
+        Home = 1,
         Category = 2
     }
 }

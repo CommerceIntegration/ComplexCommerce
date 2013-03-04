@@ -35,7 +35,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
         IDbSet<ProductXTenantLocale> ProductXTenantLocale { get; set; }
         IDbSet<TenantLocale> TenantLocale { get; set; }
         IDbSet<Category> Category { get; set; }
-        IDbSet<Page> Page { get; set; }
         IDbSet<Tenant> Tenant { get; set; }
+        IDbSet<Page> Page { get; set; }
     }
 }

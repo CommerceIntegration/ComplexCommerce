@@ -24,22 +24,25 @@ namespace ComplexCommerce
         {
             AreaRegistration.RegisterAllAreas();
 
-            CslaConfig.RegisterCsla();
+            container = DIConfig.RegisterDependencyInjectionContainer();
+            ModelBinderConfig.RegisterModelBinder();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            RouteConfig.RegisterRoutes(RouteTable.Routes, container);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
-            container = DIConfig.RegisterDependencyInjectionContainer();
+            //container = DIConfig.RegisterDependencyInjectionContainer();
         }
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
             // Lookup the current tenant and put it into ambient context on the current request
             var contextUtil = container.Resolve(typeof(IContextUtilities)) as IContextUtilities;
-            var context = new HttpContextWrapper(HttpContext.Current);
+            var contextFactory = container.Resolve(typeof(IHttpContextFactory)) as IHttpContextFactory;
+            var appContext = container.Resolve(typeof(IApplicationContext)) as IApplicationContext;
+            var context = contextFactory.GetHttpContext();
             var tenant = contextUtil.GetTenantFromContext(context);
-            ApplicationContext.CurrentTenant = tenant;
+            appContext.CurrentTenant = tenant;
 
             // Set the current culture
             var culture = contextUtil.GetLocaleFromContext(context, tenant.DefaultLocale);

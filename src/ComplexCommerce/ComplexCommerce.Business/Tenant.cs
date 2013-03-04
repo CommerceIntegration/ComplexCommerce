@@ -92,7 +92,7 @@ namespace ComplexCommerce.Business
         {
             get 
             {
-                var result = new CultureInfo("en");
+                var result = new CultureInfo("en-us");
                 if (IsValidLocaleId(this.DefaultLocaleId))
                 {
                     result = new CultureInfo(this.DefaultLocaleId);
@@ -109,11 +109,12 @@ namespace ComplexCommerce.Business
         }
 
 
+        // TODO: Move logic into business rule
         private bool IsValidLocaleId(int localeId)
         {
             return
                 CultureInfo
-                .GetCultures(CultureTypes.AllCultures)
+                .GetCultures(CultureTypes.SpecificCultures)
                 .Any(c => c.LCID == localeId);
         }
 
@@ -128,7 +129,8 @@ namespace ComplexCommerce.Business
 
         internal static Tenant NewTenant()
         {
-            return DataPortal.Create<Tenant>();
+            return new Tenant();
+            //return DataPortal.Create<Tenant>();
             // TODO: Put in some kind of factory here that can return the
             // correct type of tenant depending on the TenantType property
         }

@@ -83,7 +83,7 @@ namespace ComplexCommerce.Business
 
         public static SiteMapPageTree GetSiteMapPageTree(int storeId, int localeId)
         {
-            // TODO: Should the BO be aware of its locale and storeId or just get it from ambient
+            // TODO: Should the BO be aware of its locale and tenantId or just get it from ambient
             // context through a service?
             //int localeId = System.Threading.Thread.CurrentThread.CurrentUICulture.LCID;
             var criteria = new Criteria() { StoreId = storeId, LocaleId = localeId };

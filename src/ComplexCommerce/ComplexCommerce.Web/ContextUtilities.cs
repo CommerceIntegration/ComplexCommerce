@@ -34,22 +34,64 @@ namespace ComplexCommerce.Web
         public CultureInfo GetLocaleFromContext(HttpContextBase context, CultureInfo defaultLocale)
         {
             var result = defaultLocale;
-            var cultureName = context.Request.Url.Segments[0];
-            if (IsValidCultureInfoName(cultureName))
+            var cultureName = string.Empty;
+
+            var url = context.Request.Url;
+            //if (url.Segments.Length > 1)
+            //{
+            //    cultureName = RemoveTrailingSlash(url.Segments[1]);
+            //}
+
+            //if (IsValidCultureInfoName(cultureName))
+            //{
+            //    // TODO: Check whether culture is configured
+            //    result = new CultureInfo(cultureName);
+            //}
+
+            cultureName = GetCultureNameFromUrl(url);
+            if (!string.IsNullOrEmpty(cultureName))
             {
                 result = new CultureInfo(cultureName);
             }
+
             // TODO: Possibly fall back on a cookie setting if not found in URL
             return result;
         }
 
-        // TODO: Move this to a CSLA business rule ?
-        private static bool IsValidCultureInfoName(string name)
+        public string GetCultureNameFromUrl(Uri url)
         {
-            return
-                CultureInfo
-                .GetCultures(CultureTypes.AllCultures)
-                .Any(c => c.Name == name);
+            string cultureName = string.Empty;
+            if (url.Segments.Length > 1)
+            {
+                cultureName = RemoveTrailingSlash(url.Segments[1]);
+            }
+            if (IsValidCultureInfoName(cultureName))
+            {
+                return cultureName;
+            }
+            return string.Empty;
+        }
+
+        // TODO: Move this to a CSLA business rule ?
+        private bool IsValidCultureInfoName(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                return
+                    CultureInfo
+                    .GetCultures(CultureTypes.SpecificCultures)
+                    .Any(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            }
+            return false;
+        }
+
+        private string RemoveTrailingSlash(string url)
+        {
+            if (url.EndsWith("/"))
+            {
+                return url.Substring(0, url.Length - 2);
+            }
+            return url;
         }
     }
 }

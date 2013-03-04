@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,9 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\GenericObjectCache.cs" />
+    <Compile Include="Caching\ISingletonObjectCache.cs" />
+    <Compile Include="Caching\RouteUrlPageListCache.cs" />
+    <Compile Include="Caching\SingletonObjectCache.cs" />
     <Compile Include="ContentTypeEnum.cs" />
     <Compile Include="Context\ApplicationContext.cs" />
+    <Compile Include="Context\IApplicationContext.cs" />
+    <Compile Include="GetCachedRouteUrlPageListCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteUrlPageInfo.cs" />
+    <Compile Include="RouteUrlPageList.cs" />
     <Compile Include="SiteMapPageList.cs" />
     <Compile Include="SiteMapPageTree.cs" />
     <Compile Include="Tenant.cs" />

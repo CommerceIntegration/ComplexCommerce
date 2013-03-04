@@ -67,17 +67,17 @@ namespace ComplexCommerce.Data.SqlServer.Model
     		set { _category = value; }
         }
         private IDbSet<Category> _category;
-        public virtual IDbSet<Page> Page
-        {
-            get { return _page  ?? (_page = new MockDbSet<Page>()); }
-    		set { _page = value; }
-        }
-        private IDbSet<Page> _page;
         public virtual IDbSet<Tenant> Tenant
         {
             get { return _tenant  ?? (_tenant = new MockDbSet<Tenant>()); }
     		set { _tenant = value; }
         }
         private IDbSet<Tenant> _tenant;
+        public virtual IDbSet<Page> Page
+        {
+            get { return _page  ?? (_page = new MockDbSet<Page>()); }
+    		set { _page = value; }
+        }
+        private IDbSet<Page> _page;
     }
 }

@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Csla;
+using CslaLibrary = Csla;
 using ComplexCommerce.Data.Context;
+
 
 namespace ComplexCommerce.Csla.Persistence
 {
     [Serializable]
     public class ContextualReadOnlyListBase<T, C> :
         DI.ServerInjectableReadOnlyListBase<T, C>
-        where T : ReadOnlyListBase<T, C>
+        where T : CslaLibrary.ReadOnlyListBase<T, C>
     {
         // Injection of context factory
         [NonSerialized]

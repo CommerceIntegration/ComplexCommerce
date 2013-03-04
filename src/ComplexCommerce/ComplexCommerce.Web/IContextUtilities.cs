@@ -13,5 +13,6 @@ namespace ComplexCommerce.Web
     {
         ITenant GetTenantFromContext(HttpContextBase context);
         CultureInfo GetLocaleFromContext(HttpContextBase context, CultureInfo defaultLocale);
+        string GetCultureNameFromUrl(Uri url);
     }
 }

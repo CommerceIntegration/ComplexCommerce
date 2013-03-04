@@ -63,7 +63,8 @@ namespace ComplexCommerce.Data.SqlServer.Model.ComplexCommerceMockDbSet
     
             public virtual T Find(params object[] keyValues)
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
+                return null;
             }
     
             public virtual ObservableCollection<T> Local

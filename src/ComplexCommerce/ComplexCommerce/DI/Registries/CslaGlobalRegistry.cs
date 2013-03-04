@@ -18,8 +18,17 @@ namespace ComplexCommerce.DI.Registries
         {
             this.Scan(scan =>
             {
-                scan.AssemblyContainingType<ApplicationContext>();
+                scan.AssemblyContainingType<IApplicationContext>();
                 scan.WithDefaultConventions();
+            });
+
+
+            // We create a new Setter Injection Policy that
+            // forces StructureMap to inject all public properties
+            // where the Property Type name equals 'IApplicationContext'
+            this.SetAllProperties(p =>
+            {
+                p.TypeMatches(t => t.Name == "IApplicationContext");
             });
 
         }

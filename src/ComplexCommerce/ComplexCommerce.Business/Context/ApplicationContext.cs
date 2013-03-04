@@ -10,11 +10,12 @@ using CslaLibrary = Csla;
 namespace ComplexCommerce.Business.Context
 {
     public class ApplicationContext
+        : IApplicationContext
     {
 
         const string CurrentTenantName = "complexcommerce.tenant";
 
-        public static ITenant CurrentTenant
+        public ITenant CurrentTenant
         {
             get
             {

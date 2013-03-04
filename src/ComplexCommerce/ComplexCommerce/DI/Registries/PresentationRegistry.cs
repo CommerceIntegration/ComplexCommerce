@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using StructureMap.Configuration.DSL;
 using ComplexCommerce.Shared.DI;
 using ComplexCommerce.Csla.DI;
 using ComplexCommerce.Web;
+using ComplexCommerce.Web.Mvc;
 
 namespace ComplexCommerce.DI.Registries
 {
@@ -25,6 +27,10 @@ namespace ComplexCommerce.DI.Registries
                 scan.AssemblyContainingType<IContextUtilities>();
                 scan.WithDefaultConventions();
             });
+
+            //this.For<IModelBinder>()
+            //    .Use<LocalizedModelBinder>();
+
         }
     }
 }

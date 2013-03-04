@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using Csla;
+using CslaLibrary = Csla;
 
 namespace ComplexCommerce.Csla.DI
 {
     [Serializable]
     public abstract class ServerInjectableReadOnlyListBase<T, C> :
-        ReadOnlyListBase<T, C>
-        where T : ReadOnlyListBase<T, C>
+        CslaLibrary.ReadOnlyListBase<T, C>
+        where T : CslaLibrary.ReadOnlyListBase<T, C>
     {
         [NonSerialized]
         private bool mIsServerInjected = false;
