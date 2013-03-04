@@ -14,8 +14,6 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
     public class PageRepository
         : IPageRepository
     {
-        private readonly IPersistenceContextFactory contextFactory;
-
         public PageRepository(IPersistenceContextFactory contextFactory)
         {
             //Contract.Requires<ArgumentNullException>(contextFactory == null);
@@ -24,6 +22,8 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
             this.contextFactory = contextFactory;
         }
+
+        private readonly IPersistenceContextFactory contextFactory;
 
         #region IPageRepository Members
 

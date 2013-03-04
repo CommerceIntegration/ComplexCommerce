@@ -1,7 +1,17 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model ComplexCommerce.Business.Category
+
+@{
+    ViewBag.MetaKeywords = Model.MetaKeywords;
+    ViewBag.MetaDescription = Model.MetaDescription;
 }
 
-<h2>Index</h2>
+<h2>@Html.DisplayFor(model => model.Title)</h2>
 
-CategoryId: @ViewBag.CategoryId.ToString()
+<fieldset>
+    <legend>Category</legend>
+
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+</fieldset>
+

@@ -49,11 +49,14 @@
     <Compile Include="Context\IPersistenceContextFactory.cs" />
     <Compile Include="Context\IPersistenceDetails.cs" />
     <Compile Include="Context\PersistenceContextFactory.cs" />
+    <Compile Include="DataNotFoundException.cs" />
+    <Compile Include="Dto\CategoryDto.cs" />
     <Compile Include="Dto\PageDto.cs" />
     <Compile Include="Dto\SiteMapPageDto.cs" />
     <Compile Include="Dto\TenantDto.cs" />
     <Compile Include="IDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ICategoryRepository.cs" />
     <Compile Include="Repositories\IPageRepository.cs" />
     <Compile Include="Repositories\ITenantRepository.cs" />
   </ItemGroup>

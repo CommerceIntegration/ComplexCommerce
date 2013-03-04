@@ -16,8 +16,6 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
     public class TenantRepository
         : ITenantRepository
     {
-        private readonly IPersistenceContextFactory contextFactory;
-
         public TenantRepository(IPersistenceContextFactory contextFactory)
         {
             //Contract.Requires<ArgumentNullException>(contextFactory == null);
@@ -26,6 +24,8 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
             this.contextFactory = contextFactory;
         }
+
+        private readonly IPersistenceContextFactory contextFactory;
 
         #region ITenantRepository Members
 

@@ -51,6 +51,7 @@
     <Compile Include="Caching\ISingletonObjectCache.cs" />
     <Compile Include="Caching\RouteUrlPageListCache.cs" />
     <Compile Include="Caching\SingletonObjectCache.cs" />
+    <Compile Include="Category.cs" />
     <Compile Include="ContentTypeEnum.cs" />
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\IApplicationContext.cs" />
