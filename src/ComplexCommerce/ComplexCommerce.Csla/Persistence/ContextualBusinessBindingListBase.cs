@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CslaLibrary = Csla;
 using Csla;
 using Csla.Core;
 using ComplexCommerce.Data.Context;
@@ -12,7 +9,7 @@ namespace ComplexCommerce.Csla.Persistence
     [Serializable]
     public class ContextualBusinessBindingListBase<T, C> :
         DI.ServerInjectableBusinessBindingListBase<T, C>
-        where T : BusinessBindingListBase<T, C>
+        where T : CslaLibrary.BusinessBindingListBase<T, C>
         where C : IEditableBusinessObject
     {
         // Injection of context factory

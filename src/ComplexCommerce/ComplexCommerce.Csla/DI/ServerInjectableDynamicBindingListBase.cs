@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CslaLibrary = Csla;
 using Csla;
 using Csla.Core;
 
@@ -10,7 +11,7 @@ namespace ComplexCommerce.Csla.DI
 {
     [Serializable]
     public abstract class ServerInjectableDynamicBindingListBase<T> :
-        DynamicBindingListBase<T>
+        CslaLibrary.DynamicBindingListBase<T>
         where T : IEditableBusinessObject, IUndoableObject, ISavable
     {
         [NonSerialized]

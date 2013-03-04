@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CslaLibrary = Csla;
 using Csla;
 using Csla.Core;
 
@@ -10,8 +7,8 @@ namespace ComplexCommerce.Csla.DI
 {
     [Serializable]
     public abstract class ServerInjectableBusinessListBase<T, C> :
-        BusinessListBase<T, C>
-        where T : BusinessListBase<T, C>
+        CslaLibrary.BusinessListBase<T, C>
+        where T : CslaLibrary.BusinessListBase<T, C>
         where C : IEditableBusinessObject
     {
         [NonSerialized]

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CslaLibrary = Csla;
 using Csla;
 using Csla.Core;
 using Csla.Serialization.Mobile;
@@ -11,7 +8,7 @@ namespace ComplexCommerce.Csla.DI
 {
     [Serializable]
     public abstract class ServerInjectableDynamicListBase<T> :
-        DynamicListBase<T>
+        CslaLibrary.DynamicListBase<T>
         where T : IEditableBusinessObject, IUndoableObject, ISavable, IMobileObject
     {
         [NonSerialized]

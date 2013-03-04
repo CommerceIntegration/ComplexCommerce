@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CslaLibrary = Csla;
 using Csla;
 
 namespace ComplexCommerce.Csla.DI
 {
     [Serializable]
     public abstract class ServerInjectableReadOnlyBindingListBase<T, C> :
-        ReadOnlyBindingListBase<T, C>
-        where T : ReadOnlyBindingListBase<T, C>
+        CslaLibrary.ReadOnlyBindingListBase<T, C>
+        where T : CslaLibrary.ReadOnlyBindingListBase<T, C>
     {
         [NonSerialized]
         private bool mIsServerInjected = false;

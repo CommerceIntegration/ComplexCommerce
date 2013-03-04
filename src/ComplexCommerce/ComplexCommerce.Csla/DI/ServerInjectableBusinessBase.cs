@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using CslaLibrary = Csla;
 using Csla;
 
 namespace ComplexCommerce.Csla.DI
 {
     [Serializable]
     public abstract class ServerInjectableBusinessBase<T> :
-        BusinessBase<T>
-        where T : BusinessBase<T>
+        CslaLibrary.BusinessBase<T>
+        where T : CslaLibrary.BusinessBase<T>
     {
 
         // TODO: Make this threadsafe (See CSLA Contrib project)

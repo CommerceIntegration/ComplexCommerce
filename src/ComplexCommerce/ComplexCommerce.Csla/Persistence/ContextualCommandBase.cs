@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CslaLibrary = Csla;
 using Csla;
 using ComplexCommerce.Data.Context;
 
@@ -11,7 +8,7 @@ namespace ComplexCommerce.Csla.Persistence
     [Serializable]
     public class ContextualCommandBase<T> :
         DI.ServerInjectableCommandBase<T>
-        where T : CommandBase<T>
+        where T : CslaLibrary.CommandBase<T>
     {
         // Injection of context factory
         [NonSerialized]

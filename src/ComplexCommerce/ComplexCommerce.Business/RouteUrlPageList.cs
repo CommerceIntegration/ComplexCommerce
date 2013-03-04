@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Csla;
-using CC = ComplexCommerce.Csla;
+using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
 
 namespace ComplexCommerce.Business
@@ -36,7 +36,7 @@ namespace ComplexCommerce.Business
 
     [Serializable]
     public class RouteUrlPageList
-        : CC.ReadOnlyListBase<RouteUrlPageList, RouteUrlPageInfo>
+        : CslaReadOnlyListBase<RouteUrlPageList, RouteUrlPageInfo>
     {
         internal static RouteUrlPageList EmptyRouteUrlPageList()
         {

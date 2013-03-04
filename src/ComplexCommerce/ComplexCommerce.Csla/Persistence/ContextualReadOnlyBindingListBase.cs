@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CslaLibrary = Csla;
 using Csla;
 using ComplexCommerce.Data.Context;
 
@@ -11,7 +8,7 @@ namespace ComplexCommerce.Csla.Persistence
     [Serializable]
     public class ContextualReadOnlyBindingListBase<T, C> :
         DI.ServerInjectableReadOnlyBindingListBase<T, C>
-        where T : ReadOnlyBindingListBase<T, C>
+        where T : CslaLibrary.ReadOnlyBindingListBase<T, C>
     {
         // Injection of context factory
         [NonSerialized]
