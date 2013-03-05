@@ -1,125 +1,125 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Runtime.Caching;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading;
+//using System.Runtime.Caching;
 
-namespace ComplexCommerce.Business.Caching
-{
-    /// <summary>
-    /// Base class used to create a type safe cache that is an application-specific singleton instance
-    /// based on a derived key.
-    /// </summary>
-    /// <remarks>
-    /// Caching strategy inspired by the following post:
-    /// http://www.superstarcoders.com/blogs/posts/micro-caching-in-asp-net.aspx
-    /// </remarks>
-    public abstract class SingletonObjectCache<T> 
-        : ISingletonObjectCache<T>
-    {
-        public SingletonObjectCache(ObjectCache cache, ICachePolicy cachePolicy)
-        {
-            if (cache == null)
-                throw new ArgumentNullException("cache");
-            if (cachePolicy == null)
-                throw new ArgumentNullException("cachePolicy");
+//namespace ComplexCommerce.Business.Caching
+//{
+//    /// <summary>
+//    /// Base class used to create a type safe cache that is an application-specific singleton instance
+//    /// based on a derived key.
+//    /// </summary>
+//    /// <remarks>
+//    /// Caching strategy inspired by the following post:
+//    /// http://www.superstarcoders.com/blogs/posts/micro-caching-in-asp-net.aspx
+//    /// </remarks>
+//    public abstract class SingletonObjectCache<T> 
+//        : ISingletonObjectCache<T>
+//    {
+//        public SingletonObjectCache(ObjectCache cache, ICachePolicy cachePolicy)
+//        {
+//            if (cache == null)
+//                throw new ArgumentNullException("cache");
+//            if (cachePolicy == null)
+//                throw new ArgumentNullException("cachePolicy");
 
-            this.cache = cache;
-            this.cachePolicy = cachePolicy;
-        }
+//            this.cache = cache;
+//            this.cachePolicy = cachePolicy;
+//        }
 
-        private readonly ObjectCache cache;
-        private readonly ICachePolicy cachePolicy;
-        private ReaderWriterLockSlim synclock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+//        private readonly ObjectCache cache;
+//        private readonly ICachePolicy cachePolicy;
+//        private ReaderWriterLockSlim synclock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
-        public abstract string Key { get; }
-
-
-        public bool HasValue()
-        {
-            return cache.Contains(this.Key);
-        }
-
-        public void Clear()
-        {
-            cache.Remove(this.Key);
-        }
-
-        public T GetOrLoad(Func<T> loadFunction)
-        {
-            LazyLock lazy;
-            bool success;
-
-            synclock.EnterReadLock();
-
-            try
-            {
-                success = this.TryGetValue(out lazy);
-            }
-            finally
-            {
-                synclock.ExitReadLock();
-            }
-
-            if (!success)
-            {
-                synclock.EnterWriteLock();
-
-                try
-                {
-                    if (!this.TryGetValue(out lazy))
-                    {
-                        lazy = new LazyLock();
-                        this.Set(lazy);
-                    }
-                }
-                finally
-                {
-                    synclock.ExitWriteLock();
-                }
-            }
-
-            return lazy.Get(loadFunction);
-        }
+//        public abstract string Key { get; }
 
 
-        private LazyLock Get()
-        {
-            return (LazyLock)cache.Get(this.Key);
-        }
+//        public bool HasValue()
+//        {
+//            return cache.Contains(this.Key);
+//        }
 
-        private bool TryGetValue(out LazyLock value)
-        {
-            value = this.Get();
-            if (value != null)
-            {
-                return true;
-            }
-            return false;
-        }
+//        public void Clear()
+//        {
+//            cache.Remove(this.Key);
+//        }
 
-        private void Set(LazyLock item)
-        {
-            var policy = new CacheItemPolicy();
+//        public T GetOrLoad(Func<T> loadFunction)
+//        {
+//            LazyLock lazy;
+//            bool success;
 
-            policy.Priority = CacheItemPriority.NotRemovable;
-            if (IsTimespanSet(cachePolicy.AbsoluteExpiration))
-            {
-                policy.AbsoluteExpiration = DateTimeOffset.Now.Add(cachePolicy.AbsoluteExpiration);
-            }
-            else if (IsTimespanSet(cachePolicy.SlidingExpiration))
-            {
-                policy.SlidingExpiration = cachePolicy.SlidingExpiration;
-            }
+//            synclock.EnterReadLock();
 
-            cache.Set(this.Key, item, policy);
-        }
+//            try
+//            {
+//                success = this.TryGetValue(out lazy);
+//            }
+//            finally
+//            {
+//                synclock.ExitReadLock();
+//            }
 
-        private bool IsTimespanSet(TimeSpan timeSpan)
-        {
-            return (!timeSpan.Equals(TimeSpan.MinValue));
-        }
+//            if (!success)
+//            {
+//                synclock.EnterWriteLock();
 
-    }
-}
+//                try
+//                {
+//                    if (!this.TryGetValue(out lazy))
+//                    {
+//                        lazy = new LazyLock();
+//                        this.Set(lazy);
+//                    }
+//                }
+//                finally
+//                {
+//                    synclock.ExitWriteLock();
+//                }
+//            }
+
+//            return lazy.Get(loadFunction);
+//        }
+
+
+//        private LazyLock Get()
+//        {
+//            return (LazyLock)cache.Get(this.Key);
+//        }
+
+//        private bool TryGetValue(out LazyLock value)
+//        {
+//            value = this.Get();
+//            if (value != null)
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+
+//        private void Set(LazyLock item)
+//        {
+//            var policy = new CacheItemPolicy();
+
+//            policy.Priority = CacheItemPriority.NotRemovable;
+//            if (IsTimespanSet(cachePolicy.AbsoluteExpiration))
+//            {
+//                policy.AbsoluteExpiration = DateTimeOffset.Now.Add(cachePolicy.AbsoluteExpiration);
+//            }
+//            else if (IsTimespanSet(cachePolicy.SlidingExpiration))
+//            {
+//                policy.SlidingExpiration = cachePolicy.SlidingExpiration;
+//            }
+
+//            cache.Set(this.Key, item, policy);
+//        }
+
+//        private bool IsTimespanSet(TimeSpan timeSpan)
+//        {
+//            return (!timeSpan.Equals(TimeSpan.MinValue));
+//        }
+
+//    }
+//}

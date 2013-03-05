@@ -80,6 +80,7 @@
     <Compile Include="DI\InjectableControllerFactory.cs" />
     <Compile Include="LocalizedModelBinder.cs" />
     <Compile Include="PageRoute.cs" />
+    <Compile Include="ProductRoute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

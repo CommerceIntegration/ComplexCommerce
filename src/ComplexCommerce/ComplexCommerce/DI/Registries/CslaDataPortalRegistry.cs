@@ -11,6 +11,7 @@ using ComplexCommerce.Data;
 using ComplexCommerce.Data.Context;
 using ComplexCommerce.DI.Conventions;
 using ComplexCommerce.Business;
+using ComplexCommerce.Business.Context;
 using ComplexCommerce.Business.Caching;
 
 namespace ComplexCommerce.DI.Registries
@@ -82,15 +83,36 @@ namespace ComplexCommerce.DI.Registries
             this.For<ICachePolicy>()
                 .Use(new CachePolicy { AbsoluteExpiration = TimeSpan.FromMinutes(5) });
 
-            // Setup the RouteUrlPageList Cache
-            this.For<ISingletonObjectCache<RouteUrlPageList>>()
-                .Use<RouteUrlPageListCache>();
+            // Setup the Micro Cache
+            this.For(typeof(IMicroObjectCache<>))
+                .Use(typeof(MicroObjectCache<>));
+
+
+            //this.SetAllProperties(p =>
+            //{
+            //    p.TypeMatches(t => t == typeof(IMicroObjectCache<>));
+            //});
 
             this.SetAllProperties(p =>
             {
-                p.TypeMatches(t => t == typeof(ISingletonObjectCache<RouteUrlPageList>));
-                //p.TypeMatches(t => t.Name == "ISingletonObjectCache");
+                p.TypeMatches(t => t == typeof(IMicroObjectCache<RouteUrlPageList>));
             });
+
+            this.SetAllProperties(p =>
+            {
+                p.TypeMatches(t => t == typeof(IMicroObjectCache<RouteUrlProductList>));
+            });
+
+
+            //// Setup the RouteUrlPageList Cache
+            //this.For<ISingletonObjectCache<RouteUrlPageList>>()
+            //    .Use<RouteUrlPageListCache>();
+
+            //this.SetAllProperties(p =>
+            //{
+            //    p.TypeMatches(t => t == typeof(ISingletonObjectCache<RouteUrlPageList>));
+            //    //p.TypeMatches(t => t.Name == "ISingletonObjectCache");
+            //});
 
 
             // We create a new Setter Injection Policy that
@@ -98,7 +120,8 @@ namespace ComplexCommerce.DI.Registries
             // where the Property Type name equals 'IPersistenceContextFactory'
             this.SetAllProperties(p =>
             {
-                p.TypeMatches(t => t.Name == "IPersistenceContextFactory");
+                p.TypeMatches(t => t == typeof(IPersistenceContextFactory));
+                //p.TypeMatches(t => t.Name == "IPersistenceContextFactory");
             });
 
         }

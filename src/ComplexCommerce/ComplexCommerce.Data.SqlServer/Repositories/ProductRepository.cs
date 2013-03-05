@@ -48,6 +48,33 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
             }
         }
 
+        public IList<RouteUrlProductDto> ListForTenantLocale(int tenantId, int localeId)
+        {
+            using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+            {
+
+                var result = (from categoryXProduct in ctx.ObjectContext.CategoryXProductXTenantLocale
+                            join productXlocale in ctx.ObjectContext.ProductXTenantLocale
+                                on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
+                            join tenantLocale in ctx.ObjectContext.TenantLocale
+                                on productXlocale.TenantLocaleId equals tenantLocale.Id
+                            join page in ctx.ObjectContext.Page
+                                on categoryXProduct.CategoryId equals page.ContentId
+                            where tenantLocale.TenantId == tenantId && tenantLocale.LocaleId == localeId
+                            where page.ContentType == 2
+                            select new RouteUrlProductDto
+                            {
+                                ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
+                                LocaleId = localeId,
+                                ProductUrlSlug = productXlocale.UrlSlug,
+                                ParentPageRouteUrl = page.RouteUrl
+                            });
+
+                return result.ToList();
+            }
+        }
+
+
         #endregion
     }
 }

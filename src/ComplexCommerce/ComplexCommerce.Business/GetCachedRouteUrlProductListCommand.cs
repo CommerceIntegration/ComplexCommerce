@@ -7,10 +7,10 @@ using ComplexCommerce.Business.Caching;
 namespace ComplexCommerce.Business
 {
     [Serializable]
-    public class GetCachedRouteUrlPageListCommand
-        : CslaCommandBase<GetCachedRouteUrlPageListCommand>
+    public class GetCachedRouteUrlProductListCommand
+        : CslaCommandBase<GetCachedRouteUrlProductListCommand>
     {
-        public GetCachedRouteUrlPageListCommand(int tenantId, int localeId)
+        public GetCachedRouteUrlProductListCommand(int tenantId, int localeId)
         {
             if (tenantId < 1)
                 throw new ArgumentOutOfRangeException("tenantId");
@@ -21,8 +21,7 @@ namespace ComplexCommerce.Business
             this.LocaleId = localeId;
         }
 
-
-        public static PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
+         public static PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
         public int TenantId
         {
             get { return ReadProperty(TenantIdProperty); }
@@ -36,11 +35,11 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(LocaleIdProperty, value); }
         }
 
-        public static PropertyInfo<RouteUrlPageList> RouteUrlPageListProperty = RegisterProperty<RouteUrlPageList>(c => c.RouteUrlPageList);
-        public RouteUrlPageList RouteUrlPageList
+        public static PropertyInfo<RouteUrlProductList> RouteUrlProductListProperty = RegisterProperty<RouteUrlProductList>(c => c.RouteUrlProductList);
+        public RouteUrlProductList RouteUrlProductList
         {
-            get { return ReadProperty(RouteUrlPageListProperty); }
-            private set { LoadProperty(RouteUrlPageListProperty, value); }
+            get { return ReadProperty(RouteUrlProductListProperty); }
+            private set { LoadProperty(RouteUrlProductListProperty, value); }
         }
 
         /// <summary>
@@ -48,17 +47,17 @@ namespace ComplexCommerce.Business
         /// </summary>
         protected override void DataPortal_Execute()
         {
-            var key = "__CC_RouteUrlPageList_" + this.TenantId + "_" + this.LocaleId + "__";
-            this.RouteUrlPageList = cache.GetOrAdd(key,
-                () => RouteUrlPageList.GetRouteUrlPageList(this.TenantId, this.LocaleId));
+            var key = "__CC_RouteUrlProductList_" + this.TenantId + "_" + this.LocaleId + "__";
+            this.RouteUrlProductList = cache.GetOrAdd(key,
+                () => RouteUrlProductList.GetRouteUrlProductList(this.TenantId, this.LocaleId));
         }
 
         #region Dependency Injection
 
         [NonSerialized]
         [NotUndoable]
-        private IMicroObjectCache<RouteUrlPageList> cache;
-        public IMicroObjectCache<RouteUrlPageList> Cache
+        private IMicroObjectCache<RouteUrlProductList> cache;
+        public IMicroObjectCache<RouteUrlProductList> Cache
         {
             set
             {
@@ -77,6 +76,5 @@ namespace ComplexCommerce.Business
         }
 
         #endregion
-
     }
 }

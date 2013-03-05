@@ -23,6 +23,8 @@ namespace ComplexCommerce
 
             routes.Add(container.Resolve(typeof(PageRoute)) as PageRoute);
 
+            routes.Add(container.Resolve(typeof(ProductRoute)) as ProductRoute);
+
             //routes.MapRoute(
             //    name: "Default",
             //    url: "{culture}/{controller}/{action}/{id}",

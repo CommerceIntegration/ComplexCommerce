@@ -8,28 +8,28 @@ using ComplexCommerce.Business.Context;
 
 namespace ComplexCommerce.Web.Mvc
 {
-    public class PageRoute
+    public class ProductRoute
         : RouteBase
     {
-        public PageRoute(
+        public ProductRoute(
             IApplicationContext appContext,
-            IRouteUrlListFactory routeUrlListFactory,
+            IRouteUrlProductListFactory routeUrlProductListFactory,
             IContextUtilities contextUtilities
             )
         {
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
-            if (routeUrlListFactory == null)
-                throw new ArgumentNullException("routeUrlListFactory");
+            if (routeUrlProductListFactory == null)
+                throw new ArgumentNullException("routeUrlProductListFactory");
             if (contextUtilities == null)
                 throw new ArgumentNullException("contextUtilities");
             this.appContext = appContext;
-            this.routeUrlListFactory = routeUrlListFactory;
+            this.routeUrlProductListFactory = routeUrlProductListFactory;
             this.contextUtilities = contextUtilities;
         }
 
         private readonly IApplicationContext appContext;
-        private readonly IRouteUrlListFactory routeUrlListFactory;
+        private readonly IRouteUrlProductListFactory routeUrlProductListFactory;
         private readonly IContextUtilities contextUtilities;
 
         public override RouteData GetRouteData(HttpContextBase httpContext)
@@ -38,7 +38,7 @@ namespace ComplexCommerce.Web.Mvc
             var tenant = appContext.CurrentTenant;
 
             // Get all of the pages
-            var pages = routeUrlListFactory.GetRouteUrlPageList(tenant.Id, tenant.DefaultLocale.LCID);
+            var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, tenant.DefaultLocale.LCID);
 
             // Get the culture name
             var url = httpContext.Request.Url;
@@ -73,24 +73,23 @@ namespace ComplexCommerce.Web.Mvc
                 result = new RouteData(this, new MvcRouteHandler());
                 // TODO: Add area for different tenant types
 
-                result.Values["controller"] = page.ContentType.ToString();
+                result.Values["controller"] = "Product";
                 result.Values["action"] = "Index";
-                result.Values["id"] = page.ContentId;
+                result.Values["id"] = page.ProductXTenantLocaleId;
             }
 
             return result;
-
         }
 
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
             VirtualPathData result = null;
-            RouteUrlPageInfo page = null;
+            RouteUrlProductInfo page = null;
             string virtualPath = string.Empty;
             var tenant = appContext.CurrentTenant;
 
             // Get all of the pages
-            var pages = routeUrlListFactory.GetRouteUrlPageList(tenant.Id, tenant.DefaultLocale.LCID);
+            var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, tenant.DefaultLocale.LCID);
 
             if (TryFindMatch(pages, values, out page))
             {
@@ -105,12 +104,12 @@ namespace ComplexCommerce.Web.Mvc
             return result;
         }
 
-        private bool TryFindMatch(RouteUrlPageList pages, RouteValueDictionary values, out RouteUrlPageInfo page)
+        private bool TryFindMatch(RouteUrlProductList pages, RouteValueDictionary values, out RouteUrlProductInfo page)
         {
             page = null;
-            Guid contentId = Guid.Empty;
+            Guid productXTenantLocaleId = Guid.Empty;
 
-            if (!Guid.TryParse(Convert.ToString(values["id"]), out contentId))
+            if (!Guid.TryParse(Convert.ToString(values["id"]), out productXTenantLocaleId))
             {
                 return false;
             }
@@ -118,11 +117,11 @@ namespace ComplexCommerce.Web.Mvc
             var controller = Convert.ToString(values["controller"]);
             var action = Convert.ToString(values["action"]);
 
-            if (action == "Index")
+            if (action == "Index" && controller == "Product")
             {
                 foreach (var item in pages)
                 {
-                    if (item.ContentId.Equals(contentId) && item.ContentType.ToString().Equals(controller))
+                    if (item.ProductXTenantLocaleId.Equals(productXTenantLocaleId))
                     {
                         page = item;
                         return true;

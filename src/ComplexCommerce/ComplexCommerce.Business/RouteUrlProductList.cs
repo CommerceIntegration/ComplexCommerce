@@ -5,50 +5,51 @@ using ComplexCommerce.Data.Repositories;
 
 namespace ComplexCommerce.Business
 {
-    public interface IRouteUrlListFactory
+    public interface IRouteUrlProductListFactory
     {
-        RouteUrlPageList EmptyRouteUrlPageList();
-        RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId);
+        RouteUrlProductList EmptyRouteUrlProductList();
+        RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId);
     }
 
-    public class RouteUrlListFactory
-        : IRouteUrlListFactory
+    public class RouteUrlProductListFactory
+        : IRouteUrlProductListFactory
     {
 
         #region IRouteUrlListFactory Members
 
-        public RouteUrlPageList EmptyRouteUrlPageList()
+        public RouteUrlProductList EmptyRouteUrlProductList()
         {
-            return RouteUrlPageList.EmptyRouteUrlPageList();
+            return RouteUrlProductList.EmptyRouteUrlProductList();
         }
 
-        public RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId)
+        public RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId)
         {
-            return RouteUrlPageList.GetCachedRouteUrlPageList(tenantId, localeId);
+            return RouteUrlProductList.GetCachedRouteUrlProductList(tenantId, localeId);
         }
 
         #endregion
     }
 
     [Serializable]
-    public class RouteUrlPageList
-        : CslaReadOnlyListBase<RouteUrlPageList, RouteUrlPageInfo>
+    public class RouteUrlProductList
+        : CslaReadOnlyListBase<RouteUrlProductList, RouteUrlProductInfo>
     {
-        internal static RouteUrlPageList EmptyRouteUrlPageList()
+
+        internal static RouteUrlProductList EmptyRouteUrlProductList()
         {
-            return new RouteUrlPageList();
+            return new RouteUrlProductList();
         }
 
-        internal static RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId)
+        internal static RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId)
         {
-            return DataPortal.Fetch<RouteUrlPageList>(new Criteria { TenantId = tenantId, LocaleId = localeId });
+            return DataPortal.Fetch<RouteUrlProductList>(new Criteria { TenantId = tenantId, LocaleId = localeId });
         }
 
-        internal static RouteUrlPageList GetCachedRouteUrlPageList(int tenantId, int localeId)
+        internal static RouteUrlProductList GetCachedRouteUrlProductList(int tenantId, int localeId)
         {
-            var cmd = new GetCachedRouteUrlPageListCommand(tenantId, localeId);
-            cmd = DataPortal.Execute<GetCachedRouteUrlPageListCommand>(cmd);
-            return cmd.RouteUrlPageList;
+            var cmd = new GetCachedRouteUrlProductListCommand(tenantId, localeId);
+            cmd = DataPortal.Execute<GetCachedRouteUrlProductListCommand>(cmd);
+            return cmd.RouteUrlProductList;
         }
 
         private void DataPortal_Fetch(Criteria criteria)
@@ -60,17 +61,17 @@ namespace ComplexCommerce.Business
                 IsReadOnly = false;
 
                 var isDefaultLocale = (criteria.LocaleId == appContext.CurrentTenant.DefaultLocale.LCID);
-                var list = repository.List(criteria.TenantId, criteria.LocaleId);
+                var list = repository.ListForTenantLocale(criteria.TenantId, criteria.LocaleId);
                 foreach (var item in list)
                 {
-                    Add(DataPortal.FetchChild<RouteUrlPageInfo>(item, false));
+                    Add(DataPortal.FetchChild<RouteUrlProductInfo>(item, false));
 
                     // TODO: Add 301 redirect to the default locale without the locale info in the URL.
 
                     // If this is the default locale, add a copy of the URL without the locale info
                     if (isDefaultLocale)
                     {
-                        Add(DataPortal.FetchChild<RouteUrlPageInfo>(item, true));
+                        Add(DataPortal.FetchChild<RouteUrlProductInfo>(item, true));
                     }
                 }
 
@@ -105,8 +106,8 @@ namespace ComplexCommerce.Business
 
         [NonSerialized]
         [NotUndoable]
-        private IPageRepository repository;
-        public IPageRepository Repository
+        private IProductRepository repository;
+        public IProductRepository Repository
         {
             set
             {
@@ -146,5 +147,7 @@ namespace ComplexCommerce.Business
         }
 
         #endregion
+
+
     }
 }
