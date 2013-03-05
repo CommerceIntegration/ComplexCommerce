@@ -36,12 +36,12 @@ namespace ComplexCommerce.Business.Caching
         public abstract string Key { get; }
 
 
-        public bool Contains()
+        public bool HasValue()
         {
             return cache.Contains(this.Key);
         }
 
-        public void Remove()
+        public void Clear()
         {
             cache.Remove(this.Key);
         }
@@ -70,7 +70,6 @@ namespace ComplexCommerce.Business.Caching
                 {
                     if (!this.TryGetValue(out lazy))
                     {
-                        //cache[this.Key] = lazy = new LazyLock();
                         lazy = new LazyLock();
                         this.Set(lazy);
                     }

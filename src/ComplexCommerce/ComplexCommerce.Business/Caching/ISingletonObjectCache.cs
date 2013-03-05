@@ -3,9 +3,9 @@ namespace ComplexCommerce.Business.Caching
 {
     public interface ISingletonObjectCache<T>
     {
-        bool Contains();
         string Key { get; }
-        void Remove();
+        bool HasValue();
+        void Clear();
         T GetOrLoad(Func<T> loadFunction);
     }
 }
