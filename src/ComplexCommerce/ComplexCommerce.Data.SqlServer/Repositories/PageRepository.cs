@@ -27,7 +27,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
         #region IPageRepository Members
 
-        public List<SiteMapPageDto> List(int tenantId, int localeId)
+        public IList<SiteMapPageDto> List(int tenantId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {

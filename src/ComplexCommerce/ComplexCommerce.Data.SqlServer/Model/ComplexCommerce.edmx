@@ -99,7 +99,7 @@
           <Property Name="ChainId" Type="int" Nullable="false" />
           <Property Name="SKU" Type="nvarchar" MaxLength="100" />
           <Property Name="ImageUrl" Type="nvarchar" MaxLength="1024" />
-          <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Price" Type="decimal" Nullable="false" Precision="10" Scale="2" />
         </EntityType>
         <EntityType Name="ProductXTenantLocale">
           <Key>
@@ -309,7 +309,7 @@
           <Property Type="Int32" Name="ChainId" Nullable="false" />
           <Property Type="String" Name="SKU" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ImageUrl" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Type="Decimal" Name="Price" Precision="10" Scale="2" />
+          <Property Type="Decimal" Name="Price" Precision="10" Scale="2" Nullable="false" />
           <NavigationProperty Name="Chain" Relationship="ComplexCommerce.Model.FK_ChainProduct" FromRole="Product" ToRole="Chain" />
           <NavigationProperty Name="ProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_Product_ProductXTenantLocale" FromRole="Product" ToRole="ProductXTenantLocale" />
         </EntityType>

@@ -38,7 +38,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
         {
             var table = new List<CategoryXProductXTenantLocale>
             {
-
+                new CategoryXProductXTenantLocale { Id = new Guid("bbb4112f-a933-4190-a374-bc75b1fd97b9"), CategoryId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa"), ProductXTenantLocaleId = new Guid("209f1271-2cd9-41bc-986d-7af5bd8198b9"), RouteUrl = "sea\all-purpose-shell-kit" }
             };
             table.ForEach(x => context.CategoryXProductXTenantLocale.Add(x));
             context.SaveChanges();
@@ -60,9 +60,9 @@ namespace ComplexCommerce.Data.SqlServer.Model
         {
             var table = new List<Page>
             {
-                new Page { Id = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), ParentId = null, TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), ContentType = 1, ContentId = Guid.Empty },
-                new Page { Id = new Guid("d1ee8545-dd7d-4304-99de-397f880b553e"), ParentId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), ContentType = 2, ContentId = new Guid("db4f46b2-9335-4d3a-95c8-43490b6ef6f6") },
-                new Page { Id = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), ParentId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), ContentType = 2, ContentId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa") }
+                new Page { Id = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), ParentId = null, TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), Title = "Easy ABC Store - Home", MetaKeywords = "Easy ABC, Bees, Seas", MetaDescription = "This is the #1 store for purchasing ABC products. Free Shipping, Secure Checkout, Best Experience.", MetaRobots = "index, follow, noyahoo", ContentType = 1, ContentId = Guid.Empty },
+                new Page { Id = new Guid("d1ee8545-dd7d-4304-99de-397f880b553e"), ParentId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), Title = "Bees", MetaKeywords = "bees, bee stuff, whatever", MetaDescription = "&#9733;Trying this out &#9733;", MetaRobots = "index, follow, nosnippet", ContentType = 2, ContentId = new Guid("db4f46b2-9335-4d3a-95c8-43490b6ef6f6") },
+                new Page { Id = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), ParentId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), Title = "The Sea", MetaKeywords = "sea, ocean, bay, shore, shell", MetaDescription = "Testing & Whatnot", MetaRobots = "", ContentType = 2, ContentId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa") }
             };
             table.ForEach(x => context.Page.Add(x));
             context.SaveChanges();
@@ -72,7 +72,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
         {
             var table = new List<Product>
             {
-
+                new Product { Id = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), ChainId = 1, SKU = "SHELL123", Price = Convert.ToDecimal(6.99) }
             };
             table.ForEach(x => context.Product.Add(x));
             context.SaveChanges();
@@ -82,7 +82,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
         {
             var table = new List<ProductXTenantLocale>
             {
-
+                new ProductXTenantLocale { Id = new Guid("209f1271-2cd9-41bc-986d-7af5bd8198b9") , ProductId = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), Name = "All Purpose Shell Kit", Description = "A collection of sea shells from around the world.", UrlSlug = "all-purpose-shell-kit" }
             };
             table.ForEach(x => context.ProductXTenantLocale.Add(x));
             context.SaveChanges();

@@ -67,12 +67,6 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(DescriptionProperty, value); }
         }
 
-        
-
-        #region Layout Properties
-
-        // TODO: Devise a way to get these to the layout view
-
         public static readonly PropertyInfo<string> MetaKeywordsProperty = RegisterProperty<string>(p => p.MetaKeywords);
         public string MetaKeywords
         {
@@ -87,7 +81,18 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(MetaDescriptionProperty, value); }
         }
 
-        #endregion
+        public static readonly PropertyInfo<CategoryProductList> ProductsProperty = RegisterProperty<CategoryProductList>(c => c.Products);
+        public CategoryProductList Products
+        {
+            get
+            {
+                //if (!(FieldManager.FieldExists(ProductsProperty)))
+                //    LoadProperty(ProductsProperty, DataPortal.CreateChild<CategoryProductList>());
+                return GetProperty(ProductsProperty);
+            }
+            private set { LoadProperty(ProductsProperty, value); }
+        }
+        
 
         public static Category GetCategory(Guid categoryId)
         {
@@ -114,6 +119,7 @@ namespace ComplexCommerce.Business
                     Description = data.Description;
                     MetaKeywords = data.MetaKeywords;
                     MetaDescription = data.MetaDescription;
+                    Products = DataPortal.FetchChild<CategoryProductList>(categoryId);
                 }
             }
         }

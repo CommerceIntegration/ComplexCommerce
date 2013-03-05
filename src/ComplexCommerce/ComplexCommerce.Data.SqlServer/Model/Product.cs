@@ -23,7 +23,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public int ChainId { get; set; }
         public string SKU { get; set; }
         public string ImageUrl { get; set; }
-        public Nullable<decimal> Price { get; set; }
+        public decimal Price { get; set; }
     
         public virtual Chain Chain { get; set; }
         public virtual ICollection<ProductXTenantLocale> ProductXTenantLocale { get; set; }
