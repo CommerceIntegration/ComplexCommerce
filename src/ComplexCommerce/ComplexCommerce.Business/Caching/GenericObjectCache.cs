@@ -67,7 +67,7 @@
 
 //        private bool IsTimespanSet(TimeSpan timeSpan)
 //        {
-//            return (!timeSpan.Equals(TimeSpan.MinValue) && !timeSpan.Equals(TimeSpan.Zero));
+//            return (!timeSpan.Equals(TimeSpan.MinValue));
 //        }
 
 //    }

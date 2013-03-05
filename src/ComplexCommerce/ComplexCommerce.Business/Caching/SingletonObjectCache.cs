@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Runtime.Caching;
 
 namespace ComplexCommerce.Business.Caching
@@ -11,42 +11,30 @@ namespace ComplexCommerce.Business.Caching
     /// Base class used to create a type safe cache that is an application-specific singleton instance
     /// based on a derived key.
     /// </summary>
+    /// <remarks>
+    /// Caching strategy inspired by the following post:
+    /// http://www.superstarcoders.com/blogs/posts/micro-caching-in-asp-net.aspx
+    /// </remarks>
     public abstract class SingletonObjectCache<T> 
         : ISingletonObjectCache<T>
     {
-        public SingletonObjectCache(ObjectCache cache)
+        public SingletonObjectCache(ObjectCache cache, ICachePolicy cachePolicy)
         {
             if (cache == null)
                 throw new ArgumentNullException("cache");
+            if (cachePolicy == null)
+                throw new ArgumentNullException("cachePolicy");
 
             this.cache = cache;
-            //// TODO: Figure out if there is a way to pass this.
-            //this.cache = MemoryCache.Default;
+            this.cachePolicy = cachePolicy;
         }
 
         private readonly ObjectCache cache;
+        private readonly ICachePolicy cachePolicy;
+        private ReaderWriterLockSlim synclock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         public abstract string Key { get; }
 
-
-        public void Set(T item, TimeSpan absoluteExpiration, TimeSpan slidingExpiration)
-        {
-            var policy = new CacheItemPolicy();
-
-            policy.Priority = CacheItemPriority.NotRemovable;
-            if (IsTimespanSet(absoluteExpiration))
-            {
-                policy.AbsoluteExpiration = DateTimeOffset.Now.Add(absoluteExpiration);
-            }
-            else if (IsTimespanSet(slidingExpiration))
-            {
-                policy.SlidingExpiration = slidingExpiration;
-            }
-
-            // TODO: Figure out how to add dependencies (SQL Server in particular)
-
-            cache.Set(this.Key, item, policy);
-        }
 
         public bool Contains()
         {
@@ -58,12 +46,51 @@ namespace ComplexCommerce.Business.Caching
             cache.Remove(this.Key);
         }
 
-        public T Get()
+        public T GetOrLoad(Func<T> loadFunction)
         {
-            return (T)cache.Get(this.Key);
+            LazyLock lazy;
+            bool success;
+
+            synclock.EnterReadLock();
+
+            try
+            {
+                success = this.TryGetValue(out lazy);
+            }
+            finally
+            {
+                synclock.ExitReadLock();
+            }
+
+            if (!success)
+            {
+                synclock.EnterWriteLock();
+
+                try
+                {
+                    if (!this.TryGetValue(out lazy))
+                    {
+                        //cache[this.Key] = lazy = new LazyLock();
+                        lazy = new LazyLock();
+                        this.Set(lazy);
+                    }
+                }
+                finally
+                {
+                    synclock.ExitWriteLock();
+                }
+            }
+
+            return lazy.Get(loadFunction);
         }
 
-        public bool TryGetValue(out T value)
+
+        private LazyLock Get()
+        {
+            return (LazyLock)cache.Get(this.Key);
+        }
+
+        private bool TryGetValue(out LazyLock value)
         {
             value = this.Get();
             if (value != null)
@@ -73,9 +100,26 @@ namespace ComplexCommerce.Business.Caching
             return false;
         }
 
+        private void Set(LazyLock item)
+        {
+            var policy = new CacheItemPolicy();
+
+            policy.Priority = CacheItemPriority.NotRemovable;
+            if (IsTimespanSet(cachePolicy.AbsoluteExpiration))
+            {
+                policy.AbsoluteExpiration = DateTimeOffset.Now.Add(cachePolicy.AbsoluteExpiration);
+            }
+            else if (IsTimespanSet(cachePolicy.SlidingExpiration))
+            {
+                policy.SlidingExpiration = cachePolicy.SlidingExpiration;
+            }
+
+            cache.Set(this.Key, item, policy);
+        }
+
         private bool IsTimespanSet(TimeSpan timeSpan)
         {
-            return (!timeSpan.Equals(TimeSpan.MinValue) && !timeSpan.Equals(TimeSpan.Zero));
+            return (!timeSpan.Equals(TimeSpan.MinValue));
         }
 
     }

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using Csla;
 using ComplexCommerce.Csla;
+using ComplexCommerce.Data;
 using ComplexCommerce.Business.Caching;
 
 namespace ComplexCommerce.Business
@@ -13,29 +11,17 @@ namespace ComplexCommerce.Business
     public class GetCachedRouteUrlPageListCommand
         : CslaCommandBase<GetCachedRouteUrlPageListCommand>
     {
-        public GetCachedRouteUrlPageListCommand(int tenantId, int localeId, TimeSpan cacheExpiration, bool useAbsolute)
+        public GetCachedRouteUrlPageListCommand(int tenantId, int localeId)
         {
             if (tenantId < 1)
                 throw new ArgumentOutOfRangeException("tenantId");
             if (localeId < 1)
                 throw new ArgumentOutOfRangeException("localeId");
-            if (cacheExpiration == null)
-                throw new ArgumentNullException("cacheExpiration");
-
+            
             this.TenantId = tenantId;
             this.LocaleId = localeId;
-
-            if (useAbsolute)
-            {
-                this.AbsoluteExpiration = cacheExpiration;
-                this.SlidingExpiration = TimeSpan.Zero;
-            }
-            else
-            {
-                this.AbsoluteExpiration = TimeSpan.Zero;
-                this.SlidingExpiration = cacheExpiration;
-            }
         }
+
 
         public static PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
         public int TenantId
@@ -51,20 +37,6 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(LocaleIdProperty, value); }
         }
 
-        public static PropertyInfo<TimeSpan> AbsoluteExpirationProperty = RegisterProperty<TimeSpan>(c => c.AbsoluteExpiration);
-        public TimeSpan AbsoluteExpiration
-        {
-            get { return ReadProperty(AbsoluteExpirationProperty); }
-            private set { LoadProperty(AbsoluteExpirationProperty, value); }
-        }
-
-        public static PropertyInfo<TimeSpan> SlidingExpirationProperty = RegisterProperty<TimeSpan>(c => c.SlidingExpiration);
-        public TimeSpan SlidingExpiration
-        {
-            get { return ReadProperty(SlidingExpirationProperty); }
-            private set { LoadProperty(SlidingExpirationProperty, value); }
-        }
-
         public static PropertyInfo<RouteUrlPageList> RouteUrlPageListProperty = RegisterProperty<RouteUrlPageList>(c => c.RouteUrlPageList);
         public RouteUrlPageList RouteUrlPageList
         {
@@ -73,22 +45,13 @@ namespace ComplexCommerce.Business
         }
 
         /// <summary>
-        /// We work with the cache on the server side 
+        /// We work with the cache on the server side of the DataPortal
         /// </summary>
         protected override void DataPortal_Execute()
         {
-            var list = cache.Get();
-            if (list == null)
-            {
-                list = RouteUrlPageList.GetRouteUrlPageList(this.TenantId, this.LocaleId);
-                if (list != null)
-                {
-                    cache.Set(list, this.AbsoluteExpiration, this.SlidingExpiration);
-                }
-            }
-            this.RouteUrlPageList = list;
+            this.RouteUrlPageList = cache.GetOrLoad(
+                () => RouteUrlPageList.GetRouteUrlPageList(this.TenantId, this.LocaleId));
         }
-
 
         #region Dependency Injection
 

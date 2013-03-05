@@ -50,7 +50,7 @@ namespace ComplexCommerce.Business
 
         internal static RouteUrlPageList GetCachedRouteUrlPageList(int tenantId, int localeId)
         {
-            var cmd = new GetCachedRouteUrlPageListCommand(tenantId, localeId, TimeSpan.FromMinutes(5), true);
+            var cmd = new GetCachedRouteUrlPageListCommand(tenantId, localeId);
             cmd = DataPortal.Execute<GetCachedRouteUrlPageListCommand>(cmd);
             return cmd.RouteUrlPageList;
         }

@@ -47,8 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CachePolicy.cs" />
     <Compile Include="Caching\GenericObjectCache.cs" />
+    <Compile Include="Caching\ICachePolicy.cs" />
     <Compile Include="Caching\ISingletonObjectCache.cs" />
+    <Compile Include="Caching\LazyLock.cs" />
     <Compile Include="Caching\RouteUrlPageListCache.cs" />
     <Compile Include="Caching\SingletonObjectCache.cs" />
     <Compile Include="Category.cs" />

@@ -79,6 +79,9 @@ namespace ComplexCommerce.DI.Registries
             this.For<ObjectCache>()
                 .Use(x => MemoryCache.Default);
 
+            this.For<ICachePolicy>()
+                .Use(new CachePolicy { AbsoluteExpiration = TimeSpan.FromMinutes(5) });
+
             // Setup the RouteUrlPageList Cache
             this.For<ISingletonObjectCache<RouteUrlPageList>>()
                 .Use<RouteUrlPageListCache>();

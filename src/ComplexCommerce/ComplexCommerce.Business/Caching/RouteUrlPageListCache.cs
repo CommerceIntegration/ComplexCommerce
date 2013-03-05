@@ -11,8 +11,8 @@ namespace ComplexCommerce.Business.Caching
     public class RouteUrlPageListCache
         : SingletonObjectCache<RouteUrlPageList>
     {
-        public RouteUrlPageListCache(ObjectCache cache, IApplicationContext appContext)
-            : base(cache)
+        public RouteUrlPageListCache(ObjectCache cache, ICachePolicy cachePolicy, IApplicationContext appContext)
+            : base(cache, cachePolicy)
         {
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
