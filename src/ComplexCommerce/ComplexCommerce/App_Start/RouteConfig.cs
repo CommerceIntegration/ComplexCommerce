@@ -21,9 +21,8 @@ namespace ComplexCommerce
             //    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             //);
 
-            routes.Add(container.Resolve(typeof(PageRoute)) as PageRoute);
-
-            routes.Add(container.Resolve(typeof(ProductRoute)) as ProductRoute);
+            routes.Add(container.Resolve<PageRoute>());
+            routes.Add(container.Resolve<ProductRoute>());
 
             //routes.MapRoute(
             //    name: "Default",

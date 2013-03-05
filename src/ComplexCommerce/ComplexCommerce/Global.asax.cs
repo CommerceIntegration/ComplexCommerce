@@ -37,9 +37,9 @@ namespace ComplexCommerce
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
             // Lookup the current tenant and put it into ambient context on the current request
-            var contextUtil = container.Resolve(typeof(IContextUtilities)) as IContextUtilities;
-            var contextFactory = container.Resolve(typeof(IHttpContextFactory)) as IHttpContextFactory;
-            var appContext = container.Resolve(typeof(IApplicationContext)) as IApplicationContext;
+            var contextUtil = container.Resolve<IContextUtilities>();
+            var contextFactory = container.Resolve<IHttpContextFactory>();
+            var appContext = container.Resolve<IApplicationContext>();
             var context = contextFactory.GetHttpContext();
             var tenant = contextUtil.GetTenantFromContext(context);
             appContext.CurrentTenant = tenant;
