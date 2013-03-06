@@ -27,7 +27,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
         #region IPageRepository Members
 
-        public IList<SiteMapPageDto> List(int tenantId, int localeId)
+        public IList<SiteMapPageDto> ListForTenantLocale(int tenantId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
@@ -42,27 +42,29 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                                  ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
                                  RouteUrl = page.RouteUrl,
                                  ContentType = page.ContentType,
-                                 ContentId = page.ContentId
+                                 ContentId = page.ContentId,
+                                 LocaleId = localeId
                              }).ToList();
 
-                if (result.Count == 0)
-                {
-                    (from tenantLocale in ctx.ObjectContext.TenantLocale
-                     join page in ctx.ObjectContext.Page
-                         on tenantLocale.Id equals page.TenantLocaleId
-                     join tenant in ctx.ObjectContext.Tenant
-                         on tenantLocale.TenantId equals tenant.Id
-                     where tenantLocale.TenantId == tenantId
-                     where tenantLocale.LocaleId == tenant.DefaultLocaleId
-                     select new SiteMapPageDto
-                     {
-                         Id = page.Id,
-                         ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
-                         RouteUrl = page.RouteUrl,
-                         ContentType = page.ContentType,
-                         ContentId = page.ContentId
-                     }).ToList();
-                }
+                //if (result.Count == 0)
+                //{
+                //    (from tenantLocale in ctx.ObjectContext.TenantLocale
+                //     join page in ctx.ObjectContext.Page
+                //         on tenantLocale.Id equals page.TenantLocaleId
+                //     join tenant in ctx.ObjectContext.Tenant
+                //         on tenantLocale.TenantId equals tenant.Id
+                //     where tenantLocale.TenantId == tenantId
+                //     where tenantLocale.LocaleId == tenant.DefaultLocaleId
+                //     select new SiteMapPageDto
+                //     {
+                //         Id = page.Id,
+                //         ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
+                //         RouteUrl = page.RouteUrl,
+                //         ContentType = page.ContentType,
+                //         ContentId = page.ContentId,
+                //         LocaleId = localeId
+                //     }).ToList();
+                //}
 
 
                 // TODO: Consolidate this into a single query with default locale

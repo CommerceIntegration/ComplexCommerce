@@ -135,7 +135,7 @@ namespace ComplexCommerce.Business
         {
             using (var ctx = ContextFactory.GetContext())
             {
-                var list = repository.List(criteria.StoreId, criteria.LocaleId);
+                var list = repository.ListForTenantLocale(criteria.StoreId, criteria.LocaleId);
 
                 foreach (var item in list)
                 {

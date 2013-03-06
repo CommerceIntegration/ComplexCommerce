@@ -47,7 +47,7 @@ namespace ComplexCommerce.Csla.DI
             base.OnDeserialized();
         }
 
-        private void InjectDependencies()
+        protected void InjectDependencies()
         {
             if (!IsServerInjected)
             {
@@ -58,7 +58,7 @@ namespace ComplexCommerce.Csla.DI
 
         //protected abstract void Inject();
 
-        protected virtual void Inject()
+        private void Inject()
         {
             if (DI.IoC.Container != null)
                 DI.IoC.Container.Inject(this);

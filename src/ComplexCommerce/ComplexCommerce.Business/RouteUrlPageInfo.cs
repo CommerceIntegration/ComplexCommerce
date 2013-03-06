@@ -6,6 +6,7 @@ using System.Globalization;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Dto;
+using ComplexCommerce.Business.Rules;
 
 namespace ComplexCommerce.Business
 {
@@ -14,12 +15,12 @@ namespace ComplexCommerce.Business
         : CslaReadOnlyBase<RouteUrlPageInfo>
     {
 
-        //public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-        //public int LocaleId
-        //{
-        //    get { return GetProperty(LocaleIdProperty); }
-        //    private set { LoadProperty(LocaleIdProperty, value); }
-        //}
+        public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
+        public int LocaleId
+        {
+            get { return GetProperty(LocaleIdProperty); }
+            private set { LoadProperty(LocaleIdProperty, value); }
+        }
 
         public static PropertyInfo<string> RouteUrlProperty = RegisterProperty<string>(c => c.RouteUrl);
         public string RouteUrl
@@ -44,42 +45,25 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(ContentIdProperty, value); }
         }
 
-
-        // TODO: Move logic into business rule
-        private bool IsValidLocaleId(int localeId)
+        protected override void AddBusinessRules()
         {
-            return
-                CultureInfo
-                .GetCultures(CultureTypes.SpecificCultures)
-                .Any(c => c.LCID == localeId);
+            base.AddBusinessRules();
+
+            BusinessRules.AddRule(new UrlPathLeadingSlashRule(RouteUrlProperty) { Priority = 1 });
+            BusinessRules.AddRule(new UrlPathTrailingSlashRule(RouteUrlProperty) { Priority = 2 });
+            BusinessRules.AddRule(new UrlPathLocaleRule(RouteUrlProperty, LocaleIdProperty, appContext) { Priority = 3 });
         }
 
 
-
-        private void Child_Fetch(SiteMapPageDto item, bool defaultUrl)
+        private void Child_Fetch(SiteMapPageDto item)
         {
-            if (defaultUrl)
-            {
-                RouteUrl = item.RouteUrl;
-            }
-            else
-            {
-                var locale = appContext.CurrentTenant.DefaultLocale;
-                if (IsValidLocaleId(item.LocaleId))
-                {
-                    locale = new CultureInfo(item.LocaleId);
-                }
-
-                // Append the locale name as the first segment of the URL
-                RouteUrl = locale.Name + "/" + item.RouteUrl;
-            }
-
+            LocaleId = item.LocaleId;
+            RouteUrl = item.RouteUrl;
             ContentType = (ContentTypeEnum)item.ContentType;
             ContentId = item.ContentId;
 
-
-            // Force the PublishActionRule to execute
-            //this.BusinessRules.CheckRules();
+            // Force the Rules to execute
+            this.BusinessRules.CheckRules();
         }
 
         #region Dependency Injection

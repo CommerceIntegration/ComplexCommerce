@@ -41,17 +41,8 @@ namespace ComplexCommerce.Web.Mvc
 
             // Get all of the pages
             var pages = routeUrlListFactory.GetRouteUrlPageList(tenant.Id, tenant.DefaultLocale.LCID);
-
-            // Remove the leading slash from the path so it can be matched exactly.
-            var path = httpContext.Request.Path.Substring(1);
-
-            if (!path.EndsWith("/"))
-            {
-                path += "/";
-            }
-
-            // TODO: Make a "RoutePath" property of pageinfo that adds a leading and trailing slash so an exact match can be done uniformly.
-            var page = pages.Where(x => (x.RouteUrl + "/").Equals(path, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            var path = httpContext.Request.Path;
+            var page = pages.Where(x => x.RouteUrl.Equals(path)).FirstOrDefault();
             if (page != null)
             {
                 result = new RouteData(this, new MvcRouteHandler());
@@ -107,14 +98,6 @@ namespace ComplexCommerce.Web.Mvc
                 {
                     return true;
                 }
-                //foreach (var item in pages)
-                //{
-                //    if (item.ContentId.Equals(contentId) && item.ContentType.ToString().Equals(controller))
-                //    {
-                //        page = item;
-                //        return true;
-                //    }
-                //}
             }
             return false;
         }

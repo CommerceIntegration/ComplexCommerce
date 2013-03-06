@@ -9,6 +9,6 @@ namespace ComplexCommerce.Data.Repositories
 {
     public interface IPageRepository
     {
-        IList<SiteMapPageDto> List(int tenantId, int localeId);
+        IList<SiteMapPageDto> ListForTenantLocale(int tenantId, int localeId);
     }
 }

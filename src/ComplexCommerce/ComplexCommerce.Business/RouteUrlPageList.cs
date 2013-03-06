@@ -60,19 +60,9 @@ namespace ComplexCommerce.Business
                 IsReadOnly = false;
 
                 var isDefaultLocale = (criteria.LocaleId == appContext.CurrentTenant.DefaultLocale.LCID);
-                var list = repository.List(criteria.TenantId, criteria.LocaleId);
+                var list = repository.ListForTenantLocale(criteria.TenantId, criteria.LocaleId);
                 foreach (var item in list)
-                {
-                    Add(DataPortal.FetchChild<RouteUrlPageInfo>(item, false));
-
-                    // TODO: Add 301 redirect to the default locale without the locale info in the URL.
-
-                    // If this is the default locale, add a copy of the URL without the locale info
-                    if (isDefaultLocale)
-                    {
-                        Add(DataPortal.FetchChild<RouteUrlPageInfo>(item, true));
-                    }
-                }
+                    Add(DataPortal.FetchChild<RouteUrlPageInfo>(item));
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;
