@@ -21,6 +21,9 @@ namespace ComplexCommerce
             //    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             //);
 
+            routes.Add(container.Resolve<LowerCaseRedirectRoute>());
+            routes.Add(container.Resolve<TrailingSlashRedirectRoute>());
+            routes.Add(container.Resolve<DefaultLocaleRedirectRoute>());
             routes.Add(container.Resolve<PageRoute>());
             routes.Add(container.Resolve<ProductRoute>());
 

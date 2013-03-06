@@ -74,6 +74,7 @@
     <Compile Include="SiteMapPageTree.cs" />
     <Compile Include="Tenant.cs" />
     <Compile Include="TenantTypeEnum.cs" />
+    <Compile Include="Text\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
