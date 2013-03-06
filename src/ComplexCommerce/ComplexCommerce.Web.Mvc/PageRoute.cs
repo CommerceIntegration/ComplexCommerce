@@ -3,6 +3,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Threading;
+using System.Globalization;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
 
@@ -44,6 +46,8 @@ namespace ComplexCommerce.Web.Mvc
             var url = httpContext.Request.Url;
             var cultureName = contextUtilities.GetCultureNameFromUrl(url).ToLowerInvariant();
 
+            
+
             string localizedUrl;
 
             // Get the default Route URL
@@ -59,8 +63,18 @@ namespace ComplexCommerce.Web.Mvc
                 localizedUrl = defaultUrl;
             }
 
-            // TODO: Add 301 redirect when using the default locale so the default url takes priority
-            // over the localized url
+
+            // TODO: The 301 redirect shouldn't happen when the culture is not configured in the tenant. Instead it should
+            // return null so we get a 404.
+            if (this.IsDefaultUICulture(cultureName, tenant))
+            {
+                var urlWithoutCulture = url.ToString().ToLowerInvariant().Replace("/" + cultureName.ToLowerInvariant(), "");
+
+                // If the current culture matches the URL, we need to 301 redirect to the default URL
+                return this.RedirectPermanent(urlWithoutCulture, httpContext);
+            }
+
+            
 
             var page = pages.Where(x => x.RouteUrl.Equals(localizedUrl, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
             if (page == null && !localizedUrl.Equals(defaultUrl))
@@ -131,5 +145,82 @@ namespace ComplexCommerce.Web.Mvc
             }
             return false;
         }
+
+        //private bool IsCurrentUICulture(string cultureName)
+        //{
+        //    return Thread.CurrentThread.CurrentUICulture.Name.Equals(cultureName, StringComparison.InvariantCultureIgnoreCase);
+        //}
+
+        private bool IsDefaultUICulture(string cultureName, ITenant tenant)
+        {
+            return tenant.DefaultLocale.Name.Equals(cultureName, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private RouteData RedirectPermanent(string destinationUrl, HttpContextBase httpContext)
+        {
+            var response = httpContext.Response;
+
+            response.CacheControl = "no-cache";
+            response.StatusCode = 301;
+            response.RedirectLocation = destinationUrl;
+
+            var routeData = new RouteData(this, new MvcRouteHandler());
+            routeData.Values["controller"] = "Home";
+            routeData.Values["action"] = "Redirect301";
+            routeData.Values["url"] = destinationUrl;
+
+            return routeData;
+        }
+
+
+        //private void RedirectPermanent(string destinationUrl, HttpContextBase httpContext)
+        //{
+        //    var response = httpContext.Response;
+
+        //    response.StatusCode = 301;
+        //    response.RedirectLocation = destinationUrl;
+
+        //    // Output Custom View Here
+        //    // response.Write(The View)
+        //    var routeData = new RouteData();
+        //    routeData.Values["controller"] = "Home";
+        //    routeData.Values["action"] = "RedirectPermanent";
+        //    routeData.Values["url"] = destinationUrl;
+
+
+        //    //var newContext = new HttpContextWrapper(new HttpContext(HttpContext.Current.Request,
+
+        //    var requestContext = new RequestContext(httpContext, routeData);
+
+
+        //    // Get controller factory
+        //    var controllerFactory = ControllerBuilder.Current.GetControllerFactory();
+        //    IController homeController = controllerFactory.CreateController(requestContext, "Home");
+
+
+        //    //IController homeController = new HomeController();
+            
+        //    homeController.Execute(requestContext);
+
+        //    response.End();
+        //}
+
+
+
+        //public string RenderRazorViewToString(string viewName, object model)
+        //{
+        //    ViewData.Model = model;
+        //    using (var sw = new StringWriter())
+        //    {
+        //        var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+        //        var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+        //        viewResult.View.Render(viewContext, sw);
+        //        viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+        //        return sw.GetStringBuilder().ToString();
+        //    }
+        //}
+
+
+
     }
 }

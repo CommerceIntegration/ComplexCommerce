@@ -89,7 +89,7 @@ namespace ComplexCommerce.Web
         {
             if (url.EndsWith("/"))
             {
-                return url.Substring(0, url.Length - 2);
+                return url.Substring(0, url.Length - 1);
             }
             return url;
         }

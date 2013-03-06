@@ -22,7 +22,6 @@ namespace ComplexCommerce.Business.Caching
         private readonly ICachePolicy cachePolicy;
         private ReaderWriterLockSlim synclock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
-
         public bool Contains(string key)
         {
             return cache.Contains(key);
@@ -39,7 +38,6 @@ namespace ComplexCommerce.Business.Caching
             bool success;
 
             synclock.EnterReadLock();
-
             try
             {
                 success = this.TryGetValue(key, out lazy);
@@ -52,7 +50,6 @@ namespace ComplexCommerce.Business.Caching
             if (!success)
             {
                 synclock.EnterWriteLock();
-
                 try
                 {
                     if (!this.TryGetValue(key, out lazy))
