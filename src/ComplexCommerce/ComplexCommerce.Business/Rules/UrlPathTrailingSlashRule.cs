@@ -22,9 +22,14 @@ namespace ComplexCommerce.Business.Rules
         {
             var path = (string)context.InputPropertyValues[routePathProperty];
 
-            if (!path.EndsWith("/"))
+            //if (!path.EndsWith("/"))
+            //{
+            //    path += "/";
+            //}
+
+            if (path.EndsWith("/"))
             {
-                path += "/";
+                path = path.Substring(0, path.Length - 1);
             }
 
             context.AddOutValue(path);

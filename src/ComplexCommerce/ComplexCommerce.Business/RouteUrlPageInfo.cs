@@ -33,10 +33,17 @@ namespace ComplexCommerce.Business
         {
             get
             {
+                //var path = GetProperty(RouteUrlProperty);
+                //if (path.Length > 1)
+                //{
+                //    return path.Substring(1, path.Length - 2);
+                //}
+                //return path;
+
                 var path = GetProperty(RouteUrlProperty);
                 if (path.Length > 1)
                 {
-                    return path.Substring(1, path.Length - 2);
+                    return path.Substring(1, path.Length - 1);
                 }
                 return path;
             }
