@@ -8,6 +8,7 @@ using ComplexCommerce.Shared.DI;
 using ComplexCommerce.Csla.DI;
 using ComplexCommerce.Web;
 using ComplexCommerce.Web.Mvc;
+using ComplexCommerce.Web.Mvc.Routing;
 
 namespace ComplexCommerce.DI.Registries
 {
@@ -25,6 +26,12 @@ namespace ComplexCommerce.DI.Registries
             this.Scan(scan =>
             {
                 scan.AssemblyContainingType<IContextUtilities>();
+                scan.WithDefaultConventions();
+            });
+
+            this.Scan(scan =>
+            {
+                scan.AssemblyContainingType<IRouteUtilities>();
                 scan.WithDefaultConventions();
             });
 

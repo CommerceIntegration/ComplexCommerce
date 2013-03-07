@@ -78,14 +78,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI\InjectableControllerFactory.cs" />
-    <Compile Include="DefaultLocaleRedirectRoute.cs" />
+    <Compile Include="Routing\DefaultLocaleRedirectRoute.cs" />
     <Compile Include="LocalizedModelBinder.cs" />
-    <Compile Include="LowerCaseRedirectRoute.cs" />
-    <Compile Include="PageRoute.cs" />
-    <Compile Include="ProductRoute.cs" />
+    <Compile Include="Routing\IRouteUtilities.cs" />
+    <Compile Include="Routing\LowerCaseRedirectRoute.cs" />
+    <Compile Include="Routing\PageRoute.cs" />
+    <Compile Include="Routing\ProductRoute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RedirectRouteBase.cs" />
-    <Compile Include="TrailingSlashRedirectRoute.cs" />
+    <Compile Include="Routing\RouteUtilities.cs" />
+    <Compile Include="Routing\TrailingSlashRedirectRoute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

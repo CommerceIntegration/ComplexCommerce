@@ -88,11 +88,6 @@ namespace ComplexCommerce.DI.Registries
                 .Use(typeof(MicroObjectCache<>));
 
 
-            //this.SetAllProperties(p =>
-            //{
-            //    p.TypeMatches(t => t == typeof(IMicroObjectCache<>));
-            //});
-
             this.SetAllProperties(p =>
             {
                 p.TypeMatches(t => t == typeof(IMicroObjectCache<RouteUrlPageList>));
@@ -104,24 +99,13 @@ namespace ComplexCommerce.DI.Registries
             });
 
 
-            //// Setup the RouteUrlPageList Cache
-            //this.For<ISingletonObjectCache<RouteUrlPageList>>()
-            //    .Use<RouteUrlPageListCache>();
-
-            //this.SetAllProperties(p =>
-            //{
-            //    p.TypeMatches(t => t == typeof(ISingletonObjectCache<RouteUrlPageList>));
-            //    //p.TypeMatches(t => t.Name == "ISingletonObjectCache");
-            //});
-
 
             // We create a new Setter Injection Policy that
             // forces StructureMap to inject all public properties
-            // where the Property Type name equals 'IPersistenceContextFactory'
+            // where the Property Type equals 'IPersistenceContextFactory'
             this.SetAllProperties(p =>
             {
                 p.TypeMatches(t => t == typeof(IPersistenceContextFactory));
-                //p.TypeMatches(t => t.Name == "IPersistenceContextFactory");
             });
 
         }

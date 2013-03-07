@@ -25,10 +25,10 @@ namespace ComplexCommerce.DI.Registries
 
             // We create a new Setter Injection Policy that
             // forces StructureMap to inject all public properties
-            // where the Property Type name equals 'IApplicationContext'
+            // where the Property Type equals 'IApplicationContext'
             this.SetAllProperties(p =>
             {
-                p.TypeMatches(t => t.Name == "IApplicationContext");
+                p.TypeMatches(t => t == typeof(IApplicationContext));
             });
 
         }

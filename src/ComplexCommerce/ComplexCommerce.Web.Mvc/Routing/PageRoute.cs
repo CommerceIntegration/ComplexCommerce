@@ -8,7 +8,7 @@ using System.Globalization;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
 
-namespace ComplexCommerce.Web.Mvc
+namespace ComplexCommerce.Web.Mvc.Routing
 {
     public class PageRoute
         : RouteBase
@@ -16,23 +16,23 @@ namespace ComplexCommerce.Web.Mvc
         public PageRoute(
             IApplicationContext appContext,
             IRouteUrlListFactory routeUrlListFactory,
-            IContextUtilities contextUtilities
+            IRouteUtilities routeUtilities
             )
         {
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
             if (routeUrlListFactory == null)
                 throw new ArgumentNullException("routeUrlListFactory");
-            if (contextUtilities == null)
-                throw new ArgumentNullException("contextUtilities");
+            if (routeUtilities == null)
+                throw new ArgumentNullException("routeUtilities");
             this.appContext = appContext;
             this.routeUrlListFactory = routeUrlListFactory;
-            this.contextUtilities = contextUtilities;
+            this.routeUtilities = routeUtilities;
         }
 
         private readonly IApplicationContext appContext;
         private readonly IRouteUrlListFactory routeUrlListFactory;
-        private readonly IContextUtilities contextUtilities;
+        private readonly IRouteUtilities routeUtilities;
 
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
@@ -48,9 +48,10 @@ namespace ComplexCommerce.Web.Mvc
             if (page != null)
             {
                 result = new RouteData(this, new MvcRouteHandler());
-                // TODO: Add area for different tenant types
+                
+                routeUtilities.AddQueryStringParametersToRouteData(result, httpContext);
 
-                // TODO: add the querystring information to the route values
+                // TODO: Add area for different tenant types
                 result.Values["controller"] = page.ContentType.ToString();
                 result.Values["action"] = "Index";
                 result.Values["id"] = page.ContentId;
@@ -103,6 +104,5 @@ namespace ComplexCommerce.Web.Mvc
             }
             return false;
         }
-
     }
 }

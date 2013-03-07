@@ -6,7 +6,7 @@ using System.Web.Routing;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
 
-namespace ComplexCommerce.Web.Mvc
+namespace ComplexCommerce.Web.Mvc.Routing
 {
     public class ProductRoute
         : RouteBase
@@ -14,23 +14,23 @@ namespace ComplexCommerce.Web.Mvc
         public ProductRoute(
             IApplicationContext appContext,
             IRouteUrlProductListFactory routeUrlProductListFactory,
-            IContextUtilities contextUtilities
+            IRouteUtilities routeUtilities
             )
         {
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
             if (routeUrlProductListFactory == null)
                 throw new ArgumentNullException("routeUrlProductListFactory");
-            if (contextUtilities == null)
-                throw new ArgumentNullException("contextUtilities");
+            if (routeUtilities == null)
+                throw new ArgumentNullException("routeUtilities");
             this.appContext = appContext;
             this.routeUrlProductListFactory = routeUrlProductListFactory;
-            this.contextUtilities = contextUtilities;
+            this.routeUtilities = routeUtilities;
         }
 
         private readonly IApplicationContext appContext;
         private readonly IRouteUrlProductListFactory routeUrlProductListFactory;
-        private readonly IContextUtilities contextUtilities;
+        private readonly IRouteUtilities routeUtilities;
 
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
@@ -48,9 +48,10 @@ namespace ComplexCommerce.Web.Mvc
                 if (page != null)
                 {
                     result = new RouteData(this, new MvcRouteHandler());
-                    // TODO: Add area for different tenant types
 
-                    // TODO: add the querystring information to the route values
+                    routeUtilities.AddQueryStringParametersToRouteData(result, httpContext);
+
+                    // TODO: Add area for different tenant types
                     result.Values["controller"] = "Product";
                     result.Values["action"] = "Index";
                     result.Values["id"] = page.ProductXTenantLocaleId;

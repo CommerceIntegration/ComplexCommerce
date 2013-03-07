@@ -9,25 +9,30 @@ using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
 
 
-namespace ComplexCommerce.Web.Mvc
+namespace ComplexCommerce.Web.Mvc.Routing
 {
     public class DefaultLocaleRedirectRoute
-        : RedirectRouteBase
+        : RouteBase
     {
         public DefaultLocaleRedirectRoute(
             IApplicationContext appContext,
+            IRouteUtilities routeUtilities,
             IContextUtilities contextUtilities
             )
         {
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
+            if (routeUtilities == null)
+                throw new ArgumentNullException("routeUtilities");
             if (contextUtilities == null)
                 throw new ArgumentNullException("contextUtilities");
             this.appContext = appContext;
+            this.routeUtilities = routeUtilities;
             this.contextUtilities = contextUtilities;
         }
 
         private readonly IApplicationContext appContext;
+        private readonly IRouteUtilities routeUtilities;
         private readonly IContextUtilities contextUtilities;
 
         public override RouteData GetRouteData(HttpContextBase httpContext)
@@ -42,9 +47,15 @@ namespace ComplexCommerce.Web.Mvc
             {
                 var urlWithoutCulture = httpContext.Request.RawUrl.ToString().ToLowerInvariant().Replace("/" + cultureName, "");
 
+                var routeData = routeUtilities.CreateRouteData(this);
                 // If the current culture matches the URL, we need to 301 redirect to the default URL
-                return this.RedirectPermanent(urlWithoutCulture, httpContext);
+                return routeUtilities.RedirectPermanent(urlWithoutCulture, routeData, httpContext);
             }
+            return null;
+        }
+
+        public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
+        {
             return null;
         }
 
