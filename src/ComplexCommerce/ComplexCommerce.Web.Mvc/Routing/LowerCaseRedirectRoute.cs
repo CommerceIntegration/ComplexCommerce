@@ -22,9 +22,14 @@ namespace ComplexCommerce.Web.Mvc.Routing
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
             var request = httpContext.Request;
-            if (request.RawUrl.ContainsUpper())
+            if (request.Path.ContainsUpper() || request.Url.Host.ContainsUpper())
             {
-                var destinationUrl = request.RawUrl.ToLowerInvariant();
+                var builder = new UriBuilder(request.Url)
+                {
+                    Path = request.Path.ToLowerInvariant(),
+                    Host = request.Url.Host.ToLowerInvariant()
+                };
+                var destinationUrl = builder.Uri.ToString();
                 var routeData = routeUtilities.CreateRouteData(this);
                 return routeUtilities.RedirectPermanent(destinationUrl, routeData, httpContext);
             }

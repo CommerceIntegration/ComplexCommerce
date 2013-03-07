@@ -23,8 +23,11 @@ namespace ComplexCommerce.Web.Mvc.Routing
             var request = httpContext.Request;
             if (!request.Path.EndsWith("/"))
             {
-                var path = request.Path.ToLowerInvariant();
-                var destinationUrl = request.RawUrl.ToLowerInvariant().Replace(path, path + "/");
+                var builder = new UriBuilder(request.Url)
+                {
+                    Path = request.Path + "/"
+                };
+                var destinationUrl = builder.Uri.ToString();
                 var routeData = routeUtilities.CreateRouteData(this);
                 return routeUtilities.RedirectPermanent(destinationUrl, routeData, httpContext);
             }

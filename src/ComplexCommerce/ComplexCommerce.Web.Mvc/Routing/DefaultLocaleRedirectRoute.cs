@@ -45,11 +45,14 @@ namespace ComplexCommerce.Web.Mvc.Routing
 
             if (this.IsDefaultUICulture(cultureName, tenant))
             {
-                var urlWithoutCulture = httpContext.Request.RawUrl.ToString().ToLowerInvariant().Replace("/" + cultureName, "");
-
+                var request = httpContext.Request;
+                var builder = new UriBuilder(request.Url)
+                {
+                    Path = request.Path.Substring(cultureName.Length + 1)
+                };
+                var destinationUrl = builder.Uri.ToString();
                 var routeData = routeUtilities.CreateRouteData(this);
-                // If the current culture matches the URL, we need to 301 redirect to the default URL
-                return routeUtilities.RedirectPermanent(urlWithoutCulture, routeData, httpContext);
+                return routeUtilities.RedirectPermanent(destinationUrl, routeData, httpContext);
             }
             return null;
         }
