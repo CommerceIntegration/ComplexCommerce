@@ -77,6 +77,8 @@
     <Compile Include="Rules\UrlPathTrailingSlashRule.cs" />
     <Compile Include="SiteMapPageList.cs" />
     <Compile Include="SiteMapPageTree.cs" />
+    <Compile Include="SiteMapProductInfo.cs" />
+    <Compile Include="SiteMapProductList.cs" />
     <Compile Include="Tenant.cs" />
     <Compile Include="TenantTypeEnum.cs" />
     <Compile Include="Text\StringExtensions.cs" />

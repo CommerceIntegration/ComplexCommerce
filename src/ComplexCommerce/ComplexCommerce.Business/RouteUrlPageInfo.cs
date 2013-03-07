@@ -75,7 +75,7 @@ namespace ComplexCommerce.Business
         }
 
 
-        private void Child_Fetch(SiteMapPageDto item)
+        private void Child_Fetch(RouteUrlPageDto item)
         {
             LocaleId = item.LocaleId;
             RouteUrl = item.RouteUrl;

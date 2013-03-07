@@ -52,10 +52,11 @@
     <Compile Include="DataNotFoundException.cs" />
     <Compile Include="Dto\CategoryDto.cs" />
     <Compile Include="Dto\CategoryProductDto.cs" />
-    <Compile Include="Dto\PageDto.cs" />
     <Compile Include="Dto\ProductDto.cs" />
+    <Compile Include="Dto\RouteUrlPageDto.cs" />
     <Compile Include="Dto\RouteUrlProductDto.cs" />
     <Compile Include="Dto\SiteMapPageDto.cs" />
+    <Compile Include="Dto\SiteMapProductDto.cs" />
     <Compile Include="Dto\TenantDto.cs" />
     <Compile Include="IDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

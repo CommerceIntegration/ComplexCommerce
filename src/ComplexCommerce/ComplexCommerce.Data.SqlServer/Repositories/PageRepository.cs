@@ -27,7 +27,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
         #region IPageRepository Members
 
-        public IList<SiteMapPageDto> ListForTenantLocale(int tenantId, int localeId)
+        public IList<RouteUrlPageDto> ListForRouteUrl(int tenantId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
@@ -36,59 +36,40 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                                  on tenantLocale.Id equals page.TenantLocaleId
                              where tenantLocale.TenantId == tenantId
                              where tenantLocale.LocaleId == localeId
-                             select new SiteMapPageDto
+                             select new RouteUrlPageDto
                              {
-                                 Id = page.Id,
-                                 ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
+                                 LocaleId = localeId,
                                  RouteUrl = page.RouteUrl,
-                                 MetaRobots = page.MetaRobots,
                                  ContentType = page.ContentType,
-                                 ContentId = page.ContentId,
-                                 LocaleId = localeId
-                             }).ToList();
+                                 ContentId = page.ContentId
+                             });
 
-                //if (result.Count == 0)
-                //{
-                //    (from tenantLocale in ctx.ObjectContext.TenantLocale
-                //     join page in ctx.ObjectContext.Page
-                //         on tenantLocale.Id equals page.TenantLocaleId
-                //     join tenant in ctx.ObjectContext.Tenant
-                //         on tenantLocale.TenantId equals tenant.Id
-                //     where tenantLocale.TenantId == tenantId
-                //     where tenantLocale.LocaleId == tenant.DefaultLocaleId
-                //     select new SiteMapPageDto
-                //     {
-                //         Id = page.Id,
-                //         ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
-                //         RouteUrl = page.RouteUrl,
-                //         MetaRobots = page.MetaRobots,
-                //         ContentType = page.ContentType,
-                //         ContentId = page.ContentId,
-                //         LocaleId = localeId
-                //     }).ToList();
-                //}
-
-
-                // TODO: Consolidate this into a single query with default locale
                 return result.ToList();
+            }
+        }
 
+        public IList<SiteMapPageDto> ListForSiteMap(int tenantId, int localeId)
+        {
+            using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+            {
+                var result = (from tenantLocale in ctx.ObjectContext.TenantLocale
+                              join page in ctx.ObjectContext.Page
+                                  on tenantLocale.Id equals page.TenantLocaleId
+                              where tenantLocale.TenantId == tenantId
+                              where tenantLocale.LocaleId == localeId
+                              select new SiteMapPageDto
+                              {
+                                  Id = page.Id,
+                                  ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
+                                  LocaleId = localeId,
+                                  Title = page.Title,
+                                  RouteUrl = page.RouteUrl,
+                                  MetaRobots = page.MetaRobots,
+                                  ContentType = page.ContentType,
+                                  ContentId = page.ContentId
+                              });
 
-                //var result = from product in ctx.ObjectContext.Product
-                //             join tenantXproductXlocale in ctx.ObjectContext.StoreXProductXLocale
-                //                 on product.Id equals tenantXproductXlocale.ProductId
-                //             where tenantXproductXlocale.StoreId == tenantId
-                //             where tenantXproductXlocale.LocaleId == localeId
-                //             select new ProductDto
-                //             {
-                //                 Id = product.Id,
-                //                 Name = tenantXproductXlocale.Name,
-                //                 Description = tenantXproductXlocale.Description,
-                //                 Sku = product.SKU
-                //             };
-
-
-                //// TODO: Consolidate this into a single query with default locale
-                //return result.ToList();
+                return result.ToList();
             }
         }
 

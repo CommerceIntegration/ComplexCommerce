@@ -59,8 +59,7 @@ namespace ComplexCommerce.Business
                 RaiseListChangedEvents = false;
                 IsReadOnly = false;
 
-                var isDefaultLocale = (criteria.LocaleId == appContext.CurrentTenant.DefaultLocale.LCID);
-                var list = repository.ListForTenantLocale(criteria.TenantId, criteria.LocaleId);
+                var list = repository.ListForRouteUrl(criteria.TenantId, criteria.LocaleId);
                 foreach (var item in list)
                     Add(DataPortal.FetchChild<RouteUrlPageInfo>(item));
 
@@ -111,27 +110,6 @@ namespace ComplexCommerce.Business
                     throw new InvalidOperationException();
                 }
                 this.repository = value;
-            }
-        }
-
-        [NonSerialized]
-        [NotUndoable]
-        private Context.IApplicationContext appContext;
-        public Context.IApplicationContext AppContext
-        {
-            set
-            {
-                // Don't allow the value to be set to null
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-                // Don't allow the value to be set more than once
-                if (this.appContext != null)
-                {
-                    throw new InvalidOperationException();
-                }
-                this.appContext = value;
             }
         }
 

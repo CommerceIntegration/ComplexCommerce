@@ -72,13 +72,16 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(ChildPagesProperty, value); }
         }
 
+        public static readonly PropertyInfo<SiteMapProductList> ProductsProperty = RegisterProperty<SiteMapProductList>(p => p.Products);
+        public SiteMapProductList Products
+        {
+            get { return GetProperty(ProductsProperty); }
+            private set { LoadProperty(ProductsProperty, value); }
+        }
 
 
         public static SiteMapPageTree GetSiteMapPageTree(int storeId, int localeId)
         {
-            // TODO: Should the BO be aware of its locale and tenantId or just get it from ambient
-            // context through a service?
-            //int localeId = System.Threading.Thread.CurrentThread.CurrentUICulture.LCID;
             var criteria = new Criteria() { StoreId = storeId, LocaleId = localeId };
             return DataPortal.Fetch<SiteMapPageTree>(criteria);
         }
@@ -88,42 +91,42 @@ namespace ComplexCommerce.Business
         {
             using (var ctx = ContextFactory.GetContext())
             {
-                var list = repository.ListForTenantLocale(criteria.StoreId, criteria.LocaleId);
+                var pageList = pageRepository.ListForSiteMap(criteria.StoreId, criteria.LocaleId);
+                var productList = productRepository.ListForSiteMap(criteria.StoreId, criteria.LocaleId);
 
-                foreach (var item in list)
+                foreach (var page in pageList)
                 {
                     // Find root node
-                    if (item.ParentId == Guid.Empty)
+                    if (page.ParentId == Guid.Empty)
                     {
-                        this.Child_Fetch(item, list);
+                        this.Child_Fetch(page, pageList, productList);
                         break;
                     }
                 }
             }
         }
 
-        // Used for nested calls
-        private void Child_Fetch(SiteMapPageDto item, IEnumerable<SiteMapPageDto> list)
+        // Used for nested calls for pages
+        private void Child_Fetch(SiteMapPageDto page, IEnumerable<SiteMapPageDto> pageList, IEnumerable<SiteMapProductDto> productList)
         {
-            Id = item.Id;
-            LocaleId = item.LocaleId;
-            Title = item.Title;
-            RouteUrl = item.RouteUrl;
-            MetaRobots = item.MetaRobots;
-            ContentType = (ContentTypeEnum)item.ContentType;
-            ContentId = item.ContentId;
+            Id = page.Id;
+            LocaleId = page.LocaleId;
+            Title = page.Title;
+            RouteUrl = page.RouteUrl;
+            MetaRobots = page.MetaRobots;
+            ContentType = (ContentTypeEnum)page.ContentType;
+            ContentId = page.ContentId;
 
-            ChildPages = DataPortal.FetchChild<SiteMapPageList>(item.Id, list);
+            ChildPages = DataPortal.FetchChild<SiteMapPageList>(page.Id, pageList, productList);
+            Products = DataPortal.FetchChild<SiteMapProductList>(page.ContentId, productList);
         }
-
-
 
         #region Dependency Injection
 
         [NonSerialized]
         [NotUndoable]
-        private IPageRepository repository;
-        public IPageRepository Repository
+        private IPageRepository pageRepository;
+        public IPageRepository PageRepository
         {
             set
             {
@@ -133,11 +136,32 @@ namespace ComplexCommerce.Business
                     throw new ArgumentNullException("value");
                 }
                 // Don't allow the value to be set more than once
-                if (this.repository != null)
+                if (this.pageRepository != null)
                 {
                     throw new InvalidOperationException();
                 }
-                this.repository = value;
+                this.pageRepository = value;
+            }
+        }
+
+        [NonSerialized]
+        [NotUndoable]
+        private IProductRepository productRepository;
+        public IProductRepository ProductRepository
+        {
+            set
+            {
+                // Don't allow the value to be set to null
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+                // Don't allow the value to be set more than once
+                if (this.productRepository != null)
+                {
+                    throw new InvalidOperationException();
+                }
+                this.productRepository = value;
             }
         }
 

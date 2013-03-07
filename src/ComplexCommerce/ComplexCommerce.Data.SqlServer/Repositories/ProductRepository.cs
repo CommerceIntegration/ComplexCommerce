@@ -48,7 +48,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
             }
         }
 
-        public IList<RouteUrlProductDto> ListForTenantLocale(int tenantId, int localeId)
+        public IList<RouteUrlProductDto> ListForRouteUrl(int tenantId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
@@ -74,6 +74,40 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
             }
         }
 
+        public IList<SiteMapProductDto> ListForSiteMap(int tenantId, int localeId)
+        {
+            using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+            {
+
+                var result = (from categoryXProduct in ctx.ObjectContext.CategoryXProductXTenantLocale
+                              join productXlocale in ctx.ObjectContext.ProductXTenantLocale
+                                  on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
+                              join tenantLocale in ctx.ObjectContext.TenantLocale
+                                  on productXlocale.TenantLocaleId equals tenantLocale.Id
+                              join page in ctx.ObjectContext.Page
+                                  on categoryXProduct.CategoryId equals page.ContentId
+                              join defaultCategory in ctx.ObjectContext.Page
+                                  on productXlocale.DefaultCategoryId equals defaultCategory.ContentId
+
+                              where tenantLocale.TenantId == tenantId && tenantLocale.LocaleId == localeId
+                              where page.ContentType == 2
+
+                              select new SiteMapProductDto
+                              {
+                                  //ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
+                                  CategoryId = categoryXProduct.CategoryId,
+                                  LocaleId = localeId,
+                                  Name = productXlocale.Name,
+                                  ProductUrlSlug = productXlocale.UrlSlug,
+                                  ParentPageRouteUrl = page.RouteUrl,
+                                  //MetaRobots = // TODO: Finish MetaRobots
+                                  DefaultCategoryRouteUrl = defaultCategory.RouteUrl
+                              });
+
+                return result.ToList();
+            }
+        }
+
         public ProductDto Fetch(Guid productXTenantLocaleId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
@@ -82,11 +116,11 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                 var result = (from productXTenantLocale in ctx.ObjectContext.ProductXTenantLocale
                               join product in ctx.ObjectContext.Product
                                   on productXTenantLocale.ProductId equals product.Id
-                              join page in ctx.ObjectContext.Page
-                                  on productXTenantLocale.DefaultCategoryId equals page.ContentId
+                              //join page in ctx.ObjectContext.Page
+                              //    on productXTenantLocale.DefaultCategoryId equals page.ContentId
 
                               where productXTenantLocale.Id == productXTenantLocaleId
-                              where page.ContentType == 2 //category type (so we can get the URL of the category page)
+                              //where page.ContentType == 2 //category type (so we can get the URL of the category page)
 
                               select new ProductDto
                               {
@@ -97,8 +131,8 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                                   MetaDescription = productXTenantLocale.MetaDescription,
                                   SKU = product.SKU,
                                   ImageUrl = product.ImageUrl,
-                                  Price = product.Price,
-                                  DefaultCategoryRouteUrl = page.RouteUrl
+                                  Price = product.Price//,
+                                  //DefaultCategoryRouteUrl = page.RouteUrl
                               }).FirstOrDefault();
 
                 if (result == null)

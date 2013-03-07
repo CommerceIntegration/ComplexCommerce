@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace ComplexCommerce.Data.Dto
 {
-    public class PageDto
+    public class RouteUrlPageDto
     {
-        public Guid Id { get; set; }
-        public Guid ParentId { get; set; }
-        public string Title { get; set; }
+        public int LocaleId { get; set; }
         public string RouteUrl { get; set; }
-        public int ContentTypeId { get; set; }
+        public int ContentType { get; set; }
         public Guid ContentId { get; set; }
     }
 }

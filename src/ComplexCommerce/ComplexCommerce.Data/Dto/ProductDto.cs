@@ -16,6 +16,6 @@ namespace ComplexCommerce.Data.Dto
         public string SKU { get; set; }
         public string ImageUrl { get; set; }
         public decimal Price { get; set; }
-        public string DefaultCategoryRouteUrl { get; set; }
+        //public string DefaultCategoryRouteUrl { get; set; }
     }
 }

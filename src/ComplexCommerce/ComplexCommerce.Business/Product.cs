@@ -41,8 +41,8 @@ namespace ComplexCommerce.Business
         string SKU { get; }
         string ImageUrl { get; }
         decimal Price { get; }
-        string DefaultCategoryRouteUrl { get; }
-        string CanonicalRouteUrl { get; }
+        //string DefaultCategoryRouteUrl { get; }
+        //string CanonicalRouteUrl { get; }
     }
 
     [Serializable]
@@ -105,21 +105,21 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(PriceProperty, value); }
         }
 
-        public static readonly PropertyInfo<string> DefaultCategoryRouteUrlProperty = RegisterProperty<string>(p => p.DefaultCategoryRouteUrl);
-        public string DefaultCategoryRouteUrl
-        {
-            get { return GetProperty(DefaultCategoryRouteUrlProperty); }
-            private set { LoadProperty(DefaultCategoryRouteUrlProperty, value); }
-        }
+        //public static readonly PropertyInfo<string> DefaultCategoryRouteUrlProperty = RegisterProperty<string>(p => p.DefaultCategoryRouteUrl);
+        //public string DefaultCategoryRouteUrl
+        //{
+        //    get { return GetProperty(DefaultCategoryRouteUrlProperty); }
+        //    private set { LoadProperty(DefaultCategoryRouteUrlProperty, value); }
+        //}
 
-        // TODO: Eliminate this property here and populate the canonical URL when building the SiteMapTree
-        // This can eliminate an unnecessary join when users are browsing the product pages.
-        public static readonly PropertyInfo<string> CanonicalRouteUrlProperty = RegisterProperty<string>(p => p.CanonicalRouteUrl);
-        public string CanonicalRouteUrl
-        {
-            get { return GetProperty(CanonicalRouteUrlProperty); }
-            private set { LoadProperty(CanonicalRouteUrlProperty, value); }
-        }
+        //// TODO: Eliminate this property here and populate the canonical URL when building the SiteMapTree
+        //// This can eliminate an unnecessary join when users are browsing the product pages.
+        //public static readonly PropertyInfo<string> CanonicalRouteUrlProperty = RegisterProperty<string>(p => p.CanonicalRouteUrl);
+        //public string CanonicalRouteUrl
+        //{
+        //    get { return GetProperty(CanonicalRouteUrlProperty); }
+        //    private set { LoadProperty(CanonicalRouteUrlProperty, value); }
+        //}
 
 
         internal static IProduct GetProduct(Guid productXTenantLocaleId)
@@ -150,7 +150,7 @@ namespace ComplexCommerce.Business
                     SKU = data.SKU;
                     ImageUrl = data.ImageUrl;
                     Price = data.Price;
-                    DefaultCategoryRouteUrl = data.DefaultCategoryRouteUrl;
+                    //DefaultCategoryRouteUrl = data.DefaultCategoryRouteUrl;
                 }
             }
 
