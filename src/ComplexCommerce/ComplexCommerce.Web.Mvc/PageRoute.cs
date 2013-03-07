@@ -42,7 +42,9 @@ namespace ComplexCommerce.Web.Mvc
             // Get all of the pages
             var pages = routeUrlListFactory.GetRouteUrlPageList(tenant.Id, tenant.DefaultLocale.LCID);
             var path = httpContext.Request.Path;
-            var page = pages.Where(x => x.RouteUrl.Equals(path)).FirstOrDefault();
+            var page = pages
+                .Where(x => x.RouteUrl.Equals(path))
+                .FirstOrDefault();
             if (page != null)
             {
                 result = new RouteData(this, new MvcRouteHandler());
@@ -68,7 +70,7 @@ namespace ComplexCommerce.Web.Mvc
 
             if (TryFindMatch(pages, values, out page))
             {
-                virtualPath = page.RouteUrl;
+                virtualPath = page.VirtualPath;
             }
 
             if (!string.IsNullOrEmpty(virtualPath))

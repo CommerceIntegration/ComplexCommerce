@@ -47,6 +47,7 @@ namespace ComplexCommerce.Business
         string Name { get; }
         string LogoUrl { get; }
         CultureInfo DefaultLocale { get; }
+        TenantTypeEnum TenantType { get; }
     }
 
     [Serializable]

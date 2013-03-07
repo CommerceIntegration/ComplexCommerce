@@ -29,6 +29,19 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(RouteUrlProperty, value); }
         }
 
+        public string VirtualPath
+        {
+            get
+            {
+                var path = GetProperty(RouteUrlProperty);
+                if (path.Length > 1)
+                {
+                    return path.Substring(1, path.Length - 2);
+                }
+                return path;
+            }
+        }
+
         // Route = {controller}
         public static PropertyInfo<ContentTypeEnum> ContentTypeProperty = RegisterProperty<ContentTypeEnum>(c => c.ContentType);
         public ContentTypeEnum ContentType

@@ -40,7 +40,7 @@ namespace ComplexCommerce.Web.Mvc
 
             if (this.IsDefaultUICulture(cultureName, tenant))
             {
-                var urlWithoutCulture = url.ToString().ToLowerInvariant().Replace("/" + cultureName, "");
+                var urlWithoutCulture = httpContext.Request.RawUrl.ToString().ToLowerInvariant().Replace("/" + cultureName, "");
 
                 // If the current culture matches the URL, we need to 301 redirect to the default URL
                 return this.RedirectPermanent(urlWithoutCulture, httpContext);

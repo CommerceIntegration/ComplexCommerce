@@ -72,6 +72,7 @@
     <Compile Include="RouteUrlProductList.cs" />
     <Compile Include="Rules\UrlPathLeadingSlashRule.cs" />
     <Compile Include="Rules\UrlPathLocaleRule.cs" />
+    <Compile Include="Rules\UrlPathProductRule.cs" />
     <Compile Include="Rules\UrlPathTrailingSlashRule.cs" />
     <Compile Include="SiteMapPageList.cs" />
     <Compile Include="SiteMapPageTree.cs" />

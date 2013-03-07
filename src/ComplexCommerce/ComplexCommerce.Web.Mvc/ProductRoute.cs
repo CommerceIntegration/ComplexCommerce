@@ -37,70 +37,51 @@ namespace ComplexCommerce.Web.Mvc
             RouteData result = null;
             var tenant = appContext.CurrentTenant;
 
-            // Get all of the pages
-            var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, tenant.DefaultLocale.LCID);
-
-            // Get the culture name
-            var url = httpContext.Request.Url;
-            var cultureName = contextUtilities.GetCultureNameFromUrl(url).ToLowerInvariant();
-
-            string localizedUrl;
-
-            // Get the default Route URL
-            string defaultUrl = url.AbsolutePath.Substring(1).ToLowerInvariant();
-
-            // Get the localized Route URL
-            if (!string.IsNullOrEmpty(cultureName))
+            if (tenant.TenantType == TenantTypeEnum.Store)
             {
-                localizedUrl = cultureName + url.AbsolutePath.ToLowerInvariant();
+                // Get all of the pages
+                var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, tenant.DefaultLocale.LCID);
+                var path = httpContext.Request.Path;
+                var page = pages
+                    .Where(x => x.RouteUrl.Equals(path))
+                    .FirstOrDefault();
+                if (page != null)
+                {
+                    result = new RouteData(this, new MvcRouteHandler());
+                    // TODO: Add area for different tenant types
+
+                    // TODO: add the querystring information to the route values
+                    result.Values["controller"] = "Product";
+                    result.Values["action"] = "Index";
+                    result.Values["id"] = page.ProductXTenantLocaleId;
+                }
             }
-            else
-            {
-                localizedUrl = defaultUrl;
-            }
-
-            // TODO: Add 301 redirect when using the default locale so the default url takes priority
-            // over the localized url
-
-            var page = pages.Where(x => x.RouteUrl.Equals(localizedUrl, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-            if (page == null && !localizedUrl.Equals(defaultUrl))
-            {
-                page = pages.Where(x => x.RouteUrl.Equals(defaultUrl, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-            }
-
-            if (page != null)
-            {
-                result = new RouteData(this, new MvcRouteHandler());
-                // TODO: Add area for different tenant types
-
-                result.Values["controller"] = "Product";
-                result.Values["action"] = "Index";
-                result.Values["id"] = page.ProductXTenantLocaleId;
-            }
-
             return result;
         }
 
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
             VirtualPathData result = null;
-            RouteUrlProductInfo page = null;
-            string virtualPath = string.Empty;
             var tenant = appContext.CurrentTenant;
 
-            // Get all of the pages
-            var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, tenant.DefaultLocale.LCID);
-
-            if (TryFindMatch(pages, values, out page))
+            if (tenant.TenantType == TenantTypeEnum.Store)
             {
-                virtualPath = page.RouteUrl;
-            }
+                RouteUrlProductInfo page = null;
+                string virtualPath = string.Empty;
 
-            if (!string.IsNullOrEmpty(virtualPath))
-            {
-                result = new VirtualPathData(this, virtualPath);
-            }
+                // Get all of the pages
+                var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, tenant.DefaultLocale.LCID);
 
+                if (TryFindMatch(pages, values, out page))
+                {
+                    virtualPath = page.VirtualPath;
+                }
+
+                if (!string.IsNullOrEmpty(virtualPath))
+                {
+                    result = new VirtualPathData(this, virtualPath);
+                }
+            }
             return result;
         }
 
@@ -119,13 +100,10 @@ namespace ComplexCommerce.Web.Mvc
 
             if (action == "Index" && controller == "Product")
             {
-                foreach (var item in pages)
+                page = pages.Where(x => x.ProductXTenantLocaleId.Equals(productXTenantLocaleId)).FirstOrDefault();
+                if (page != null)
                 {
-                    if (item.ProductXTenantLocaleId.Equals(productXTenantLocaleId))
-                    {
-                        page = item;
-                        return true;
-                    }
+                    return true;
                 }
             }
             return false;

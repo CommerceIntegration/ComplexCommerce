@@ -4,17 +4,38 @@ using System.Globalization;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Dto;
+using ComplexCommerce.Business.Rules;
 
 namespace ComplexCommerce.Business
 {
     public class RouteUrlProductInfo
         : CslaReadOnlyBase<RouteUrlProductInfo>
     {
+        public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
+        public int LocaleId
+        {
+            get { return GetProperty(LocaleIdProperty); }
+            private set { LoadProperty(LocaleIdProperty, value); }
+        }
+
         public static PropertyInfo<string> RouteUrlProperty = RegisterProperty<string>(c => c.RouteUrl);
         public string RouteUrl
         {
             get { return GetProperty(RouteUrlProperty); }
             private set { LoadProperty(RouteUrlProperty, value); }
+        }
+
+        public string VirtualPath
+        {
+            get 
+            {
+                var path = GetProperty(RouteUrlProperty);
+                if (path.Length > 1)
+                {
+                    return path.Substring(1, path.Length - 2);
+                }
+                return path;
+            }
         }
 
         // Route = {id}
@@ -25,39 +46,39 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
         }
 
-
-        // TODO: Move logic into business rule
-        private bool IsValidLocaleId(int localeId)
+        public static PropertyInfo<string> ParentPageRouteUrlProperty = RegisterProperty<string>(c => c.ParentPageRouteUrl);
+        public string ParentPageRouteUrl
         {
-            return
-                CultureInfo
-                .GetCultures(CultureTypes.SpecificCultures)
-                .Any(c => c.LCID == localeId);
+            get { return GetProperty(ParentPageRouteUrlProperty); }
+            private set { LoadProperty(ParentPageRouteUrlProperty, value); }
         }
 
-
-
-        private void Child_Fetch(RouteUrlProductDto item, bool defaultUrl)
+        public static PropertyInfo<string> ProductUrlSlugProperty = RegisterProperty<string>(c => c.ProductUrlSlug);
+        public string ProductUrlSlug
         {
-            // TODO: Move this logic to business rule
-            RouteUrl = item.ParentPageRouteUrl + "/" + item.ProductUrlSlug;
-            if (!defaultUrl)
-            {
-                var locale = appContext.CurrentTenant.DefaultLocale;
-                if (IsValidLocaleId(item.LocaleId))
-                {
-                    locale = new CultureInfo(item.LocaleId);
-                }
+            get { return GetProperty(ProductUrlSlugProperty); }
+            private set { LoadProperty(ProductUrlSlugProperty, value); }
+        }
 
-                // Append the locale name as the first segment of the URL
-                RouteUrl = locale.Name + "/" + RouteUrl;
-            }
+        protected override void AddBusinessRules()
+        {
+            base.AddBusinessRules();
 
+            BusinessRules.AddRule(new UrlPathProductRule(RouteUrlProperty, ParentPageRouteUrlProperty, ProductUrlSlugProperty) { Priority = 1 });
+            BusinessRules.AddRule(new UrlPathLeadingSlashRule(RouteUrlProperty) { Priority = 2 });
+            BusinessRules.AddRule(new UrlPathTrailingSlashRule(RouteUrlProperty) { Priority = 3 });
+            BusinessRules.AddRule(new UrlPathLocaleRule(RouteUrlProperty, LocaleIdProperty, appContext) { Priority = 4 });
+        }
+
+        private void Child_Fetch(RouteUrlProductDto item)
+        {
+            LocaleId = item.LocaleId;
+            ParentPageRouteUrl = item.ParentPageRouteUrl;
+            ProductUrlSlug = item.ProductUrlSlug;
             ProductXTenantLocaleId = item.ProductXTenantLocaleId;
 
-
-            // Force the PublishActionRule to execute
-            //this.BusinessRules.CheckRules();
+            // Force the BusinessRules to execute
+            this.BusinessRules.CheckRules();
         }
 
         #region Dependency Injection
