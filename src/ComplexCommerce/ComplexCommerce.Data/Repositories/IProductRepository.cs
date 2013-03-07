@@ -8,5 +8,6 @@ namespace ComplexCommerce.Data.Repositories
     {
         IList<CategoryProductDto> ListForCategory(Guid categoryId);
         IList<RouteUrlProductDto> ListForTenantLocale(int tenantId, int localeId);
+        ProductDto Fetch(Guid productXTenantLocaleId);
     }
 }

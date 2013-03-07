@@ -1,0 +1,53 @@
+﻿@model ComplexCommerce.Business.IProduct
+
+@{
+    ViewBag.Title = Model.Name;
+    ViewBag.MetaKeywords = Model.MetaKeywords;
+    ViewBag.MetaDescription = Model.MetaDescription;
+}
+
+<h2>@Html.DisplayFor(model => model.Name)</h2>
+
+<fieldset>
+    <legend>IProduct</legend>
+
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SKU)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SKU)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ImageUrl)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ImageUrl)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Price)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Price)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DefaultCategoryRouteUrl)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DefaultCategoryRouteUrl)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CanonicalRouteUrl)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CanonicalRouteUrl)
+    </div>
+</fieldset>
+

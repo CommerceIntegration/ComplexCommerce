@@ -66,7 +66,6 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CategoryId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ProductXTenantLocaleId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="RouteUrl" Type="nvarchar" Nullable="false" MaxLength="1024" />
         </EntityType>
         <EntityType Name="Chain">
           <Key>
@@ -111,6 +110,9 @@
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="UrlSlug" Type="nvarchar" MaxLength="255" />
+          <Property Name="MetaKeywords" Type="nvarchar" MaxLength="1024" />
+          <Property Name="MetaDescription" Type="nvarchar" MaxLength="255" />
+          <Property Name="DefaultCategoryId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Tenant">
           <Key>
@@ -332,7 +334,6 @@
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="CategoryId" Nullable="false" />
           <Property Type="Guid" Name="ProductXTenantLocaleId" Nullable="false" />
-          <Property Type="String" Name="RouteUrl" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale" FromRole="CategoryXProductXTenantLocale" ToRole="ProductXTenantLocale" />
           <NavigationProperty Name="Category" Relationship="ComplexCommerce.Model.FK_Category_ProductXCategory" FromRole="CategoryXProductXTenantLocale" ToRole="Category" />
         </EntityType>
@@ -349,6 +350,9 @@
           <NavigationProperty Name="CategoryXProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="CategoryXProductXTenantLocale" />
           <NavigationProperty Name="Product" Relationship="ComplexCommerce.Model.FK_Product_ProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="Product" />
           <NavigationProperty Name="TenantLocale" Relationship="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="TenantLocale" />
+          <Property Type="String" Name="MetaKeywords" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MetaDescription" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="DefaultCategoryId" />
         </EntityType>
         <EntityType Name="TenantLocale">
           <Key>
@@ -528,7 +532,6 @@
           <EntitySetMapping Name="CategoryXProductXTenantLocale">
             <EntityTypeMapping TypeName="ComplexCommerce.Model.CategoryXProductXTenantLocale">
               <MappingFragment StoreEntitySet="CategoryXProductXTenantLocale">
-                <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
                 <ScalarProperty Name="ProductXTenantLocaleId" ColumnName="ProductXTenantLocaleId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -538,6 +541,9 @@
           <EntitySetMapping Name="ProductXTenantLocale">
             <EntityTypeMapping TypeName="ComplexCommerce.Model.ProductXTenantLocale">
               <MappingFragment StoreEntitySet="ProductXTenantLocale">
+                <ScalarProperty Name="DefaultCategoryId" ColumnName="DefaultCategoryId" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
                 <ScalarProperty Name="UrlSlug" ColumnName="UrlSlug" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

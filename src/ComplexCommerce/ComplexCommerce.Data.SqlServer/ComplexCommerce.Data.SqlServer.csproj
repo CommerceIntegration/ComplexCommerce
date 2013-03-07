@@ -69,6 +69,9 @@
     <Compile Include="Model\Chain.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ComplexCommerce.Concrete.cs">
+      <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ComplexCommerce.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -77,7 +80,7 @@
     <Compile Include="Model\ComplexCommerce.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ComplexCommerce.Context.tt</DependentUpon>
+      <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ComplexCommerce.Designer.cs">
       <AutoGen>True</AutoGen>

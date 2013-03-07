@@ -1,6 +1,7 @@
 ﻿@model ComplexCommerce.Business.Category
 
 @{
+    ViewBag.Title = Model.Title;
     ViewBag.MetaKeywords = Model.MetaKeywords;
     ViewBag.MetaDescription = Model.MetaDescription;
 }
@@ -17,7 +18,7 @@
     @foreach (var product in Model.Products)
     {
         <ul id="product-list">
-            <a href="@Url.Action("Index", "Product", new { id = product.ProductXTenantLocaleId })">
+            <a href="@Url.Action("Details", "Product", new { id = product.ProductXTenantLocaleId })">
                 <img alt="@product.Name" src="@product.ImageUrl" />
                 <div>@product.Name</div>
                 <div>@product.SKU</div>

@@ -65,6 +65,7 @@
     <Compile Include="Context\IApplicationContext.cs" />
     <Compile Include="GetCachedRouteUrlPageListCommand.cs" />
     <Compile Include="GetCachedRouteUrlProductListCommand.cs" />
+    <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteUrlPageInfo.cs" />
     <Compile Include="RouteUrlPageList.cs" />

@@ -17,7 +17,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public System.Guid Id { get; set; }
         public System.Guid CategoryId { get; set; }
         public System.Guid ProductXTenantLocaleId { get; set; }
-        public string RouteUrl { get; set; }
     
         public virtual ProductXTenantLocale ProductXTenantLocale { get; set; }
         public virtual Category Category { get; set; }

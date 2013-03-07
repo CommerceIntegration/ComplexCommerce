@@ -23,7 +23,13 @@ namespace ComplexCommerce.Controllers
         //
         // GET: /Category/
 
-        public ActionResult Index(Guid id)
+        //public ActionResult Index(Guid id)
+        //{
+        //    ViewData.Model = categoryFactory.GetCategory(id);
+        //    return View();
+        //}
+
+        public ActionResult Details(Guid id)
         {
             ViewData.Model = categoryFactory.GetCategory(id);
             return View();

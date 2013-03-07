@@ -74,6 +74,38 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
             }
         }
 
+        public ProductDto Fetch(Guid productXTenantLocaleId)
+        {
+            using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+            {
+
+                var result = (from productXTenantLocale in ctx.ObjectContext.ProductXTenantLocale
+                              join product in ctx.ObjectContext.Product
+                                  on productXTenantLocale.ProductId equals product.Id
+                              join page in ctx.ObjectContext.Page
+                                  on productXTenantLocale.DefaultCategoryId equals page.ContentId
+
+                              where productXTenantLocale.Id == productXTenantLocaleId
+                              where page.ContentType == 2 //category type (so we can get the URL of the category page)
+
+                              select new ProductDto
+                              {
+                                  Id = product.Id,
+                                  Name = productXTenantLocale.Name,
+                                  Description = productXTenantLocale.Description,
+                                  MetaKeywords = productXTenantLocale.MetaKeywords,
+                                  MetaDescription = productXTenantLocale.MetaDescription,
+                                  SKU = product.SKU,
+                                  ImageUrl = product.ImageUrl,
+                                  Price = product.Price,
+                                  DefaultCategoryRouteUrl = page.RouteUrl
+                              }).FirstOrDefault();
+
+                if (result == null)
+                    throw new DataNotFoundException("Product");
+                return result;
+            }
+        }
 
         #endregion
     }

@@ -94,15 +94,15 @@ namespace ComplexCommerce.Business
         }
         
 
-        public static Category GetCategory(Guid categoryId)
+        internal static Category GetCategory(Guid categoryId)
         {
             return DataPortal.Fetch<Category>(categoryId);
         }
 
-        public static Category NewCategory()
+        internal static Category NewCategory()
         {
-            return DataPortal.Create<Category>();
-            //return new ProductView();
+            //return DataPortal.Create<Category>();
+            return new Category();
         }
 
 

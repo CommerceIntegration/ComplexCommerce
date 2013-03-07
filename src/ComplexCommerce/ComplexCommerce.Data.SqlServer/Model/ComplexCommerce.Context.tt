@@ -73,7 +73,7 @@ WriteNamespaceBegin( code, namespaceName );
 WriteDbContextInterface( container, code );
 WriteNamespaceEnd( namespaceName );
 
-fileManager.StartNewFile( container.Name + ".cs");
+fileManager.StartNewFile( container.Name + ".Concrete.cs");
 WriteHeader();
 WriteHeaderIncludeData();
 WriteNamespaceBegin( code, namespaceName );
