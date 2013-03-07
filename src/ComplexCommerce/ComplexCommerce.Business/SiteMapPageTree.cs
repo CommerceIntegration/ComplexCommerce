@@ -65,20 +65,6 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(ContentIdProperty, value); }
         }
 
-        // Child data
-        //public static readonly PropertyInfo<SiteMapPageList> ChildPagesProperty = RegisterProperty<SiteMapPageList>(p => p.ChildPages);
-        //public SiteMapPageList ChildPages
-        //{
-        //    get
-        //    {
-        //        // TODO: figure out how to make this NOT lazy load.
-        //        if (!(FieldManager.FieldExists(ChildPagesProperty)))
-        //            LoadProperty(ChildPagesProperty, DataPortal.CreateChild<ChildPages>());
-        //        return GetProperty(ChildPagesProperty);
-        //    }
-        //    private set { LoadProperty(ChildPagesProperty, value); }
-        //}
-
         public static readonly PropertyInfo<SiteMapPageList> ChildPagesProperty = RegisterProperty<SiteMapPageList>(p => p.ChildPages);
         public SiteMapPageList ChildPages
         {
@@ -95,47 +81,6 @@ namespace ComplexCommerce.Business
             //int localeId = System.Threading.Thread.CurrentThread.CurrentUICulture.LCID;
             var criteria = new Criteria() { StoreId = storeId, LocaleId = localeId };
             return DataPortal.Fetch<SiteMapPageTree>(criteria);
-        }
-
-
-
-
-        //private void Child_Fetch(SiteMapPageDto item)
-        //{
-        //    Id = item.Id;
-        //    LocaleId = item.LocaleId;
-        //    Title = item.Title;
-        //    RouteUrl = item.RouteUrl;
-        //    ContentType = (ContentTypeEnum)item.ContentTypeId;
-        //    ContentId = item.ContentId;
-        //}
-
-        //private void Child_Fetch(Criteria criteria)
-        //{
-        //    var item = criteria.CurrentPage;
-
-        //    Id = item.Id;
-        //    LocaleId = item.LocaleId;
-        //    Title = item.Title;
-        //    RouteUrl = item.RouteUrl;
-        //    ContentType = (ContentTypeEnum)item.ContentTypeId;
-        //    ContentId = item.ContentId;
-
-        //    ChildPages = DataPortal.FetchChild<SiteMapPageList>(criteria.AllPages.Where(x => x.ParentId == item.Id));
-        //}
-
-        // Used for nested calls
-        private void Child_Fetch(SiteMapPageDto item, IEnumerable<SiteMapPageDto> list)
-        {
-            Id = item.Id;
-            LocaleId = item.LocaleId;
-            Title = item.Title;
-            RouteUrl = item.RouteUrl;
-            MetaRobots = item.MetaRobots;
-            ContentType = (ContentTypeEnum)item.ContentType;
-            ContentId = item.ContentId;
-
-            ChildPages = DataPortal.FetchChild<SiteMapPageList>(item.Id, list);
         }
 
         // Used for entry point
@@ -156,6 +101,22 @@ namespace ComplexCommerce.Business
                 }
             }
         }
+
+        // Used for nested calls
+        private void Child_Fetch(SiteMapPageDto item, IEnumerable<SiteMapPageDto> list)
+        {
+            Id = item.Id;
+            LocaleId = item.LocaleId;
+            Title = item.Title;
+            RouteUrl = item.RouteUrl;
+            MetaRobots = item.MetaRobots;
+            ContentType = (ContentTypeEnum)item.ContentType;
+            ContentId = item.ContentId;
+
+            ChildPages = DataPortal.FetchChild<SiteMapPageList>(item.Id, list);
+        }
+
+
 
         #region Dependency Injection
 
@@ -202,40 +163,5 @@ namespace ComplexCommerce.Business
                 set { LoadProperty(LocaleIdProperty, value); }
             }
         }
-
-
-
-
-
-        //// TODO: Determine best location for criteria class
-        //[Serializable()]
-        //public class Criteria : CriteriaBase<Criteria>
-        //{
-        //    public Criteria()
-        //    {
-
-        //    }
-
-        //    public Criteria(SiteMapPageDto currentPage, IEnumerable<SiteMapPageDto> allPages)
-        //    {
-        //        this.CurrentPage = currentPage;
-        //        this.AllPages = allPages;
-        //    }
-
-        //    public static readonly PropertyInfo<SiteMapPageDto> CurrentPageProperty = RegisterProperty<SiteMapPageDto>(c => c.CurrentPage);
-        //    public SiteMapPageDto CurrentPage
-        //    {
-        //        get { return ReadProperty(CurrentPageProperty); }
-        //        set { LoadProperty(CurrentPageProperty, value); }
-        //    }
-
-        //    public static readonly PropertyInfo<IEnumerable<SiteMapPageDto>> AllPagesProperty = RegisterProperty<IEnumerable<SiteMapPageDto>>(c => c.AllPages);
-        //    public IEnumerable<SiteMapPageDto> AllPages
-        //    {
-        //        get { return ReadProperty(AllPagesProperty); }
-        //        set { LoadProperty(AllPagesProperty, value); }
-        //    }
-        //}
-
     }
 }
