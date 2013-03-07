@@ -41,6 +41,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                                  Id = page.Id,
                                  ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
                                  RouteUrl = page.RouteUrl,
+                                 MetaRobots = page.MetaRobots,
                                  ContentType = page.ContentType,
                                  ContentId = page.ContentId,
                                  LocaleId = localeId
@@ -60,6 +61,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                 //         Id = page.Id,
                 //         ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
                 //         RouteUrl = page.RouteUrl,
+                //         MetaRobots = page.MetaRobots,
                 //         ContentType = page.ContentType,
                 //         ContentId = page.ContentId,
                 //         LocaleId = localeId

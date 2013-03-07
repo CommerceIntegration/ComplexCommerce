@@ -44,6 +44,13 @@ namespace ComplexCommerce.Business
         // TODO: Add Url property that combines the locale with the route in a business rule.
         // http://www.somesite.com.../en-us/the/route/url
 
+        public static PropertyInfo<string> MetaRobotsProperty = RegisterProperty<string>(c => c.MetaRobots);
+        public string MetaRobots
+        {
+            get { return GetProperty(MetaRobotsProperty); }
+            private set { LoadProperty(MetaRobotsProperty, value); }
+        }
+
         public static PropertyInfo<ContentTypeEnum> ContentTypeProperty = RegisterProperty<ContentTypeEnum>(c => c.ContentType);
         public ContentTypeEnum ContentType
         {
@@ -124,6 +131,7 @@ namespace ComplexCommerce.Business
             LocaleId = item.LocaleId;
             Title = item.Title;
             RouteUrl = item.RouteUrl;
+            MetaRobots = item.MetaRobots;
             ContentType = (ContentTypeEnum)item.ContentType;
             ContentId = item.ContentId;
 
