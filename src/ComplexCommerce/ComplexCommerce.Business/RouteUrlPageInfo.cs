@@ -69,8 +69,9 @@ namespace ComplexCommerce.Business
         {
             base.AddBusinessRules();
 
-            BusinessRules.AddRule(new UrlPathTrailingSlashRule(RouteUrlProperty) { Priority = 1 });
-            BusinessRules.AddRule(new UrlPathLeadingSlashRule(RouteUrlProperty) { Priority = 2 });
+            // IMPORTANT: For pages we need to ensure the trailing slash rule comes after the leading slash rule.
+            BusinessRules.AddRule(new UrlPathLeadingSlashRule(RouteUrlProperty) { Priority = 1 });
+            BusinessRules.AddRule(new UrlPathTrailingSlashRule(RouteUrlProperty) { Priority = 2 });
             BusinessRules.AddRule(new UrlPathLocaleRule(RouteUrlProperty, LocaleIdProperty, appContext) { Priority = 3 });
         }
 

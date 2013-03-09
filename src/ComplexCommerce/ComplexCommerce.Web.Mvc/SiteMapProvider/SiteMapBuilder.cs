@@ -59,40 +59,31 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
         private void ProcessTreeNodes(ISiteMap siteMap, ISiteMapNode rootNode, SiteMapPageTree tree)
         {
             var parentNode = rootNode;
-            foreach (var product in tree.Products)
-            {
-                var productNode = GetSiteMapNodeFromProductInfo(siteMap, product, parentNode);
-                siteMap.AddNode(productNode, parentNode);
-            }
-
             foreach (var page in tree.ChildPages)
             {
-                var childNode = GetSiteMapNodeFromTreeNode(siteMap, page, parentNode);
+                var childNode = GetSiteMapNodeFromTreeNode(siteMap, page);
                 childNode.ParentNode = parentNode;
 
                 siteMap.AddNode(childNode, parentNode);
 
-                //if (page.Products.Count > 0)
-                //{
-                //    foreach (var product in page.Products)
-                //    {
-                //        var productNode = GetSiteMapNodeFromProductInfo(siteMap, product, parentNode);
-                //        siteMap.AddNode(productNode, childNode);
-                //    }
-                //}
-
                 // Process next level
                 ProcessTreeNodes(siteMap, childNode, page);
+            }
+
+            foreach (var product in tree.Products)
+            {
+                var productNode = GetSiteMapNodeFromProductInfo(siteMap, product);
+                siteMap.AddNode(productNode, parentNode);
             }
         }
 
         private ISiteMapNode GetRootNode(ISiteMap siteMap, SiteMapPageTree tree)
         {
             // The root of the tree is the passed in SiteMapPageTree object
-            return GetSiteMapNodeFromTreeNode(siteMap, tree, null);
+            return GetSiteMapNodeFromTreeNode(siteMap, tree);
         }
 
-        private ISiteMapNode GetSiteMapNodeFromTreeNode(ISiteMap siteMap, SiteMapPageTree treeNode, ISiteMapNode parentNode)
+        private ISiteMapNode GetSiteMapNodeFromTreeNode(ISiteMap siteMap, SiteMapPageTree treeNode)
         {
             var key = treeNode.Id.ToString();
             var node = siteMapNodeFactory.Create(siteMap, key, "");
@@ -117,7 +108,7 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             return node;
         }
 
-        private ISiteMapNode GetSiteMapNodeFromProductInfo(ISiteMap siteMap, SiteMapProductInfo productInfo, ISiteMapNode parentNode)
+        private ISiteMapNode GetSiteMapNodeFromProductInfo(ISiteMap siteMap, SiteMapProductInfo productInfo)
         {
             var key = productInfo.ProductXTenantLocaleId.ToString();
             var node = siteMapNodeFactory.Create(siteMap, key, "");

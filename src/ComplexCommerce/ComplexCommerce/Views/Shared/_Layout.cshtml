@@ -4,6 +4,8 @@
         <meta charset="utf-8" />
         <title>@ViewBag.Title - My ASP.NET MVC Application</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        @Html.MvcSiteMap().CanonicalTag()
+        @Html.MvcSiteMap().MetaRobotsTag()
         @if (ViewBag.MetaKeywords != null)
         {
             <meta name="keywords" content="@ViewBag.MetaKeywords" />
