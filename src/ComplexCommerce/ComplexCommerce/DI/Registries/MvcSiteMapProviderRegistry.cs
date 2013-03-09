@@ -15,7 +15,6 @@ using MvcSiteMapProvider.Reflection;
 using MvcSiteMapProvider.Visitor;
 using MvcSiteMapProvider.Builder;
 using MvcSiteMapProvider.Caching;
-using MvcSiteMapProvider.Loader;
 using ComplexCommerce.Shared.DI;
 using ComplexCommerce.DI.Conventions;
 using ComplexCommerce.Web.Mvc.SiteMapProvider;
@@ -49,11 +48,6 @@ namespace ComplexCommerce.DI.Registries
                 scan.Convention<SingletonConvention>();
             });
 
-
-
-
-
-
             this.For<ISiteMap>()
                 .Use<RequestCacheableSiteMap>();
 
@@ -69,25 +63,6 @@ namespace ComplexCommerce.DI.Registries
 
             this.For<IBuildManager>()
                 .Use<BuildManagerAdaptor>();
-
-            //// Configure default filter provider with one that provides filters
-            //// from the global filter collection.
-            //this.Scan(scan =>
-            //{
-            //    scan.AssemblyContainingType<SiteMaps>();
-            //    //scan.WithDefaultConventions();
-            //    //scan.SingleImplementationsOfInterface();
-            //    scan.With(new SingletonConvention<IFilterProvider>());
-            //    scan.With(new SingletonConvention<IControllerDescriptorFactory>());
-            //    //scan.With(new SingletonConvention<IObjectCopier>());
-            //    //scan.With(new SingletonConvention<IDynamicNodeProviderStrategy>());
-            //    //scan.With(new SingletonConvention<ISiteMapNodeUrlResolverStrategy>());
-            //    //scan.With(new SingletonConvention<ISiteMapNodeVisibilityProviderStrategy>());
-
-            //    //scan.With(new SingletonConvention<INodeKeyGenerator>());
-            //    //scan.With(new SingletonConvention<IControllerDescriptorFactory>());
-            //    //scan.With(new SingletonConvention<IControllerDescriptorFactory>());
-            //});
 
             this.For<IFilterProvider>()
                 .Singleton()
@@ -117,32 +92,6 @@ namespace ComplexCommerce.DI.Registries
                 .Singleton()
                 .Use<SiteMapNodeVisibilityProviderStrategy>();
 
-
-
-
-            ////@Html.MvcSiteMap().SiteMapPath()
-
-            ////var f = new MvcContextFactory();
-
-            ////this.For<IMvcContextFactory>()
-            ////    .Use(f);
-
-            
-
-
-            //var factory = container.Resolve<IMvcContextFactory>();
-
-            //var module = container.Resolve<AuthorizeAttributeAclModule>();
-
-            // Configure Security
-            //var aclModules = new CompositeAclModule(
-            //    container.Resolve<AuthorizeAttributeAclModule>(),
-            //    container.Resolve<XmlRolesAclModule>()
-            //);
-
-            //this.For<IAclModule>()
-            //    .Use(aclModules);
-
             // Configure Security
             this.For<IAclModule>().Use<CompositeAclModule>()
                 .EnumerableOf<IAclModule>().Contains(x =>
@@ -150,15 +99,6 @@ namespace ComplexCommerce.DI.Registries
                     x.Type<AuthorizeAttributeAclModule>();
                     x.Type<XmlRolesAclModule>();
                 });
-
-
-            
-
-
-            this.For<ISiteMapNodeVisitor>()
-               .Use<UrlResolvingSiteMapNodeVisitor>();
-
-            
 
             // Setup cache
             this.For<ISiteMapCache>()
@@ -174,6 +114,9 @@ namespace ComplexCommerce.DI.Registries
 
 
             // Register the custom sitemap builder
+            this.For<ISiteMapNodeVisitor>()
+                .Use<UrlResolvingSiteMapNodeVisitor>();
+
             this.For<ISiteMapBuilder>().Use<CompositeSiteMapBuilder>()
                 .EnumerableOf<ISiteMapBuilder>().Contains(x =>
                 {
@@ -181,22 +124,11 @@ namespace ComplexCommerce.DI.Registries
                     x.Type<VisitingSiteMapBuilder>();
                 });
 
-            
-
-            //this.For<ISiteMapBuilderSet>().Use<SiteMapBuilderSet>()
-            //   .Ctor<string>("name").Is("default");
-            //   //.Ctor<ISiteMapBuilder>().Is<CompositeSiteMapBuilder>()
-            //   //.Ctor<ICacheDetails>().
-
             this.For<ISiteMapBuilderSetStrategy>().Use<SiteMapBuilderSetStrategy>()
                 .EnumerableOf<ISiteMapBuilderSet>().Contains(x =>
                 {
                     x.Type<SiteMapBuilderSet>().Ctor<string>("name").Is("default");
                 });
-
-
-            //// Setup global sitemap loader
-            //MvcSiteMapProvider.SiteMaps.Loader = container.Resolve<ISiteMapLoader>();
         }
     }
 }
