@@ -24,7 +24,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public System.Guid Id { get; set; }
         public int TenantId { get; set; }
         public int LocaleId { get; set; }
-        public string SiteMap { get; set; }
     
         public virtual ICollection<ProductXTenantLocale> ProductXTenantLocale { get; set; }
         public virtual ICollection<Category> Category { get; set; }

@@ -12,7 +12,7 @@ namespace ComplexCommerce.DI.Registries
     // Note that dependencies to CSLA objects should be injected as
     // properties (setter injection) rather than injecting through a
     // constructor.
-    public class CslaGlobalRegistry : Registry
+    internal class CslaGlobalRegistry : Registry
     {
         public CslaGlobalRegistry()
         {

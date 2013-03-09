@@ -28,14 +28,5 @@ namespace ComplexCommerce.Controllers
 
             return View();
         }
-
-        public ActionResult Redirect301(string url)
-        {
-            // TODO: Add javascript and meta redirects to the view
-            // TODO: Localize the view
-
-            ViewBag.DestinationUrl = url;
-            return View();
-        }
     }
 }

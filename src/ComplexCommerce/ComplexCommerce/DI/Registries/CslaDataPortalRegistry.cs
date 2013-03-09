@@ -21,7 +21,7 @@ namespace ComplexCommerce.DI.Registries
     // Note that dependencies to CSLA objects should be injected as
     // properties (setter injection) rather than injecting through a
     // constructor.
-    public class CslaDataPortalRegistry : Registry
+    internal class CslaDataPortalRegistry : Registry
     {
         public CslaDataPortalRegistry(IDependencyInjectionContainer container)
         {

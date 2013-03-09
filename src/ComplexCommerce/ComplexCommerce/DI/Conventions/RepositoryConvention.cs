@@ -8,7 +8,7 @@ using StructureMap.Pipeline;
 
 namespace ComplexCommerce.DI.Conventions
 {
-    public class RepositoryConvention : IRegistrationConvention
+    internal class RepositoryConvention : IRegistrationConvention
     {
 
         #region IRegistrationConvention Members

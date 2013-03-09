@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using ComplexCommerce.Business;
 using CslaLibrary = Csla;
 
@@ -29,6 +28,11 @@ namespace ComplexCommerce.Business.Context
             {
                 CslaLibrary.ApplicationContext.ClientContext[CurrentTenantName] = value;
             }
+        }
+
+        public int CurrentLocaleId
+        {
+            get { return Thread.CurrentThread.CurrentUICulture.LCID; }
         }
     }
 }

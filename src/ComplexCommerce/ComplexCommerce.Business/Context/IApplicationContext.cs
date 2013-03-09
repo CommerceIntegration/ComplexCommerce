@@ -10,5 +10,6 @@ namespace ComplexCommerce.Business.Context
     public interface IApplicationContext
     {
         ITenant CurrentTenant { get; set; }
+        int CurrentLocaleId { get; }
     }
 }

@@ -27,7 +27,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public string UrlSlug { get; set; }
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }
-        public Nullable<System.Guid> DefaultCategoryId { get; set; }
+        public System.Guid DefaultCategoryId { get; set; }
     
         public virtual ICollection<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale { get; set; }
         public virtual Product Product { get; set; }

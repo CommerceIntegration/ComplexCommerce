@@ -23,10 +23,6 @@ namespace ComplexCommerce.Web.Mvc.DI
                 return base.GetControllerInstance(requestContext, controllerType);
             try
             {
-                if ((requestContext == null) || (controllerType == null))
-                {
-                    return null;
-                }
                 return container.Resolve(controllerType) as IController;
             }
             catch (Exception ex)

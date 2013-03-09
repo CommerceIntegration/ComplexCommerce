@@ -9,7 +9,7 @@ using ComplexCommerce.Business.Context;
 namespace ComplexCommerce.DI.Registries
 {
     // Register Dependencies for Business layer (client side only)
-    public class CslaClientRegistry : Registry
+    internal class CslaClientRegistry : Registry
     {
         public CslaClientRegistry()
         {

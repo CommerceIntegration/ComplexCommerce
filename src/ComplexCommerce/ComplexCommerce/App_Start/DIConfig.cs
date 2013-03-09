@@ -14,7 +14,7 @@ namespace ComplexCommerce
 {
     public class DIConfig
     {
-        public static IDependencyInjectionContainer RegisterDependencyInjectionContainer()
+        public static IDependencyInjectionContainer Register()
         {
             // Create the DI container
             var container = new Container();
@@ -28,11 +28,23 @@ namespace ComplexCommerce
             //http://codebetter.com/jeremymiller/2010/02/10/nested-containers-in-structuremap-2-6-1/
             //var disposableContainer = container.GetNestedContainer();
 
+            //container.Configure(x => x
+            //    .For<MvcSiteMapProvider.Web.Mvc.IMvcContextFactory>()
+            //    .Use<MvcSiteMapProvider.Web.Mvc.MvcContextFactory>()
+            //);
+
             // Setup configuration of DI
+            container.Configure(r => r.AddRegistry(new MvcSiteMapProviderRegistry(diContainer)));
             container.Configure(r => r.AddRegistry<PresentationRegistry>());
             container.Configure(r => r.AddRegistry<CslaClientRegistry>());
             container.Configure(r => r.AddRegistry(new CslaDataPortalRegistry(diContainer)));
             container.Configure(r => r.AddRegistry<CslaGlobalRegistry>());
+
+            
+
+            //var test = container.GetInstance<MvcSiteMapProvider.Web.Mvc.IMvcContextFactory>();
+            var test = diContainer.Resolve<MvcSiteMapProvider.Web.Mvc.IMvcContextFactory>();
+
 
                // Verify the configuration
             // TODO: Move this into a test

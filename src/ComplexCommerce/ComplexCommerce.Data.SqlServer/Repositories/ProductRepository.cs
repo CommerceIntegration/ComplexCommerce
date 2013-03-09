@@ -94,7 +94,7 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
                               select new SiteMapProductDto
                               {
-                                  //ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
+                                  ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
                                   CategoryId = categoryXProduct.CategoryId,
                                   LocaleId = localeId,
                                   Name = productXlocale.Name,

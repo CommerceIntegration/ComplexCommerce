@@ -8,7 +8,7 @@ using StructureMap.Pipeline;
 
 namespace ComplexCommerce.DI.Conventions
 {
-    public class ConnectionStringConvention : IRegistrationConvention
+    internal class ConnectionStringConvention : IRegistrationConvention
     {
         private readonly string connectionString;
 

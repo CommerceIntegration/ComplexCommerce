@@ -8,7 +8,7 @@ namespace ComplexCommerce.Data.Dto
 {
     public class SiteMapProductDto
     {
-        //public Guid ProductXTenantLocaleId { get; set; }
+        public Guid ProductXTenantLocaleId { get; set; }
         public Guid CategoryId { get; set; }
         public int LocaleId { get; set; }
         public string Name { get; set; }

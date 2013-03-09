@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Reflection;
 using StructureMap.Graph;
 using StructureMap.Configuration.DSL;
 
 namespace ComplexCommerce.DI.Conventions
 {
-    public class SingletonConvention : IRegistrationConvention
+    internal class SingletonConvention : IRegistrationConvention
     {
         #region IRegistrationConvention Members
 
@@ -17,5 +18,16 @@ namespace ComplexCommerce.DI.Conventions
         }
 
         #endregion
+    }
+
+    internal class SingletonConvention<TPluginFamily> : IRegistrationConvention
+    {
+        public void Process(Type type, Registry registry)
+        {
+            if (!typeof(TPluginFamily).IsAssignableFrom(type))
+                return;
+
+            registry.For(typeof(TPluginFamily)).Singleton().Use(type);
+        }
     }
 }

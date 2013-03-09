@@ -19,8 +19,8 @@ namespace ComplexCommerce.Web.Mvc.Routing
             response.StatusCode = 301;
             response.RedirectLocation = destinationUrl;
 
-            routeData.Values["controller"] = "Home";
-            routeData.Values["action"] = "Redirect301";
+            routeData.Values["controller"] = "System";
+            routeData.Values["action"] = "Status301";
             routeData.Values["url"] = destinationUrl;
 
             return routeData;

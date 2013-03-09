@@ -24,14 +24,14 @@ namespace ComplexCommerce
         {
             AreaRegistration.RegisterAllAreas();
 
-            container = DIConfig.RegisterDependencyInjectionContainer();
+            container = DIConfig.Register();
+            MvcSiteMapProviderConfig.Register(container);
             ModelBinderConfig.RegisterModelBinder();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes, container);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
-            //container = DIConfig.RegisterDependencyInjectionContainer();
         }
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)

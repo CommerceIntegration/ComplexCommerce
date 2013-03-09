@@ -49,6 +49,9 @@
       <HintPath>..\packages\CSLA-Core.4.5.10\lib\net45\Csla.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MvcSiteMapProvider">
+      <HintPath>..\..\..\lib\MvcSiteMapProvider\MvcSiteMapProvider.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -174,18 +177,23 @@
     <Compile Include="App_Start\ModelBinderConfig.cs" />
     <Compile Include="App_Start\DIConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MvcSiteMapProviderConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="DI\Conventions\ConnectionStringConvention.cs" />
+    <Compile Include="DI\Conventions\HttpContextScopedConvention.cs" />
     <Compile Include="DI\Conventions\RepositoryConvention.cs" />
     <Compile Include="DI\Conventions\SingletonConvention.cs" />
+    <Compile Include="DI\Conventions\TransientConvention.cs" />
     <Compile Include="DI\Registries\CslaClientRegistry.cs" />
     <Compile Include="DI\Registries\CslaDataPortalRegistry.cs" />
     <Compile Include="DI\Registries\CslaGlobalRegistry.cs" />
+    <Compile Include="DI\Registries\MvcSiteMapProviderRegistry.cs" />
     <Compile Include="DI\Registries\PresentationRegistry.cs" />
     <Compile Include="DI\StructureMapContainer.cs" />
     <Compile Include="DI\StructureMapResolver.cs" />
@@ -310,7 +318,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Category\Details.cshtml" />
-    <Content Include="Views\Home\Redirect301.cshtml" />
+    <Content Include="Views\System\Status301.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>

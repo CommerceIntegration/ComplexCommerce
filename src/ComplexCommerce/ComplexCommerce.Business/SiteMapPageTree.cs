@@ -7,9 +7,35 @@ using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Dto;
 using ComplexCommerce.Data.Repositories;
+using ComplexCommerce.Business.Rules;
 
 namespace ComplexCommerce.Business
 {
+    public interface ISiteMapPageTreeFactory
+    {
+        //SiteMapPageTree EmptySiteMapPageTree();
+        SiteMapPageTree GetSiteMapPageTree(int tenantId, int localeId);
+    }
+
+    public class SiteMapPageTreeFactory
+        : ISiteMapPageTreeFactory
+    {
+
+        #region ISiteMapPageTreeFactory Members
+
+        //public SiteMapPageTree EmptySiteMapPageTree()
+        //{
+        //    return SiteMapPageTree.EmptyRouteUrlPageList();
+        //}
+
+        public SiteMapPageTree GetSiteMapPageTree(int tenantId, int localeId)
+        {
+            return SiteMapPageTree.GetSiteMapPageTree(tenantId, localeId);
+        }
+
+        #endregion
+    }
+
     public class SiteMapPageTree
         : CslaReadOnlyBase<SiteMapPageTree>
     {
@@ -80,10 +106,29 @@ namespace ComplexCommerce.Business
         }
 
 
+
+
         public static SiteMapPageTree GetSiteMapPageTree(int storeId, int localeId)
         {
             var criteria = new Criteria() { StoreId = storeId, LocaleId = localeId };
             return DataPortal.Fetch<SiteMapPageTree>(criteria);
+        }
+
+        protected override void AddBusinessRules()
+        {
+            base.AddBusinessRules();
+
+            // Route URL
+            //BusinessRules.AddRule(new UrlPathProductRule(RouteUrlProperty, ParentPageRouteUrlProperty, ProductUrlSlugProperty) { Priority = 1 });
+            BusinessRules.AddRule(new UrlPathTrailingSlashRule(RouteUrlProperty) { Priority = 2 });
+            BusinessRules.AddRule(new UrlPathLeadingSlashRule(RouteUrlProperty) { Priority = 3 });
+            BusinessRules.AddRule(new UrlPathLocaleRule(RouteUrlProperty, LocaleIdProperty, appContext) { Priority = 4 });
+
+            //// Canonical URL
+            //BusinessRules.AddRule(new UrlPathProductRule(CanonicalRouteUrlProperty, DefaultCategoryRouteUrlProperty, ProductUrlSlugProperty) { Priority = 1 });
+            //BusinessRules.AddRule(new UrlPathTrailingSlashRule(CanonicalRouteUrlProperty) { Priority = 2 });
+            //BusinessRules.AddRule(new UrlPathLeadingSlashRule(CanonicalRouteUrlProperty) { Priority = 3 });
+            //BusinessRules.AddRule(new UrlPathLocaleRule(CanonicalRouteUrlProperty, LocaleIdProperty, appContext) { Priority = 4 });
         }
 
         // Used for entry point
@@ -119,6 +164,9 @@ namespace ComplexCommerce.Business
 
             ChildPages = DataPortal.FetchChild<SiteMapPageList>(page.Id, pageList, productList);
             Products = DataPortal.FetchChild<SiteMapProductList>(page.ContentId, productList);
+
+            // Force the BusinessRules to execute
+            this.BusinessRules.CheckRules();
         }
 
         #region Dependency Injection
@@ -162,6 +210,27 @@ namespace ComplexCommerce.Business
                     throw new InvalidOperationException();
                 }
                 this.productRepository = value;
+            }
+        }
+
+        [NonSerialized]
+        [NotUndoable]
+        private Context.IApplicationContext appContext;
+        public Context.IApplicationContext AppContext
+        {
+            set
+            {
+                // Don't allow the value to be set to null
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+                // Don't allow the value to be set more than once
+                if (this.appContext != null)
+                {
+                    throw new InvalidOperationException();
+                }
+                this.appContext = value;
             }
         }
 
