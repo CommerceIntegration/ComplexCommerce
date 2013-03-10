@@ -27,9 +27,6 @@ namespace ComplexCommerce.DI.Registries
     {
         public MvcSiteMapProviderRegistry(IDependencyInjectionContainer container)
         {
-            this.For<IMvcContextFactory>()
-                .Use<MvcContextFactory>();
-
             this.Scan(scan =>
             {
                 scan.TheCallingAssembly();
@@ -45,14 +42,14 @@ namespace ComplexCommerce.DI.Registries
                 scan.AddAllTypesOf<IDynamicNodeProvider>();
                 scan.AddAllTypesOf<ISiteMapNodeVisibilityProvider>();
                 scan.AddAllTypesOf<ISiteMapNodeUrlResolver>();
+                scan.AddAllTypesOf<IDynamicNodeProviderStrategy>();
+                scan.AddAllTypesOf<ISiteMapNodeUrlResolverStrategy>();
+                scan.AddAllTypesOf<ISiteMapNodeVisibilityProviderStrategy>();
+                scan.AddAllTypesOf<IFilterProvider>();
+                scan.AddAllTypesOf<IControllerDescriptorFactory>();
+                scan.AddAllTypesOf<IObjectCopier>();
                 scan.Convention<SingletonConvention>();
             });
-
-            this.For<ISiteMap>()
-                .Use<RequestCacheableSiteMap>();
-
-            this.For<ISiteMapNode>()
-                .Use<RequestCacheableSiteMapNode>();
 
             // Pass in the global controllerBuilder reference
             this.For<ControllerBuilder>()
@@ -63,30 +60,6 @@ namespace ComplexCommerce.DI.Registries
 
             this.For<IBuildManager>()
                 .Use<BuildManagerAdaptor>();
-
-            this.For<IFilterProvider>()
-                .Singleton()
-                .Use<FilterProvider>();
-
-            this.For<IControllerDescriptorFactory>()
-                .Singleton()
-                .Use<ControllerDescriptorFactory>();
-
-            this.For<IObjectCopier>()
-                .Singleton()
-                .Use<ObjectCopier>();
-
-            this.For<IDynamicNodeProviderStrategy>()
-                .Singleton()
-                .Use<DynamicNodeProviderStrategy>();
-
-            this.For<ISiteMapNodeUrlResolverStrategy>()
-                .Singleton()
-                .Use<SiteMapNodeUrlResolverStrategy>();
-
-            this.For<ISiteMapNodeVisibilityProviderStrategy>()
-                .Singleton()
-                .Use<SiteMapNodeVisibilityProviderStrategy>();
 
             // Configure Security
             this.For<IAclModule>().Use<CompositeAclModule>()
