@@ -114,15 +114,7 @@ namespace ComplexCommerce.DI.Registries
 
 
             // Register the custom sitemap builder
-            this.For<ISiteMapNodeVisitor>()
-                .Use<UrlResolvingSiteMapNodeVisitor>();
-
-            this.For<ISiteMapBuilder>().Use<CompositeSiteMapBuilder>()
-                .EnumerableOf<ISiteMapBuilder>().Contains(x =>
-                {
-                    x.Type<SiteMapBuilder>();
-                    x.Type<VisitingSiteMapBuilder>();
-                });
+            this.For<ISiteMapBuilder>().Use<SiteMapBuilder>();
 
             this.For<ISiteMapBuilderSetStrategy>().Use<SiteMapBuilderSetStrategy>()
                 .EnumerableOf<ISiteMapBuilderSet>().Contains(x =>
