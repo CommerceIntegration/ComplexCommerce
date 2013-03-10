@@ -84,10 +84,6 @@ namespace ComplexCommerce.DI.Registries
                 .Singleton()
                 .Use<SiteMapNodeUrlResolverStrategy>();
 
-            this.For<IControllerDescriptorFactory>()
-                .Singleton()
-                .Use<ControllerDescriptorFactory>();
-
             this.For<ISiteMapNodeVisibilityProviderStrategy>()
                 .Singleton()
                 .Use<SiteMapNodeVisibilityProviderStrategy>();
