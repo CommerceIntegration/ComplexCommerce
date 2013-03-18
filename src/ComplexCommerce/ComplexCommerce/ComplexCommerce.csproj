@@ -320,6 +320,9 @@
     <Content Include="Views\Category\Details.cshtml" />
     <Content Include="Views\System\Status301.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

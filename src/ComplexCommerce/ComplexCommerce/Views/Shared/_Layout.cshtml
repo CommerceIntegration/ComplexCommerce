@@ -29,17 +29,24 @@
                         @Html.Partial("_LoginPartial")
                     </section>
                     <nav>
-                        <ul id="menu">
+                        @*<ul id="menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
                             <li>@Html.ActionLink("About", "About", "Home")</li>
                             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
+                        </ul>*@
+
+                        @Html.MvcSiteMap().Menu()
                     </nav>
                 </div>
+                <div class="clear-fix"></div>
+                <div class="breadcrumb">
+                    @Html.MvcSiteMap().SiteMapPath()
+                </div>
             </div>
+            
         </header>
+        
         <div id="body">
-            @Html.MvcSiteMap().SiteMapPath()
             @RenderSection("featured", required: false)
             <section class="content-wrapper main-content clear-fix">
                 @RenderBody()
