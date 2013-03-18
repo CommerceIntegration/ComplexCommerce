@@ -18,6 +18,7 @@ using MvcSiteMapProvider.Caching;
 using ComplexCommerce.Shared.DI;
 using ComplexCommerce.DI.Conventions;
 using ComplexCommerce.Web.Mvc.SiteMapProvider;
+using ComplexCommerce.Web.Mvc.DI;
 
 
 namespace ComplexCommerce.DI.Registries
@@ -38,7 +39,10 @@ namespace ComplexCommerce.DI.Registries
             {
                 scan.TheCallingAssembly();
                 scan.AssemblyContainingType<SiteMaps>();
+                scan.AssemblyContainingType<InjectableControllerFactory>();
                 scan.WithDefaultConventions();
+                scan.AddAllTypesOf<IMvcContextFactory>();
+                scan.AddAllTypesOf<ISiteMapCacheKeyToBuilderSetMapper>();
                 scan.AddAllTypesOf<IDynamicNodeProvider>();
                 scan.AddAllTypesOf<ISiteMapNodeVisibilityProvider>();
                 scan.AddAllTypesOf<ISiteMapNodeUrlResolver>();
@@ -71,24 +75,28 @@ namespace ComplexCommerce.DI.Registries
 
             // Setup cache
             this.For<ISiteMapCache>()
-                .Use<AspNetSiteMapCache>();
+                .Use<RuntimeSiteMapCache>();
 
-            this.For<ICacheDependencyFactory>()
-                .Use<AspNetCacheDependencyFactory>()
-                .Ctor<IEnumerable<string>>().Is(new string[0]);
+            var cacheDependency = 
+                this.For<ICacheDependency>().Use<NullCacheDependency>();
 
-            this.For<ICacheDetails>().Use<CacheDetails>()
-                .Ctor<TimeSpan>("absoluteCacheExpiration").Is(TimeSpan.FromMinutes(5))
-                .Ctor<TimeSpan>("slidingCacheExpiration").Is(TimeSpan.MinValue);
+            var cacheDetails = 
+                this.For<ICacheDetails>().Use<CacheDetails>()
+                    .Ctor<TimeSpan>("absoluteCacheExpiration").Is(TimeSpan.FromMinutes(5))
+                    .Ctor<TimeSpan>("slidingCacheExpiration").Is(TimeSpan.MinValue)
+                    .Ctor<ICacheDependency>().Is(cacheDependency);
 
 
             // Register the custom sitemap builder
-            this.For<ISiteMapBuilder>().Use<SiteMapBuilder>();
+            var builder = this.For<ISiteMapBuilder>().Use<SiteMapBuilder>();
 
             this.For<ISiteMapBuilderSetStrategy>().Use<SiteMapBuilderSetStrategy>()
                 .EnumerableOf<ISiteMapBuilderSet>().Contains(x =>
                 {
-                    x.Type<SiteMapBuilderSet>().Ctor<string>("name").Is("default");
+                    x.Type<SiteMapBuilderSet>()
+                        .Ctor<string>("instanceName").Is("default")
+                        .Ctor<ISiteMapBuilder>().Is(builder)
+                        .Ctor<ICacheDetails>().Is(cacheDetails);
                 });
         }
     }

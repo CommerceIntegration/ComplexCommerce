@@ -78,7 +78,7 @@ namespace ComplexCommerce.DI.Registries
                 scan.TheCallingAssembly();
                 scan.AddAllTypesOf<IController>();
                 scan.Include(t => typeof(IController).IsAssignableFrom(t));
-                scan.Convention<HttpContextScopedConvention>();
+                scan.Convention<TransientConvention>();
             });
         }
     }

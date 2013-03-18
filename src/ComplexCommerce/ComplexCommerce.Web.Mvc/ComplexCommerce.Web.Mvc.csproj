@@ -90,6 +90,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\RouteUtilities.cs" />
     <Compile Include="Routing\TrailingSlashRedirectRoute.cs" />
+    <Compile Include="SiteMapProvider\VisibilityProvider.cs" />
     <Compile Include="SiteMapProvider\SiteMapBuilder.cs" />
     <Compile Include="SiteMapProvider\SiteMapCacheKeyGenerator.cs" />
   </ItemGroup>

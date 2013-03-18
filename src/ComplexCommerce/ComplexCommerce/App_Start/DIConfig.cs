@@ -40,12 +40,6 @@ namespace ComplexCommerce
             container.Configure(r => r.AddRegistry(new CslaDataPortalRegistry(diContainer)));
             container.Configure(r => r.AddRegistry<CslaGlobalRegistry>());
 
-            
-
-            //var test = container.GetInstance<MvcSiteMapProvider.Web.Mvc.IMvcContextFactory>();
-            var test = diContainer.Resolve<MvcSiteMapProvider.Web.Mvc.IMvcContextFactory>();
-
-
                // Verify the configuration
             // TODO: Move this into a test
             //container.AssertConfigurationIsValid();
