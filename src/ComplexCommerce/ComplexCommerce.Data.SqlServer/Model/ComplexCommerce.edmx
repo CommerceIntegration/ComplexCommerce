@@ -82,13 +82,14 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ParentId" Type="uniqueidentifier" />
           <Property Name="TenantLocaleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ContentType" Type="int" Nullable="false" />
+          <Property Name="ContentId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="RouteUrl" Type="nvarchar" Nullable="false" MaxLength="1024" />
           <Property Name="Title" Type="nvarchar" MaxLength="100" />
           <Property Name="MetaKeywords" Type="nvarchar" MaxLength="1024" />
           <Property Name="MetaDescription" Type="nvarchar" MaxLength="255" />
           <Property Name="MetaRobots" Type="nvarchar" MaxLength="50" />
-          <Property Name="ContentType" Type="int" Nullable="false" />
-          <Property Name="ContentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsVisibleOnMainMenu" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -480,13 +481,14 @@
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="ParentId" />
           <Property Type="Guid" Name="TenantLocaleId" Nullable="false" />
+          <Property Type="Int32" Name="ContentType" Nullable="false" />
+          <Property Type="Guid" Name="ContentId" Nullable="false" />
           <Property Type="String" Name="RouteUrl" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Title" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MetaKeywords" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MetaDescription" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MetaRobots" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="ContentType" Nullable="false" />
-          <Property Type="Guid" Name="ContentId" Nullable="false" />
+          <Property Type="Boolean" Name="IsVisibleOnMainMenu" Nullable="false" />
           <NavigationProperty Name="TenantLocale" Relationship="ComplexCommerce.Model.FK_TenantLocale_Page" FromRole="Page" ToRole="TenantLocale" />
         </EntityType>
         <Association Name="FK_TenantLocale_Page">
@@ -585,13 +587,14 @@
           <EntitySetMapping Name="Page">
             <EntityTypeMapping TypeName="ComplexCommerce.Model.Page">
               <MappingFragment StoreEntitySet="Page">
-                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
-                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="IsVisibleOnMainMenu" ColumnName="IsVisibleOnMainMenu" />
                 <ScalarProperty Name="MetaRobots" ColumnName="MetaRobots" />
                 <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
                 <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
+                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
                 <ScalarProperty Name="TenantLocaleId" ColumnName="TenantLocaleId" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

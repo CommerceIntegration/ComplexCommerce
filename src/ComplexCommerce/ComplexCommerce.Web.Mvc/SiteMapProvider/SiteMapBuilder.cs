@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using MvcSiteMapProvider;
 using MvcSiteMapProvider.Builder;
+using MvcSiteMapProvider.Reflection;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
 
@@ -92,6 +93,10 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             node.Title = treeNode.Title;
             node.Url = treeNode.RouteUrl;
 
+            // Setup visibility
+            node.Attributes.Add("isVisibleOnMainMenu", treeNode.IsVisibleOnMainMenu.ToString().ToLowerInvariant());
+            node.VisibilityProvider = typeof(VisibilityProvider).ShortAssemblyQualifiedName();
+
             //// These aren't strictly necessary...
             //node.Controller = treeNode.ContentType.ToString();
             //node.Area = "";
@@ -116,6 +121,10 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             // Assign values
             node.Title = productInfo.Name;
             node.Url = productInfo.RouteUrl;
+
+            // Setup visibility
+            node.Attributes.Add("isVisibleOnMainMenu", "false");
+            node.VisibilityProvider = typeof(VisibilityProvider).ShortAssemblyQualifiedName();
 
             //// These aren't strictly necessary...
             //node.Controller = "Product";

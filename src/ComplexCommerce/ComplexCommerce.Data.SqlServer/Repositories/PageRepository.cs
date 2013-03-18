@@ -62,11 +62,12 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                                   Id = page.Id,
                                   ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
                                   LocaleId = localeId,
+                                  ContentType = page.ContentType,
+                                  ContentId = page.ContentId,
                                   Title = page.Title,
                                   RouteUrl = page.RouteUrl,
                                   MetaRobots = page.MetaRobots,
-                                  ContentType = page.ContentType,
-                                  ContentId = page.ContentId
+                                  IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
                               });
 
                 return result.ToList();

@@ -17,13 +17,14 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> ParentId { get; set; }
         public System.Guid TenantLocaleId { get; set; }
+        public int ContentType { get; set; }
+        public System.Guid ContentId { get; set; }
         public string RouteUrl { get; set; }
         public string Title { get; set; }
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }
         public string MetaRobots { get; set; }
-        public int ContentType { get; set; }
-        public System.Guid ContentId { get; set; }
+        public bool IsVisibleOnMainMenu { get; set; }
     
         public virtual TenantLocale TenantLocale { get; set; }
     }

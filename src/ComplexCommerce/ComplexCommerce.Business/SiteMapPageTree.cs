@@ -39,6 +39,12 @@ namespace ComplexCommerce.Business
     public class SiteMapPageTree
         : CslaReadOnlyBase<SiteMapPageTree>
     {
+        public static SiteMapPageTree GetSiteMapPageTree(int storeId, int localeId)
+        {
+            var criteria = new Criteria() { StoreId = storeId, LocaleId = localeId };
+            return DataPortal.Fetch<SiteMapPageTree>(criteria);
+        }
+
         public static PropertyInfo<Guid> IdProperty = RegisterProperty<Guid>(c => c.Id);
         public Guid Id
         {
@@ -51,6 +57,20 @@ namespace ComplexCommerce.Business
         {
             get { return GetProperty(LocaleIdProperty); }
             private set { LoadProperty(LocaleIdProperty, value); }
+        }
+
+        public static PropertyInfo<ContentTypeEnum> ContentTypeProperty = RegisterProperty<ContentTypeEnum>(c => c.ContentType);
+        public ContentTypeEnum ContentType
+        {
+            get { return GetProperty(ContentTypeProperty); }
+            private set { LoadProperty(ContentTypeProperty, value); }
+        }
+
+        public static PropertyInfo<Guid> ContentIdProperty = RegisterProperty<Guid>(c => c.ContentId);
+        public Guid ContentId
+        {
+            get { return GetProperty(ContentIdProperty); }
+            private set { LoadProperty(ContentIdProperty, value); }
         }
 
         public static PropertyInfo<string> TitleProperty = RegisterProperty<string>(c => c.Title);
@@ -67,9 +87,6 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(RouteUrlProperty, value); }
         }
 
-        // TODO: Add Url property that combines the locale with the route in a business rule.
-        // http://www.somesite.com.../en-us/the/route/url
-
         public static PropertyInfo<string> MetaRobotsProperty = RegisterProperty<string>(c => c.MetaRobots);
         public string MetaRobots
         {
@@ -77,19 +94,13 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(MetaRobotsProperty, value); }
         }
 
-        public static PropertyInfo<ContentTypeEnum> ContentTypeProperty = RegisterProperty<ContentTypeEnum>(c => c.ContentType);
-        public ContentTypeEnum ContentType
+        public static PropertyInfo<bool> IsVisibleOnMainMenuProperty = RegisterProperty<bool>(c => c.IsVisibleOnMainMenu);
+        public bool IsVisibleOnMainMenu
         {
-            get { return GetProperty(ContentTypeProperty); }
-            private set { LoadProperty(ContentTypeProperty, value); }
+            get { return GetProperty(IsVisibleOnMainMenuProperty); }
+            private set { LoadProperty(IsVisibleOnMainMenuProperty, value); }
         }
 
-        public static PropertyInfo<Guid> ContentIdProperty = RegisterProperty<Guid>(c => c.ContentId);
-        public Guid ContentId
-        {
-            get { return GetProperty(ContentIdProperty); }
-            private set { LoadProperty(ContentIdProperty, value); }
-        }
 
         public static readonly PropertyInfo<SiteMapPageList> ChildPagesProperty = RegisterProperty<SiteMapPageList>(p => p.ChildPages);
         public SiteMapPageList ChildPages
@@ -108,18 +119,13 @@ namespace ComplexCommerce.Business
 
 
 
-        public static SiteMapPageTree GetSiteMapPageTree(int storeId, int localeId)
-        {
-            var criteria = new Criteria() { StoreId = storeId, LocaleId = localeId };
-            return DataPortal.Fetch<SiteMapPageTree>(criteria);
-        }
+        
 
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
 
             // Route URL
-            //BusinessRules.AddRule(new UrlPathProductRule(RouteUrlProperty, ParentPageRouteUrlProperty, ProductUrlSlugProperty) { Priority = 1 });
             BusinessRules.AddRule(new UrlPathTrailingSlashRule(RouteUrlProperty) { Priority = 2 });
             BusinessRules.AddRule(new UrlPathLeadingSlashRule(RouteUrlProperty) { Priority = 3 });
             BusinessRules.AddRule(new UrlPathLocaleRule(RouteUrlProperty, LocaleIdProperty, appContext) { Priority = 4 });
@@ -156,11 +162,12 @@ namespace ComplexCommerce.Business
         {
             Id = page.Id;
             LocaleId = page.LocaleId;
+            ContentType = (ContentTypeEnum)page.ContentType;
+            ContentId = page.ContentId;
             Title = page.Title;
             RouteUrl = page.RouteUrl;
             MetaRobots = page.MetaRobots;
-            ContentType = (ContentTypeEnum)page.ContentType;
-            ContentId = page.ContentId;
+            IsVisibleOnMainMenu = page.IsVisibleOnMainMenu;
 
             ChildPages = DataPortal.FetchChild<SiteMapPageList>(page.Id, pageList, productList);
             Products = DataPortal.FetchChild<SiteMapProductList>(page.ContentId, productList);
