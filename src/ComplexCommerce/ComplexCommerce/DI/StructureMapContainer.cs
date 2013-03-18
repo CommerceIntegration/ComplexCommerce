@@ -8,8 +8,8 @@ using ComplexCommerce.Shared.DI;
 namespace ComplexCommerce.DI
 {
     // Container to pass the instance of the DI container to Controller for resolving dependencies
-    public class StructureMapContainer :
-        IDependencyInjectionContainer
+    public class StructureMapContainer 
+        : IDependencyInjectionContainer
     {
         private readonly StructureMap.IContainer container;
 

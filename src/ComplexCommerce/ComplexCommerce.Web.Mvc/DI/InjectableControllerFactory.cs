@@ -8,7 +8,8 @@ using ComplexCommerce.Shared.DI;
 
 namespace ComplexCommerce.Web.Mvc.DI
 {
-    public class InjectableControllerFactory : DefaultControllerFactory
+    public class InjectableControllerFactory 
+        : DefaultControllerFactory
     {
         private readonly IDependencyInjectionContainer container;
 

@@ -12,9 +12,9 @@ namespace ComplexCommerce.DI
     public class StructureMapResolver :
         IResolver
     {
-        private readonly StructureMap.Container container;
+        private readonly StructureMap.IContainer container;
 
-        public StructureMapResolver(StructureMap.Container container)
+        public StructureMapResolver(StructureMap.IContainer container)
         {
             this.container = container;
         }
