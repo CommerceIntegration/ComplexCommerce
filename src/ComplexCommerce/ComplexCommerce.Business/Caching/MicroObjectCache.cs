@@ -24,12 +24,28 @@ namespace ComplexCommerce.Business.Caching
 
         public bool Contains(string key)
         {
-            return cache.Contains(key);
+            synclock.EnterReadLock();
+            try
+            {
+                return cache.Contains(key);
+            }
+            finally
+            {
+                synclock.ExitReadLock();
+            }
         }
 
         public void Remove(string key)
         {
-            cache.Remove(key);
+            synclock.EnterWriteLock();
+            try
+            {
+                cache.Remove(key);
+            }
+            finally
+            {
+                synclock.ExitWriteLock();
+            }
         }
 
         public T GetOrAdd(string key, Func<T> loadFunction)
