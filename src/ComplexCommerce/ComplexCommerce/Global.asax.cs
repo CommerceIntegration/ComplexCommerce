@@ -32,22 +32,18 @@ namespace ComplexCommerce
             RouteConfig.RegisterRoutes(RouteTable.Routes, container);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+            DbConfig.Register(container);
+        }
+
+        protected void Application_BeginRequest(Object sender, EventArgs e)
+        {
+            container.Resolve<TenantInitializer>();
+            container.Resolve<LocaleInitializer>();
         }
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
-            // Lookup the current tenant and put it into ambient context on the current request
-            var contextUtil = container.Resolve<IContextUtilities>();
-            var contextFactory = container.Resolve<IHttpContextFactory>();
-            var appContext = container.Resolve<IApplicationContext>();
-            var context = contextFactory.GetHttpContext();
-            var tenant = contextUtil.GetTenantFromContext(context);
-            appContext.CurrentTenant = tenant;
-
-            // Set the current culture
-            var culture = contextUtil.GetLocaleFromContext(context, tenant.DefaultLocale);
-            Thread.CurrentThread.CurrentUICulture = culture;
-            Thread.CurrentThread.CurrentCulture = culture;
+            
         }
     }
 }

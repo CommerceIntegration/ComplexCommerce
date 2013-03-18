@@ -49,9 +49,6 @@ namespace ComplexCommerce
                 new InjectableControllerFactory(diContainer)
             );
 
-            // Configure AutoMapper - all work done in constructor
-            container.GetInstance<IDataInitializer>();
-
             // Return our DI container instance
             return diContainer;
         }

@@ -8,7 +8,7 @@ using System.Data.Entity;
 namespace ComplexCommerce.Data.SqlServer.Model
 {
 
-    public class ComplexCommerceInitializer
+    public class ComplexCommerceSeeder
         : DropCreateDatabaseIfModelChanges<ComplexCommerce>
     {
         protected override void Seed(ComplexCommerce context)
