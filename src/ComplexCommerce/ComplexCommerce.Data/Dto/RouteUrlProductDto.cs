@@ -8,7 +8,8 @@ namespace ComplexCommerce.Data.Dto
 {
     public class RouteUrlProductDto
     {
-        public Guid ProductXTenantLocaleId { get; set; }
+        //public Guid ProductXTenantLocaleId { get; set; }
+        public Guid CategoryXProductXTenantLocaleId { get; set; }
         public int LocaleId { get; set; }
         public string ProductUrlSlug { get; set; }
         public string ParentPageRouteUrl { get; set; }

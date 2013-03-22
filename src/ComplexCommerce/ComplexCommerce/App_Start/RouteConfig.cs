@@ -21,6 +21,7 @@ namespace ComplexCommerce
             routes.Add(container.Resolve<PageRoute>());
             routes.Add(container.Resolve<ProductRoute>());
 
+            
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

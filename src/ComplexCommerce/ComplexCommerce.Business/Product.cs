@@ -9,7 +9,8 @@ namespace ComplexCommerce.Business
     public interface IProductFactory
     {
         IProduct NewProduct();
-        IProduct GetProduct(Guid productXTenantLocaleId);
+        //IProduct GetProduct(Guid productXTenantLocaleId);
+        IProduct GetProduct(Guid categoryXProductXTenantLocaleId);
     }
 
     public class ProductFactory
@@ -23,10 +24,15 @@ namespace ComplexCommerce.Business
             return Product.NewProduct();
         }
 
-        public IProduct GetProduct(Guid productXTenantLocaleId)
+        public IProduct GetProduct(Guid categoryXProductXTenantLocaleId)
         {
-            return Product.GetProduct(productXTenantLocaleId);
+            return Product.GetProduct(categoryXProductXTenantLocaleId);
         }
+
+        //public IProduct GetProduct(Guid productXTenantLocaleId)
+        //{
+        //    return Product.GetProduct(productXTenantLocaleId);
+        //}
 
         #endregion
     }
@@ -34,6 +40,7 @@ namespace ComplexCommerce.Business
     public interface IProduct
     {
         Guid Id { get; }
+        Guid ProductXTenantLocaleId { get; }
         string Name { get; }
         string Description { get; }
         string MetaKeywords { get; } // Move to another interface that is inherited?
@@ -41,8 +48,7 @@ namespace ComplexCommerce.Business
         string SKU { get; }
         string ImageUrl { get; }
         decimal Price { get; }
-        //string DefaultCategoryRouteUrl { get; }
-        //string CanonicalRouteUrl { get; }
+        ProductCategoryList Categories { get; }
     }
 
     [Serializable]
@@ -54,6 +60,13 @@ namespace ComplexCommerce.Business
         {
             get { return GetProperty(IdProperty); }
             private set { LoadProperty(IdProperty, value); }
+        }
+
+        public static readonly PropertyInfo<Guid> ProductXTenantLocaleIdProperty = RegisterProperty<Guid>(p => p.ProductXTenantLocaleId);
+        public Guid ProductXTenantLocaleId
+        {
+            get { return GetProperty(ProductXTenantLocaleIdProperty); }
+            private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
         }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
@@ -105,26 +118,22 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(PriceProperty, value); }
         }
 
-        //public static readonly PropertyInfo<string> DefaultCategoryRouteUrlProperty = RegisterProperty<string>(p => p.DefaultCategoryRouteUrl);
-        //public string DefaultCategoryRouteUrl
-        //{
-        //    get { return GetProperty(DefaultCategoryRouteUrlProperty); }
-        //    private set { LoadProperty(DefaultCategoryRouteUrlProperty, value); }
-        //}
-
-        //// TODO: Eliminate this property here and populate the canonical URL when building the SiteMapTree
-        //// This can eliminate an unnecessary join when users are browsing the product pages.
-        //public static readonly PropertyInfo<string> CanonicalRouteUrlProperty = RegisterProperty<string>(p => p.CanonicalRouteUrl);
-        //public string CanonicalRouteUrl
-        //{
-        //    get { return GetProperty(CanonicalRouteUrlProperty); }
-        //    private set { LoadProperty(CanonicalRouteUrlProperty, value); }
-        //}
-
-
-        internal static IProduct GetProduct(Guid productXTenantLocaleId)
+        public static readonly PropertyInfo<ProductCategoryList> CategoriesProperty = RegisterProperty<ProductCategoryList>(p => p.Categories);
+        public ProductCategoryList Categories
         {
-            return DataPortal.Fetch<Product>(productXTenantLocaleId);
+            get { return GetProperty(CategoriesProperty); }
+            private set { LoadProperty(CategoriesProperty, value); }
+        }
+
+
+        //internal static IProduct GetProduct(Guid productXTenantLocaleId)
+        //{
+        //    return DataPortal.Fetch<Product>(productXTenantLocaleId);
+        //}
+
+        internal static IProduct GetProduct(Guid categoryXProductXTenantLocaleId)
+        {
+            return DataPortal.Fetch<Product>(categoryXProductXTenantLocaleId);
         }
 
         internal static IProduct NewProduct()
@@ -134,15 +143,16 @@ namespace ComplexCommerce.Business
         }
 
 
-        private void DataPortal_Fetch(Guid productXTenantLocaleId)
+        private void DataPortal_Fetch(Guid categoryXProductXTenantLocaleId)
         {
             using (var ctx = ContextFactory.GetContext())
             {
-                var data = repository.Fetch(productXTenantLocaleId);
+                var data = repository.Fetch(categoryXProductXTenantLocaleId);
 
                 if (data != null)
                 {
                     Id = data.Id;
+                    ProductXTenantLocaleId = data.ProductXTenantLocaleId;
                     Name = data.Name;
                     Description = data.Description;
                     MetaKeywords = data.MetaKeywords;
@@ -150,7 +160,8 @@ namespace ComplexCommerce.Business
                     SKU = data.SKU;
                     ImageUrl = data.ImageUrl;
                     Price = data.Price;
-                    //DefaultCategoryRouteUrl = data.DefaultCategoryRouteUrl;
+
+                    Categories = DataPortal.FetchChild<ProductCategoryList>(ProductXTenantLocaleId);
                 }
             }
 

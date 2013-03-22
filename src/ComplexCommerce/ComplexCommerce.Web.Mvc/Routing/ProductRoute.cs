@@ -54,7 +54,12 @@ namespace ComplexCommerce.Web.Mvc.Routing
                     // TODO: Add area for different tenant types
                     result.Values["controller"] = "Product";
                     result.Values["action"] = "Details";
-                    result.Values["id"] = page.ProductXTenantLocaleId;
+                    //result.Values["id"] = page.ProductXTenantLocaleId;
+
+                    // NOTE: May need a compound key here (ProductXTenantLocaleID and 
+                    // CategoryId) to allow product to be hosted on pages that are not 
+                    // below categories.
+                    result.Values["id"] = page.CategoryXProductXTenantLocaleId;
                 }
             }
             return result;
@@ -86,12 +91,36 @@ namespace ComplexCommerce.Web.Mvc.Routing
             return result;
         }
 
+        //private bool TryFindMatch(RouteUrlProductList pages, RouteValueDictionary values, out RouteUrlProductInfo page)
+        //{
+        //    page = null;
+        //    Guid productXTenantLocaleId = Guid.Empty;
+
+        //    if (!Guid.TryParse(Convert.ToString(values["id"]), out productXTenantLocaleId))
+        //    {
+        //        return false;
+        //    }
+
+        //    var controller = Convert.ToString(values["controller"]);
+        //    var action = Convert.ToString(values["action"]);
+
+        //    if (action == "Details" && controller == "Product")
+        //    {
+        //        page = pages.Where(x => x.ProductXTenantLocaleId.Equals(productXTenantLocaleId)).FirstOrDefault();
+        //        if (page != null)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
+
         private bool TryFindMatch(RouteUrlProductList pages, RouteValueDictionary values, out RouteUrlProductInfo page)
         {
             page = null;
-            Guid productXTenantLocaleId = Guid.Empty;
+            Guid categoryXProductXTenantLocaleId = Guid.Empty;
 
-            if (!Guid.TryParse(Convert.ToString(values["id"]), out productXTenantLocaleId))
+            if (!Guid.TryParse(Convert.ToString(values["id"]), out categoryXProductXTenantLocaleId))
             {
                 return false;
             }
@@ -101,7 +130,7 @@ namespace ComplexCommerce.Web.Mvc.Routing
 
             if (action == "Details" && controller == "Product")
             {
-                page = pages.Where(x => x.ProductXTenantLocaleId.Equals(productXTenantLocaleId)).FirstOrDefault();
+                page = pages.Where(x => x.CategoryXProductXTenantLocaleId.Equals(categoryXProductXTenantLocaleId)).FirstOrDefault();
                 if (page != null)
                 {
                     return true;

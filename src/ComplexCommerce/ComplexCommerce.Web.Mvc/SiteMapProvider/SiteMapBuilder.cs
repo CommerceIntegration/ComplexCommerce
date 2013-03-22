@@ -115,7 +115,9 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
 
         private ISiteMapNode GetSiteMapNodeFromProductInfo(ISiteMap siteMap, SiteMapProductInfo productInfo)
         {
-            var key = productInfo.ProductXTenantLocaleId.ToString();
+            //var key = productInfo.ProductXTenantLocaleId.ToString();
+
+            var key = productInfo.ProductXTenantLocaleId.ToString() + "|" + productInfo.CategoryId.ToString();
             var node = siteMapNodeFactory.Create(siteMap, key, "");
 
             // Assign values

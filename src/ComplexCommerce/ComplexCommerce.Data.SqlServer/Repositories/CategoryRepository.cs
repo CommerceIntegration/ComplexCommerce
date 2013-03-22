@@ -65,6 +65,25 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
         //                join product in ctx.ObjectContext.Product
         //                    on localizedProduct.ProductId equals product.Id
 
+        public IList<ProductCategoryDto> ListForProduct(Guid productXTenantLocaleId)
+        {
+            using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+            {
+
+                var result = (from categoryXProduct in ctx.ObjectContext.CategoryXProductXTenantLocale
+                              join page in ctx.ObjectContext.Page
+                                  on categoryXProduct.CategoryId equals page.ContentId
+                              //where page.ContentType == 2 // Filter for categories only
+                              select new ProductCategoryDto
+                              {
+                                  PageId = page.Id
+                              });
+
+                return result.ToList();
+            }
+        }
+
+
         #endregion
     }
 }

@@ -14,9 +14,14 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
 
         public override bool IsVisible(ISiteMapNode node, IDictionary<string, object> sourceMetadata)
         {
-            if (sourceMetadata["HtmlHelper"].ToString().Equals("MvcSiteMapProvider.Web.Html.MenuHelper"))
+            if (sourceMetadata.ContainsKey("name"))
             {
-                return bool.Parse(node.Attributes["isVisibleOnMainMenu"]);
+                var name = sourceMetadata["name"].ToString();
+                var attributeName = "isVisibleOn" + name;
+                if (node.Attributes.ContainsKey(attributeName))
+                {
+                    return bool.Parse(node.Attributes[attributeName]);
+                }
             }
             return true;
         }

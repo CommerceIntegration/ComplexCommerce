@@ -36,4 +36,15 @@
         @Html.DisplayFor(model => model.Price)
     </div>
 </fieldset>
+<div>
+    @if (Model.Categories.Count >  0)
+    {
+        <ul>
+        @foreach (var category in Model.Categories)
+        {
+            <li>@Html.MvcSiteMap().SiteMapPath(null, category.PageId.ToString())</li>
+        }
+        </ul>
+    }
+</div>
 

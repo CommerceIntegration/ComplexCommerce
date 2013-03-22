@@ -52,6 +52,7 @@
     <Compile Include="DataNotFoundException.cs" />
     <Compile Include="Dto\CategoryDto.cs" />
     <Compile Include="Dto\CategoryProductDto.cs" />
+    <Compile Include="Dto\ProductCategoryDto.cs" />
     <Compile Include="Dto\ProductDto.cs" />
     <Compile Include="Dto\RouteUrlPageDto.cs" />
     <Compile Include="Dto\RouteUrlProductDto.cs" />

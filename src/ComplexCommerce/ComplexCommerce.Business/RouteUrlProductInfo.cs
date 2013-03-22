@@ -45,12 +45,20 @@ namespace ComplexCommerce.Business
             }
         }
 
+        //// Route = {id}
+        //public static PropertyInfo<Guid> ProductXTenantLocaleIdProperty = RegisterProperty<Guid>(c => c.ProductXTenantLocaleId);
+        //public Guid ProductXTenantLocaleId
+        //{
+        //    get { return GetProperty(ProductXTenantLocaleIdProperty); }
+        //    private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
+        //}
+
         // Route = {id}
-        public static PropertyInfo<Guid> ProductXTenantLocaleIdProperty = RegisterProperty<Guid>(c => c.ProductXTenantLocaleId);
-        public Guid ProductXTenantLocaleId
+        public static PropertyInfo<Guid> CategoryXProductXTenantLocaleIdProperty = RegisterProperty<Guid>(c => c.CategoryXProductXTenantLocaleId);
+        public Guid CategoryXProductXTenantLocaleId
         {
-            get { return GetProperty(ProductXTenantLocaleIdProperty); }
-            private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
+            get { return GetProperty(CategoryXProductXTenantLocaleIdProperty); }
+            private set { LoadProperty(CategoryXProductXTenantLocaleIdProperty, value); }
         }
 
         public static PropertyInfo<string> ParentPageRouteUrlProperty = RegisterProperty<string>(c => c.ParentPageRouteUrl);
@@ -82,7 +90,8 @@ namespace ComplexCommerce.Business
             LocaleId = item.LocaleId;
             ParentPageRouteUrl = item.ParentPageRouteUrl;
             ProductUrlSlug = item.ProductUrlSlug;
-            ProductXTenantLocaleId = item.ProductXTenantLocaleId;
+            CategoryXProductXTenantLocaleId = item.CategoryXProductXTenantLocaleId;
+            //ProductXTenantLocaleId = item.ProductXTenantLocaleId;
 
             // Force the BusinessRules to execute
             this.BusinessRules.CheckRules();

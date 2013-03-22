@@ -24,29 +24,80 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
         #region IProductRepository Members
 
+        //public IList<CategoryProductDto> ListForCategory(Guid categoryId)
+        //{
+        //    using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+        //    {
+
+        //        var result = (from categoryXProduct in ctx.ObjectContext.CategoryXProductXTenantLocale
+        //                    join productXlocale in ctx.ObjectContext.ProductXTenantLocale
+        //                        on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
+        //                    join product in ctx.ObjectContext.Product
+        //                        on productXlocale.ProductId equals product.Id
+        //                    where categoryXProduct.CategoryId == categoryId
+        //                    select new CategoryProductDto
+        //                    {
+        //                        ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
+        //                        Name = productXlocale.Name,
+        //                        SKU = product.SKU,
+        //                        ImageUrl = product.ImageUrl,
+        //                        Price = product.Price
+        //                    });
+
+        //        return result.ToList();
+        //    }
+        //}
+
         public IList<CategoryProductDto> ListForCategory(Guid categoryId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
 
                 var result = (from categoryXProduct in ctx.ObjectContext.CategoryXProductXTenantLocale
-                            join productXlocale in ctx.ObjectContext.ProductXTenantLocale
-                                on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
-                            join product in ctx.ObjectContext.Product
-                                on productXlocale.ProductId equals product.Id
-                            where categoryXProduct.CategoryId == categoryId
-                            select new CategoryProductDto
-                            {
-                                ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
-                                Name = productXlocale.Name,
-                                SKU = product.SKU,
-                                ImageUrl = product.ImageUrl,
-                                Price = product.Price
-                            });
+                              join productXlocale in ctx.ObjectContext.ProductXTenantLocale
+                                  on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
+                              join product in ctx.ObjectContext.Product
+                                  on productXlocale.ProductId equals product.Id
+                              where categoryXProduct.CategoryId == categoryId
+                              select new CategoryProductDto
+                              {
+                                  //ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
+                                  CategoryXProductXTenantLocaleId = categoryXProduct.Id,
+                                  Name = productXlocale.Name,
+                                  SKU = product.SKU,
+                                  ImageUrl = product.ImageUrl,
+                                  Price = product.Price
+                              });
 
                 return result.ToList();
             }
         }
+
+        //public IList<RouteUrlProductDto> ListForRouteUrl(int tenantId, int localeId)
+        //{
+        //    using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+        //    {
+
+        //        var result = (from categoryXProduct in ctx.ObjectContext.CategoryXProductXTenantLocale
+        //                    join productXlocale in ctx.ObjectContext.ProductXTenantLocale
+        //                        on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
+        //                    join tenantLocale in ctx.ObjectContext.TenantLocale
+        //                        on productXlocale.TenantLocaleId equals tenantLocale.Id
+        //                    join page in ctx.ObjectContext.Page
+        //                        on categoryXProduct.CategoryId equals page.ContentId
+        //                    where tenantLocale.TenantId == tenantId && tenantLocale.LocaleId == localeId
+        //                    where page.ContentType == 2
+        //                    select new RouteUrlProductDto
+        //                    {
+        //                        ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
+        //                        LocaleId = localeId,
+        //                        ProductUrlSlug = productXlocale.UrlSlug,
+        //                        ParentPageRouteUrl = page.RouteUrl
+        //                    });
+
+        //        return result.ToList();
+        //    }
+        //}
 
         public IList<RouteUrlProductDto> ListForRouteUrl(int tenantId, int localeId)
         {
@@ -54,21 +105,21 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
             {
 
                 var result = (from categoryXProduct in ctx.ObjectContext.CategoryXProductXTenantLocale
-                            join productXlocale in ctx.ObjectContext.ProductXTenantLocale
-                                on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
-                            join tenantLocale in ctx.ObjectContext.TenantLocale
-                                on productXlocale.TenantLocaleId equals tenantLocale.Id
-                            join page in ctx.ObjectContext.Page
-                                on categoryXProduct.CategoryId equals page.ContentId
-                            where tenantLocale.TenantId == tenantId && tenantLocale.LocaleId == localeId
-                            where page.ContentType == 2
-                            select new RouteUrlProductDto
-                            {
-                                ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
-                                LocaleId = localeId,
-                                ProductUrlSlug = productXlocale.UrlSlug,
-                                ParentPageRouteUrl = page.RouteUrl
-                            });
+                              join productXlocale in ctx.ObjectContext.ProductXTenantLocale
+                                  on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
+                              join tenantLocale in ctx.ObjectContext.TenantLocale
+                                  on productXlocale.TenantLocaleId equals tenantLocale.Id
+                              join page in ctx.ObjectContext.Page
+                                  on categoryXProduct.CategoryId equals page.ContentId
+                              where tenantLocale.TenantId == tenantId && tenantLocale.LocaleId == localeId
+                              where page.ContentType == 2
+                              select new RouteUrlProductDto
+                              {
+                                  CategoryXProductXTenantLocaleId = categoryXProduct.Id,
+                                  LocaleId = localeId,
+                                  ProductUrlSlug = productXlocale.UrlSlug,
+                                  ParentPageRouteUrl = page.RouteUrl
+                              });
 
                 return result.ToList();
             }
@@ -108,31 +159,68 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
             }
         }
 
-        public ProductDto Fetch(Guid productXTenantLocaleId)
+        //public ProductDto Fetch(Guid productXTenantLocaleId)
+        //{
+        //    using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+        //    {
+
+        //        var result = (from productXTenantLocale in ctx.ObjectContext.ProductXTenantLocale
+        //                      join product in ctx.ObjectContext.Product
+        //                          on productXTenantLocale.ProductId equals product.Id
+        //                      //join page in ctx.ObjectContext.Page
+        //                      //    on productXTenantLocale.DefaultCategoryId equals page.ContentId
+
+        //                      where productXTenantLocale.Id == productXTenantLocaleId
+        //                      //where page.ContentType == 2 //category type (so we can get the URL of the category page)
+
+        //                      select new ProductDto
+        //                      {
+        //                          Id = product.Id,
+        //                          Name = productXTenantLocale.Name,
+        //                          Description = productXTenantLocale.Description,
+        //                          MetaKeywords = productXTenantLocale.MetaKeywords,
+        //                          MetaDescription = productXTenantLocale.MetaDescription,
+        //                          SKU = product.SKU,
+        //                          ImageUrl = product.ImageUrl,
+        //                          Price = product.Price//,
+        //                          //DefaultCategoryRouteUrl = page.RouteUrl
+        //                      }).FirstOrDefault();
+
+        //        if (result == null)
+        //            throw new DataNotFoundException("Product");
+        //        return result;
+        //    }
+        //}
+
+        public ProductDto Fetch(Guid categoryXProductXTenantLocaleId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
 
-                var result = (from productXTenantLocale in ctx.ObjectContext.ProductXTenantLocale
-                              join product in ctx.ObjectContext.Product
+                var result = (from categoryXProductXTenantLocale in ctx.ObjectContext.CategoryXProductXTenantLocale
+                            join productXTenantLocale in ctx.ObjectContext.ProductXTenantLocale
+                                on categoryXProductXTenantLocale.ProductXTenantLocaleId equals productXTenantLocale.Id
+                            join product in ctx.ObjectContext.Product
                                   on productXTenantLocale.ProductId equals product.Id
-                              //join page in ctx.ObjectContext.Page
-                              //    on productXTenantLocale.DefaultCategoryId equals page.ContentId
 
-                              where productXTenantLocale.Id == productXTenantLocaleId
-                              //where page.ContentType == 2 //category type (so we can get the URL of the category page)
+
+                              //join categoryXProductXTenantLocale in ctx.ObjectContext.CategoryXProductXTenantLocale
+                              //      on productXTenantLocale.Id equals categoryXProductXTenantLocale.ProductXTenantLocaleId
+
+                              where categoryXProductXTenantLocale.Id == categoryXProductXTenantLocaleId
+                              //where productXTenantLocale.Id == productXTenantLocaleId
 
                               select new ProductDto
                               {
                                   Id = product.Id,
+                                  ProductXTenantLocaleId = productXTenantLocale.Id,
                                   Name = productXTenantLocale.Name,
                                   Description = productXTenantLocale.Description,
                                   MetaKeywords = productXTenantLocale.MetaKeywords,
                                   MetaDescription = productXTenantLocale.MetaDescription,
                                   SKU = product.SKU,
                                   ImageUrl = product.ImageUrl,
-                                  Price = product.Price//,
-                                  //DefaultCategoryRouteUrl = page.RouteUrl
+                                  Price = product.Price
                               }).FirstOrDefault();
 
                 if (result == null)
