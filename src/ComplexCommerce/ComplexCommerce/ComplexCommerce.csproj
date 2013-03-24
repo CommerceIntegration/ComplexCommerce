@@ -200,6 +200,7 @@
     <Compile Include="DI\Registries\CslaGlobalRegistry.cs" />
     <Compile Include="DI\Registries\MvcSiteMapProviderRegistry.cs" />
     <Compile Include="DI\Registries\PresentationRegistry.cs" />
+    <Compile Include="DI\Registries\StructureMapRegistry.cs" />
     <Compile Include="DI\StructureMapContainer.cs" />
     <Compile Include="DI\StructureMapResolver.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -207,7 +208,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="PageRoute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

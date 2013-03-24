@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Configuration;
 using System.Runtime.Caching;
 using StructureMap;
@@ -23,7 +20,7 @@ namespace ComplexCommerce.DI.Registries
     // constructor.
     internal class CslaDataPortalRegistry : Registry
     {
-        public CslaDataPortalRegistry(IDependencyInjectionContainer container)
+        public CslaDataPortalRegistry()
         {
             
             // Get Configuration Settings to Inject
@@ -63,7 +60,8 @@ namespace ComplexCommerce.DI.Registries
             // Setup the persistanceLocation injection for the repositories.
             this.For<IPersistenceContextFactory>()
                 .Singleton()
-                .Use(new PersistenceContextFactory(persistenceContextTypeName, container));
+                .Use<PersistenceContextFactory>()
+                .Ctor<Type>("contextType").Is(persistenceContextType);
 
 
             // Setup the initializer for the repositories.

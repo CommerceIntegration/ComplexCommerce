@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using StructureMap;
 using ComplexCommerce.Csla.DI;
 
@@ -12,9 +9,9 @@ namespace ComplexCommerce.DI
     public class StructureMapResolver :
         IResolver
     {
-        private readonly StructureMap.IContainer container;
+        private readonly IContainer container;
 
-        public StructureMapResolver(StructureMap.IContainer container)
+        public StructureMapResolver(IContainer container)
         {
             this.container = container;
         }

@@ -9,34 +9,27 @@ namespace ComplexCommerce.Data.Context
 {
     public class PersistenceContextFactory : IPersistenceContextFactory
     {
-        private readonly IDependencyInjectionContainer container;
-        private readonly string contextTypeName;
-        private Type contextType = null;
-
-        // NOTE: The container injected here should be a nested container so dispose gets called
-        public PersistenceContextFactory(string contextTypeName, IDependencyInjectionContainer container)
+        public PersistenceContextFactory(
+            Type contextType, 
+            IDependencyInjectionContainer container
+            )
         {
-            if (string.IsNullOrEmpty(contextTypeName))
-                throw new ArgumentNullException("contextTypeName");
+            if (contextType == null)
+                throw new ArgumentNullException("contextType");
             if (container == null)
                 throw new ArgumentNullException("container");
-            this.contextTypeName = contextTypeName;
+            this.contextType = contextType;
             this.container = container;
         }
+
+        private readonly Type contextType = null;
+        private readonly IDependencyInjectionContainer container;
 
         #region IPersistenceContextFactory Members
 
         public IPersistenceContext GetContext()
         {
-            if (contextType == null)
-            {
-                contextType = Type.GetType(contextTypeName);
-
-                if (contextType == null)
-                    throw new ArgumentException(string.Format("Type {0} could not be found", contextTypeName));
-            }
             return container.Resolve(contextType) as IPersistenceContext;
-            //return (IPersistenceContext)Activator.CreateInstance(contextType);
         }
 
         #endregion
