@@ -91,7 +91,7 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
 
             // Assign values
             node.Title = treeNode.Title;
-            node.Url = treeNode.RouteUrl;
+            node.Url = treeNode.UrlPath;
 
             // Setup visibility
             node.Attributes.Add("isVisibleOnMainMenu", treeNode.IsVisibleOnMainMenu.ToString().ToLowerInvariant());
@@ -122,7 +122,7 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
 
             // Assign values
             node.Title = productInfo.Name;
-            node.Url = productInfo.RouteUrl;
+            node.Url = productInfo.UrlPath;
 
             // Setup visibility
             node.Attributes.Add("isVisibleOnMainMenu", "false");
@@ -134,7 +134,7 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             //node.Action = "Details";
             //node.RouteValues.Add("id", productInfo.ProductXTenantLocaleId);
 
-            node.CanonicalUrl = productInfo.CanonicalRouteUrl;
+            node.CanonicalUrl = productInfo.CanonicalUrlPath;
 
             AcquireMetaRobotsValuesFrom(productInfo.MetaRobots, node.MetaRobotsValues);
 

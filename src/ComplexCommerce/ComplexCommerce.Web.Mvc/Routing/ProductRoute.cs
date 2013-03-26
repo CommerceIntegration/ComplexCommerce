@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -36,18 +37,24 @@ namespace ComplexCommerce.Web.Mvc.Routing
         {
             RouteData result = null;
             var tenant = appContext.CurrentTenant;
+            var localeId = appContext.CurrentLocaleId;
 
             if (tenant.TenantType == TenantTypeEnum.Store)
             {
                 // Get all of the pages
-                var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, tenant.DefaultLocale.LCID);
                 var path = httpContext.Request.Path;
-                var page = pages
-                    .Where(x => x.RouteUrl.Equals(path))
+                var pathLength = path.Length;
+
+                var page = routeUrlProductListFactory
+                    .GetRouteUrlProductList(tenant.Id, localeId)
+                    .Where(x => x.UrlPath.Length.Equals(pathLength))
+                    .Where(x => x.UrlPath.Equals(path))
                     .FirstOrDefault();
+                
                 if (page != null)
                 {
-                    result = new RouteData(this, new MvcRouteHandler());
+                    //result = new RouteData(this, new MvcRouteHandler());
+                    result = routeUtilities.CreateRouteData(this);
 
                     routeUtilities.AddQueryStringParametersToRouteData(result, httpContext);
 
@@ -69,53 +76,27 @@ namespace ComplexCommerce.Web.Mvc.Routing
         {
             VirtualPathData result = null;
             var tenant = appContext.CurrentTenant;
+            var localeId = appContext.CurrentLocaleId;
 
             if (tenant.TenantType == TenantTypeEnum.Store)
             {
-                RouteUrlProductInfo page = null;
-                string virtualPath = string.Empty;
+                IRouteUrlProductInfo page = null;
 
                 // Get all of the pages
-                var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, tenant.DefaultLocale.LCID);
+                var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, localeId);
 
                 if (TryFindMatch(pages, values, out page))
                 {
-                    virtualPath = page.VirtualPath;
-                }
-
-                if (!string.IsNullOrEmpty(virtualPath))
-                {
-                    result = new VirtualPathData(this, virtualPath);
+                    if (!string.IsNullOrEmpty(page.VirtualPath))
+                    {
+                        result = new VirtualPathData(this, page.VirtualPath);
+                    }
                 }
             }
             return result;
         }
 
-        //private bool TryFindMatch(RouteUrlProductList pages, RouteValueDictionary values, out RouteUrlProductInfo page)
-        //{
-        //    page = null;
-        //    Guid productXTenantLocaleId = Guid.Empty;
-
-        //    if (!Guid.TryParse(Convert.ToString(values["id"]), out productXTenantLocaleId))
-        //    {
-        //        return false;
-        //    }
-
-        //    var controller = Convert.ToString(values["controller"]);
-        //    var action = Convert.ToString(values["action"]);
-
-        //    if (action == "Details" && controller == "Product")
-        //    {
-        //        page = pages.Where(x => x.ProductXTenantLocaleId.Equals(productXTenantLocaleId)).FirstOrDefault();
-        //        if (page != null)
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
-
-        private bool TryFindMatch(RouteUrlProductList pages, RouteValueDictionary values, out RouteUrlProductInfo page)
+        private bool TryFindMatch(IEnumerable<IRouteUrlProductInfo> pages, RouteValueDictionary values, out IRouteUrlProductInfo page)
         {
             page = null;
             Guid categoryXProductXTenantLocaleId = Guid.Empty;

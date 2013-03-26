@@ -84,7 +84,8 @@
           <Property Name="TenantLocaleId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ContentType" Type="int" Nullable="false" />
           <Property Name="ContentId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="RouteUrl" Type="nvarchar" Nullable="false" MaxLength="1024" />
+          <Property Name="Url" Type="nvarchar" Nullable="false" MaxLength="1024" />
+          <Property Name="IsUrlAbsolute" Type="bit" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="100" />
           <Property Name="MetaKeywords" Type="nvarchar" MaxLength="1024" />
           <Property Name="MetaDescription" Type="nvarchar" MaxLength="255" />
@@ -110,7 +111,8 @@
           <Property Name="TenantLocaleId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="UrlSlug" Type="nvarchar" MaxLength="255" />
+          <Property Name="Url" Type="nvarchar" MaxLength="1024" />
+          <Property Name="IsUrlAbsolute" Type="bit" Nullable="false" />
           <Property Name="MetaKeywords" Type="nvarchar" MaxLength="1024" />
           <Property Name="MetaDescription" Type="nvarchar" MaxLength="255" />
           <Property Name="DefaultCategoryId" Type="uniqueidentifier" Nullable="false" />
@@ -255,20 +257,7 @@
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
           <EntitySet Name="CategoryXProductXTenantLocale" EntityType="ComplexCommerce.Model.CategoryXProductXTenantLocale" />
-          <EntitySet Name="ProductXTenantLocale" EntityType="ComplexCommerce.Model.ProductXTenantLocale" />
           <EntitySet Name="TenantLocale" EntityType="ComplexCommerce.Model.TenantLocale" />
-          <AssociationSet Name="FK_ProductXTenantLocale_CategoryXProductXTenantLocale" Association="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale">
-            <End Role="ProductXTenantLocale" EntitySet="ProductXTenantLocale" />
-            <End Role="CategoryXProductXTenantLocale" EntitySet="CategoryXProductXTenantLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Product_ProductXTenantLocale" Association="ComplexCommerce.Model.FK_Product_ProductXTenantLocale">
-            <End Role="Product" EntitySet="Product" />
-            <End Role="ProductXTenantLocale" EntitySet="ProductXTenantLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TenantLocale_ProductXTenantLocale" Association="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale">
-            <End Role="TenantLocale" EntitySet="TenantLocale" />
-            <End Role="ProductXTenantLocale" EntitySet="ProductXTenantLocale" />
-          </AssociationSet>
           <EntitySet Name="Category" EntityType="ComplexCommerce.Model.Category" />
           <AssociationSet Name="FK_Category_ProductXCategory" Association="ComplexCommerce.Model.FK_Category_ProductXCategory">
             <End Role="Category" EntitySet="Category" />
@@ -291,6 +280,19 @@
           <AssociationSet Name="FK_TenantLocale_Page" Association="ComplexCommerce.Model.FK_TenantLocale_Page">
             <End Role="TenantLocale" EntitySet="TenantLocale" />
             <End Role="Page" EntitySet="Page" />
+          </AssociationSet>
+          <EntitySet Name="ProductXTenantLocale" EntityType="ComplexCommerce.Model.ProductXTenantLocale" />
+          <AssociationSet Name="FK_ProductXTenantLocale_CategoryXProductXTenantLocale" Association="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale">
+            <End Role="ProductXTenantLocale" EntitySet="ProductXTenantLocale" />
+            <End Role="CategoryXProductXTenantLocale" EntitySet="CategoryXProductXTenantLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductXTenantLocale" Association="ComplexCommerce.Model.FK_Product_ProductXTenantLocale">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductXTenantLocale" EntitySet="ProductXTenantLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TenantLocale_ProductXTenantLocale" Association="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale">
+            <End Role="TenantLocale" EntitySet="TenantLocale" />
+            <End Role="ProductXTenantLocale" EntitySet="ProductXTenantLocale" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Chain">
@@ -334,25 +336,8 @@
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="CategoryId" Nullable="false" />
           <Property Type="Guid" Name="ProductXTenantLocaleId" Nullable="false" />
-          <NavigationProperty Name="ProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale" FromRole="CategoryXProductXTenantLocale" ToRole="ProductXTenantLocale" />
           <NavigationProperty Name="Category" Relationship="ComplexCommerce.Model.FK_Category_ProductXCategory" FromRole="CategoryXProductXTenantLocale" ToRole="Category" />
-        </EntityType>
-        <EntityType Name="ProductXTenantLocale">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Guid" Name="ProductId" Nullable="false" />
-          <Property Type="Guid" Name="TenantLocaleId" Nullable="false" />
-          <Property Type="String" Name="Name" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="UrlSlug" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CategoryXProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="CategoryXProductXTenantLocale" />
-          <NavigationProperty Name="Product" Relationship="ComplexCommerce.Model.FK_Product_ProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="Product" />
-          <NavigationProperty Name="TenantLocale" Relationship="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="TenantLocale" />
-          <Property Type="String" Name="MetaKeywords" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="MetaDescription" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="DefaultCategoryId" Nullable="false" />
+          <NavigationProperty Name="ProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale" FromRole="CategoryXProductXTenantLocale" ToRole="ProductXTenantLocale" />
         </EntityType>
         <EntityType Name="TenantLocale">
           <Key>
@@ -361,47 +346,11 @@
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="TenantId" Nullable="false" />
           <Property Type="Int32" Name="LocaleId" Nullable="false" />
-          <NavigationProperty Name="ProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale" FromRole="TenantLocale" ToRole="ProductXTenantLocale" />
           <NavigationProperty Name="Category" Relationship="ComplexCommerce.Model.FK_TenantLocale_Category" FromRole="TenantLocale" ToRole="Category" />
           <NavigationProperty Name="Tenant" Relationship="ComplexCommerce.Model.FK_TenantLocale_Tenant" FromRole="TenantLocale" ToRole="Tenant" />
           <NavigationProperty Name="Page" Relationship="ComplexCommerce.Model.FK_TenantLocale_Page" FromRole="TenantLocale" ToRole="Page" />
+          <NavigationProperty Name="ProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale" FromRole="TenantLocale" ToRole="ProductXTenantLocale" />
         </EntityType>
-        <Association Name="FK_ProductXTenantLocale_CategoryXProductXTenantLocale">
-          <End Type="ComplexCommerce.Model.ProductXTenantLocale" Role="ProductXTenantLocale" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.CategoryXProductXTenantLocale" Role="CategoryXProductXTenantLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProductXTenantLocale">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CategoryXProductXTenantLocale">
-              <PropertyRef Name="ProductXTenantLocaleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Product_ProductXTenantLocale">
-          <End Type="ComplexCommerce.Model.Product" Role="Product" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.ProductXTenantLocale" Role="ProductXTenantLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProductXTenantLocale">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TenantLocale_ProductXTenantLocale">
-          <End Type="ComplexCommerce.Model.TenantLocale" Role="TenantLocale" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.ProductXTenantLocale" Role="ProductXTenantLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TenantLocale">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProductXTenantLocale">
-              <PropertyRef Name="TenantLocaleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -483,7 +432,8 @@
           <Property Type="Guid" Name="TenantLocaleId" Nullable="false" />
           <Property Type="Int32" Name="ContentType" Nullable="false" />
           <Property Type="Guid" Name="ContentId" Nullable="false" />
-          <Property Type="String" Name="RouteUrl" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Url" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsUrlAbsolute" Nullable="false" />
           <Property Type="String" Name="Title" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MetaKeywords" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MetaDescription" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -499,6 +449,60 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Page">
+              <PropertyRef Name="TenantLocaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductXTenantLocale">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ProductId" Nullable="false" />
+          <Property Type="Guid" Name="TenantLocaleId" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Url" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsUrlAbsolute" Nullable="false" />
+          <Property Type="String" Name="MetaKeywords" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MetaDescription" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="DefaultCategoryId" Nullable="false" />
+          <NavigationProperty Name="CategoryXProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="CategoryXProductXTenantLocale" />
+          <NavigationProperty Name="Product" Relationship="ComplexCommerce.Model.FK_Product_ProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="Product" />
+          <NavigationProperty Name="TenantLocale" Relationship="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale" FromRole="ProductXTenantLocale" ToRole="TenantLocale" />
+        </EntityType>
+        <Association Name="FK_ProductXTenantLocale_CategoryXProductXTenantLocale">
+          <End Type="ComplexCommerce.Model.ProductXTenantLocale" Role="ProductXTenantLocale" Multiplicity="1" />
+          <End Type="ComplexCommerce.Model.CategoryXProductXTenantLocale" Role="CategoryXProductXTenantLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductXTenantLocale">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CategoryXProductXTenantLocale">
+              <PropertyRef Name="ProductXTenantLocaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductXTenantLocale">
+          <End Type="ComplexCommerce.Model.Product" Role="Product" Multiplicity="1" />
+          <End Type="ComplexCommerce.Model.ProductXTenantLocale" Role="ProductXTenantLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductXTenantLocale">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TenantLocale_ProductXTenantLocale">
+          <End Type="ComplexCommerce.Model.TenantLocale" Role="TenantLocale" Multiplicity="1" />
+          <End Type="ComplexCommerce.Model.ProductXTenantLocale" Role="ProductXTenantLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TenantLocale">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductXTenantLocale">
               <PropertyRef Name="TenantLocaleId" />
             </Dependent>
           </ReferentialConstraint>
@@ -534,21 +538,6 @@
               <MappingFragment StoreEntitySet="CategoryXProductXTenantLocale">
                 <ScalarProperty Name="ProductXTenantLocaleId" ColumnName="ProductXTenantLocaleId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProductXTenantLocale">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.ProductXTenantLocale">
-              <MappingFragment StoreEntitySet="ProductXTenantLocale">
-                <ScalarProperty Name="DefaultCategoryId" ColumnName="DefaultCategoryId" />
-                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
-                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
-                <ScalarProperty Name="UrlSlug" ColumnName="UrlSlug" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="TenantLocaleId" ColumnName="TenantLocaleId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -592,11 +581,28 @@
                 <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
                 <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="RouteUrl" ColumnName="RouteUrl" />
+                <ScalarProperty Name="IsUrlAbsolute" ColumnName="IsUrlAbsolute" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="ContentId" ColumnName="ContentId" />
                 <ScalarProperty Name="ContentType" ColumnName="ContentType" />
                 <ScalarProperty Name="TenantLocaleId" ColumnName="TenantLocaleId" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductXTenantLocale">
+            <EntityTypeMapping TypeName="ComplexCommerce.Model.ProductXTenantLocale">
+              <MappingFragment StoreEntitySet="ProductXTenantLocale">
+                <ScalarProperty Name="DefaultCategoryId" ColumnName="DefaultCategoryId" />
+                <ScalarProperty Name="MetaDescription" ColumnName="MetaDescription" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="IsUrlAbsolute" ColumnName="IsUrlAbsolute" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TenantLocaleId" ColumnName="TenantLocaleId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

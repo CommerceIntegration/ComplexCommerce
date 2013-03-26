@@ -24,7 +24,8 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public System.Guid TenantLocaleId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string UrlSlug { get; set; }
+        public string Url { get; set; }
+        public bool IsUrlAbsolute { get; set; }
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }
         public System.Guid DefaultCategoryId { get; set; }

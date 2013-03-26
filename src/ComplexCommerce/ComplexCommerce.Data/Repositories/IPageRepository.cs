@@ -9,7 +9,8 @@ namespace ComplexCommerce.Data.Repositories
 {
     public interface IPageRepository
     {
-        IList<RouteUrlPageDto> ListForRouteUrl(int tenantId, int localeId);
-        IList<SiteMapPageDto> ListForSiteMap(int tenantId, int localeId);
+        //IList<RouteUrlPageDto> ListForRouteUrl(int tenantId, int localeId); // TODO: Remove
+        //IList<SiteMapPageDto> ListForSiteMap(int tenantId, int localeId); // TODO: Remove
+        IList<ParentUrlPageDto> ListForParentUrl(int tenantId, int localeId);
     }
 }

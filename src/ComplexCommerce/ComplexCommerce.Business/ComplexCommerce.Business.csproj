@@ -62,9 +62,12 @@
     <Compile Include="CategoryProductList.cs" />
     <Compile Include="ContentTypeEnum.cs" />
     <Compile Include="Context\ApplicationContext.cs" />
+    <Compile Include="Context\ApplicationContextSourceEnum.cs" />
     <Compile Include="Context\IApplicationContext.cs" />
     <Compile Include="GetCachedRouteUrlPageListCommand.cs" />
     <Compile Include="GetCachedRouteUrlProductListCommand.cs" />
+    <Compile Include="GetRequestCachedParentUrlPageListCommand.cs" />
+    <Compile Include="ParentUrlPageInfo.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductCategoryInfo.cs" />
     <Compile Include="ProductCategoryList.cs" />
@@ -75,6 +78,7 @@
     <Compile Include="RouteUrlProductList.cs" />
     <Compile Include="Rules\UrlPathLeadingSlashRule.cs" />
     <Compile Include="Rules\UrlPathLocaleRule.cs" />
+    <Compile Include="Rules\UrlPathPageRule.cs" />
     <Compile Include="Rules\UrlPathProductRule.cs" />
     <Compile Include="Rules\UrlPathTrailingSlashRule.cs" />
     <Compile Include="SiteMapPageList.cs" />
@@ -83,7 +87,10 @@
     <Compile Include="SiteMapProductList.cs" />
     <Compile Include="Tenant.cs" />
     <Compile Include="TenantTypeEnum.cs" />
+    <Compile Include="Text\IUrlBuilder.cs" />
     <Compile Include="Text\StringExtensions.cs" />
+    <Compile Include="ParentUrlPageList.cs" />
+    <Compile Include="Text\UrlBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

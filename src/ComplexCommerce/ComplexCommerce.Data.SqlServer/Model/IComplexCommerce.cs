@@ -32,10 +32,10 @@ namespace ComplexCommerce.Data.SqlServer.Model
         IDbSet<Chain> Chain { get; set; }
         IDbSet<Product> Product { get; set; }
         IDbSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale { get; set; }
-        IDbSet<ProductXTenantLocale> ProductXTenantLocale { get; set; }
         IDbSet<TenantLocale> TenantLocale { get; set; }
         IDbSet<Category> Category { get; set; }
         IDbSet<Tenant> Tenant { get; set; }
         IDbSet<Page> Page { get; set; }
+        IDbSet<ProductXTenantLocale> ProductXTenantLocale { get; set; }
     }
 }

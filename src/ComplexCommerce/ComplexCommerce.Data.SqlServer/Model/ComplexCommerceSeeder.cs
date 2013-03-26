@@ -82,7 +82,7 @@ namespace ComplexCommerce.Data.SqlServer.Model
         {
             var table = new List<ProductXTenantLocale>
             {
-                new ProductXTenantLocale { Id = new Guid("209f1271-2cd9-41bc-986d-7af5bd8198b9") , ProductId = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), Name = "All Purpose Shell Kit", Description = "A collection of sea shells from around the world.", UrlSlug = "all-purpose-shell-kit", MetaKeywords = null, MetaDescription = "A collection of sea shells from around the world.", DefaultCategoryId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa") }
+                new ProductXTenantLocale { Id = new Guid("209f1271-2cd9-41bc-986d-7af5bd8198b9") , ProductId = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), TenantLocaleId = new Guid("af51370a-8d54-4891-b50e-f3511d530c90"), Name = "All Purpose Shell Kit", Description = "A collection of sea shells from around the world.", Url = "all-purpose-shell-kit", MetaKeywords = null, MetaDescription = "A collection of sea shells from around the world.", DefaultCategoryId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa") }
             };
             table.ForEach(x => context.ProductXTenantLocale.Add(x));
             context.SaveChanges();

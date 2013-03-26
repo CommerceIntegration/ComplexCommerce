@@ -61,7 +61,6 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                               where categoryXProduct.CategoryId == categoryId
                               select new CategoryProductDto
                               {
-                                  //ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
                                   CategoryXProductXTenantLocaleId = categoryXProduct.Id,
                                   Name = productXlocale.Name,
                                   SKU = product.SKU,
@@ -109,16 +108,18 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                                   on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
                               join tenantLocale in ctx.ObjectContext.TenantLocale
                                   on productXlocale.TenantLocaleId equals tenantLocale.Id
-                              join page in ctx.ObjectContext.Page
-                                  on categoryXProduct.CategoryId equals page.ContentId
+                              join parentPage in ctx.ObjectContext.Page
+                                  on categoryXProduct.CategoryId equals parentPage.ContentId
                               where tenantLocale.TenantId == tenantId && tenantLocale.LocaleId == localeId
-                              where page.ContentType == 2
+                              //where parentPage.ContentType == 2
                               select new RouteUrlProductDto
                               {
                                   CategoryXProductXTenantLocaleId = categoryXProduct.Id,
+                                  ParentId = parentPage.Id,
                                   LocaleId = localeId,
-                                  ProductUrlSlug = productXlocale.UrlSlug,
-                                  ParentPageRouteUrl = page.RouteUrl
+                                  Url = productXlocale.Url,
+                                  IsUrlAbsolute = productXlocale.IsUrlAbsolute
+                                  //ParentPageUrl = parentPage.Url
                               });
 
                 return result.ToList();
@@ -135,24 +136,28 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
                                   on categoryXProduct.ProductXTenantLocaleId equals productXlocale.Id
                               join tenantLocale in ctx.ObjectContext.TenantLocale
                                   on productXlocale.TenantLocaleId equals tenantLocale.Id
-                              join page in ctx.ObjectContext.Page
-                                  on categoryXProduct.CategoryId equals page.ContentId
-                              join defaultCategory in ctx.ObjectContext.Page
-                                  on productXlocale.DefaultCategoryId equals defaultCategory.ContentId
+                              join parentPage in ctx.ObjectContext.Page
+                                  on categoryXProduct.CategoryId equals parentPage.ContentId
+                              join defaultCategoryPage in ctx.ObjectContext.Page
+                                  on productXlocale.DefaultCategoryId equals defaultCategoryPage.ContentId
 
                               where tenantLocale.TenantId == tenantId && tenantLocale.LocaleId == localeId
-                              where page.ContentType == 2
+                              //where parentPage.ContentType == 2
 
                               select new SiteMapProductDto
                               {
                                   ProductXTenantLocaleId = categoryXProduct.ProductXTenantLocaleId,
+                                  ParentPageId = parentPage.Id,
                                   CategoryId = categoryXProduct.CategoryId,
+                                  TenantId = tenantId,
                                   LocaleId = localeId,
                                   Name = productXlocale.Name,
-                                  ProductUrlSlug = productXlocale.UrlSlug,
-                                  ParentPageRouteUrl = page.RouteUrl,
+                                  Url = productXlocale.Url,
+                                  IsUrlAbsolute = productXlocale.IsUrlAbsolute,
+                                  //ParentPageUrl = page.Url,
                                   //MetaRobots = // TODO: Finish MetaRobots
-                                  DefaultCategoryRouteUrl = defaultCategory.RouteUrl
+                                  //DefaultCategoryUrl = defaultCategory.Url
+                                  DefaultCategoryPageId = defaultCategoryPage.Id
                               });
 
                 return result.ToList();

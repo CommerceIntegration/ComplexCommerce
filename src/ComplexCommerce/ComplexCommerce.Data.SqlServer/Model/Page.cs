@@ -19,7 +19,8 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public System.Guid TenantLocaleId { get; set; }
         public int ContentType { get; set; }
         public System.Guid ContentId { get; set; }
-        public string RouteUrl { get; set; }
+        public string Url { get; set; }
+        public bool IsUrlAbsolute { get; set; }
         public string Title { get; set; }
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,46 +16,62 @@ namespace ComplexCommerce.Web.Mvc.Routing
     {
         public PageRoute(
             IApplicationContext appContext,
-            IRouteUrlListFactory routeUrlListFactory,
+            IRouteUrlPageListFactory routeUrlPageListFactory,
             IRouteUtilities routeUtilities
             )
         {
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
-            if (routeUrlListFactory == null)
-                throw new ArgumentNullException("routeUrlListFactory");
+            if (routeUrlPageListFactory == null)
+                throw new ArgumentNullException("routeUrlPageListFactory");
             if (routeUtilities == null)
                 throw new ArgumentNullException("routeUtilities");
             this.appContext = appContext;
-            this.routeUrlListFactory = routeUrlListFactory;
+            this.routeUrlPageListFactory = routeUrlPageListFactory;
             this.routeUtilities = routeUtilities;
         }
 
         private readonly IApplicationContext appContext;
-        private readonly IRouteUrlListFactory routeUrlListFactory;
+        private readonly IRouteUrlPageListFactory routeUrlPageListFactory;
         private readonly IRouteUtilities routeUtilities;
 
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
             RouteData result = null;
             var tenant = appContext.CurrentTenant;
+            var localeId = appContext.CurrentLocaleId;
 
             // Get all of the pages
-            var pages = routeUrlListFactory.GetRouteUrlPageList(tenant.Id, tenant.DefaultLocale.LCID);
             var path = httpContext.Request.Path;
-            var page = pages
-                .Where(x => x.RouteUrl.Equals(path))
+            var pathLength = path.Length;
+
+            var page = routeUrlPageListFactory
+                .GetRouteUrlPageList(tenant.Id, localeId)
+                .Where(x => x.UrlPath.Length.Equals(pathLength))
+                .Where(x => x.UrlPath.Equals(path))
                 .FirstOrDefault();
+            
+            //var page = pages
+            //    .Where(x => x.UrlPath.Equals(path))
+            //    .FirstOrDefault();
             if (page != null)
             {
-                result = new RouteData(this, new MvcRouteHandler());
+                //result = new RouteData(this, new MvcRouteHandler());
+                result = routeUtilities.CreateRouteData(this);
                 
                 routeUtilities.AddQueryStringParametersToRouteData(result, httpContext);
 
                 // TODO: Add area for different tenant types
                 result.Values["controller"] = page.ContentType.ToString();
-                result.Values["action"] = "Details";
-                result.Values["id"] = page.ContentId;
+                if (!page.ContentId.Equals(Guid.Empty))
+                {
+                    result.Values["action"] = "Details";
+                    result.Values["id"] = page.ContentId;
+                }
+                else
+                {
+                    result.Values["action"] = "Index";
+                }
             }
             return result;
         }
@@ -62,41 +79,53 @@ namespace ComplexCommerce.Web.Mvc.Routing
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
             VirtualPathData result = null;
-            RouteUrlPageInfo page = null;
-            string virtualPath = string.Empty;
+            IRouteUrlPageInfo page = null;
             var tenant = appContext.CurrentTenant;
+            var localeId = appContext.CurrentLocaleId;
 
             // Get all of the pages
-            var pages = routeUrlListFactory.GetRouteUrlPageList(tenant.Id, tenant.DefaultLocale.LCID);
+            var pages = routeUrlPageListFactory.GetRouteUrlPageList(tenant.Id, localeId);
 
             if (TryFindMatch(pages, values, out page))
             {
-                virtualPath = page.VirtualPath;
-            }
-
-            if (!string.IsNullOrEmpty(virtualPath))
-            {
-                result = new VirtualPathData(this, virtualPath);
+                if (!string.IsNullOrEmpty(page.VirtualPath))
+                {
+                    result = new VirtualPathData(this, page.VirtualPath);
+                }
             }
 
             return result;
         }
 
-        private bool TryFindMatch(RouteUrlPageList pages, RouteValueDictionary values, out RouteUrlPageInfo page)
+        private bool TryFindMatch(IEnumerable<IRouteUrlPageInfo> pages, RouteValueDictionary values, out IRouteUrlPageInfo page)
         {
             page = null;
             Guid contentId = Guid.Empty;
 
+            var action = Convert.ToString(values["action"]);
+            var controller = Convert.ToString(values["controller"]);
+
             if (!Guid.TryParse(Convert.ToString(values["id"]), out contentId))
             {
-                return false;
+                // TODO: Make home page based on tenant/area
+
+                // Special case for homepage
+                if (action == "Index" && controller == "Home")
+                {
+                    page = pages.Where(x => x.ContentType == ContentTypeEnum.Home).FirstOrDefault();
+                    if (page != null)
+                    {
+                        return true;
+                    }
+                }
             }
 
-            var action = Convert.ToString(values["action"]);
             if (action == "Details")
             {
-                var controller = Convert.ToString(values["controller"]);
-                page = pages.Where(x => x.ContentId.Equals(contentId) && x.ContentType.ToString().Equals(controller)).FirstOrDefault();
+                page = pages
+                    .Where(x => x.ContentId.Equals(contentId) && 
+                        x.ContentType.ToString().Equals(controller, StringComparison.InvariantCultureIgnoreCase))
+                    .FirstOrDefault();
                 if (page != null)
                 {
                     return true;

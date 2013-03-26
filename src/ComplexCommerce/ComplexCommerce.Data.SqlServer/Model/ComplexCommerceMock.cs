@@ -49,12 +49,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
     		set { _categoryXProductXTenantLocale = value; }
         }
         private IDbSet<CategoryXProductXTenantLocale> _categoryXProductXTenantLocale;
-        public virtual IDbSet<ProductXTenantLocale> ProductXTenantLocale
-        {
-            get { return _productXTenantLocale  ?? (_productXTenantLocale = new MockDbSet<ProductXTenantLocale>()); }
-    		set { _productXTenantLocale = value; }
-        }
-        private IDbSet<ProductXTenantLocale> _productXTenantLocale;
         public virtual IDbSet<TenantLocale> TenantLocale
         {
             get { return _tenantLocale  ?? (_tenantLocale = new MockDbSet<TenantLocale>()); }
@@ -79,5 +73,11 @@ namespace ComplexCommerce.Data.SqlServer.Model
     		set { _page = value; }
         }
         private IDbSet<Page> _page;
+        public virtual IDbSet<ProductXTenantLocale> ProductXTenantLocale
+        {
+            get { return _productXTenantLocale  ?? (_productXTenantLocale = new MockDbSet<ProductXTenantLocale>()); }
+    		set { _productXTenantLocale = value; }
+        }
+        private IDbSet<ProductXTenantLocale> _productXTenantLocale;
     }
 }

@@ -9,12 +9,16 @@ namespace ComplexCommerce.Data.Dto
     public class SiteMapProductDto
     {
         public Guid ProductXTenantLocaleId { get; set; }
+        public Guid ParentPageId { get; set; }
         public Guid CategoryId { get; set; }
+        public int TenantId { get; set; }
         public int LocaleId { get; set; }
         public string Name { get; set; }
-        public string ProductUrlSlug { get; set; }
-        public string ParentPageRouteUrl { get; set; }
+        public string Url { get; set; }
+        public bool IsUrlAbsolute { get; set; }
+        //public string ParentPageUrl { get; set; }
         public string MetaRobots { get; set; }
-        public string DefaultCategoryRouteUrl { get; set; }
+        //public string DefaultCategoryUrl { get; set; }
+        public Guid DefaultCategoryPageId { get; set; }
     }
 }

@@ -2,17 +2,18 @@
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
+using ComplexCommerce.Business.Text;
 
 namespace ComplexCommerce.Business
 {
-    public interface IRouteUrlListFactory
+    public interface IRouteUrlPageListFactory
     {
         RouteUrlPageList EmptyRouteUrlPageList();
         RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId);
     }
 
-    public class RouteUrlListFactory
-        : IRouteUrlListFactory
+    public class RouteUrlPageListFactory
+        : IRouteUrlPageListFactory
     {
 
         #region IRouteUrlListFactory Members
@@ -59,7 +60,9 @@ namespace ComplexCommerce.Business
                 RaiseListChangedEvents = false;
                 IsReadOnly = false;
 
-                var list = repository.ListForRouteUrl(criteria.TenantId, criteria.LocaleId);
+                // This list will automatically be request cached
+                var list = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId, criteria.LocaleId);
+
                 foreach (var item in list)
                     Add(DataPortal.FetchChild<RouteUrlPageInfo>(item));
 
@@ -92,10 +95,31 @@ namespace ComplexCommerce.Business
 
         #region Dependency Injection
 
+        //[NonSerialized]
+        //[NotUndoable]
+        //private IPageRepository repository;
+        //public IPageRepository Repository
+        //{
+        //    set
+        //    {
+        //        // Don't allow the value to be set to null
+        //        if (value == null)
+        //        {
+        //            throw new ArgumentNullException("value");
+        //        }
+        //        // Don't allow the value to be set more than once
+        //        if (this.repository != null)
+        //        {
+        //            throw new InvalidOperationException();
+        //        }
+        //        this.repository = value;
+        //    }
+        //}
+
         [NonSerialized]
         [NotUndoable]
-        private IPageRepository repository;
-        public IPageRepository Repository
+        private IParentUrlPageListFactory parentUrlPageListFactory;
+        public IParentUrlPageListFactory ParentUrlPageListFactory
         {
             set
             {
@@ -105,11 +129,11 @@ namespace ComplexCommerce.Business
                     throw new ArgumentNullException("value");
                 }
                 // Don't allow the value to be set more than once
-                if (this.repository != null)
+                if (this.parentUrlPageListFactory != null)
                 {
                     throw new InvalidOperationException();
                 }
-                this.repository = value;
+                this.parentUrlPageListFactory = value;
             }
         }
 

@@ -1,28 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Dto;
-using ComplexCommerce.Business.Rules;
+using ComplexCommerce.Business.Text;
 
 namespace ComplexCommerce.Business
 {
-    public class RouteUrlProductInfo
-        : CslaReadOnlyBase<RouteUrlProductInfo>
+    public interface IRouteUrlProductInfo
     {
-        public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-        public int LocaleId
-        {
-            get { return GetProperty(LocaleIdProperty); }
-            private set { LoadProperty(LocaleIdProperty, value); }
-        }
+        Guid CategoryXProductXTenantLocaleId { get; }
+        string UrlPath { get; }
+        string VirtualPath { get; }
+    }
 
-        public static PropertyInfo<string> RouteUrlProperty = RegisterProperty<string>(c => c.RouteUrl);
-        public string RouteUrl
+    public class RouteUrlProductInfo
+        : CslaReadOnlyBase<RouteUrlProductInfo>, IRouteUrlProductInfo
+    {
+        //public static PropertyInfo<Guid> ParentIdProperty = RegisterProperty<Guid>(c => c.ParentId);
+        //public Guid ParentId
+        //{
+        //    get { return GetProperty(ParentIdProperty); }
+        //    private set { LoadProperty(ParentIdProperty, value); }
+        //}
+
+        //public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
+        //public int LocaleId
+        //{
+        //    get { return GetProperty(LocaleIdProperty); }
+        //    private set { LoadProperty(LocaleIdProperty, value); }
+        //}
+
+        //public static PropertyInfo<string> RouteUrlProperty = RegisterProperty<string>(c => c.RouteUrl);
+        //public string RouteUrl
+        //{
+        //    get { return GetProperty(RouteUrlProperty); }
+        //    private set { LoadProperty(RouteUrlProperty, value); }
+        //}
+
+        public static PropertyInfo<string> UrlPathProperty = RegisterProperty<string>(c => c.UrlPath);
+        public string UrlPath
         {
-            get { return GetProperty(RouteUrlProperty); }
-            private set { LoadProperty(RouteUrlProperty, value); }
+            get { return GetProperty(UrlPathProperty); }
+            private set { LoadProperty(UrlPathProperty, value); }
         }
 
         public string VirtualPath
@@ -36,8 +58,8 @@ namespace ComplexCommerce.Business
                 //}
                 //return path;
 
-                var path = GetProperty(RouteUrlProperty);
-                if (path.Length > 1)
+                var path = GetProperty(UrlPathProperty);
+                if (path.Length > 1 && path.StartsWith("/"))
                 {
                     return path.Substring(1, path.Length - 1);
                 }
@@ -61,40 +83,61 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(CategoryXProductXTenantLocaleIdProperty, value); }
         }
 
-        public static PropertyInfo<string> ParentPageRouteUrlProperty = RegisterProperty<string>(c => c.ParentPageRouteUrl);
-        public string ParentPageRouteUrl
-        {
-            get { return GetProperty(ParentPageRouteUrlProperty); }
-            private set { LoadProperty(ParentPageRouteUrlProperty, value); }
-        }
+        //public static PropertyInfo<string> ParentPageUrlProperty = RegisterProperty<string>(c => c.ParentPageUrl);
+        //public string ParentPageUrl
+        //{
+        //    get { return GetProperty(ParentPageUrlProperty); }
+        //    private set { LoadProperty(ParentPageUrlProperty, value); }
+        //}
 
-        public static PropertyInfo<string> ProductUrlSlugProperty = RegisterProperty<string>(c => c.ProductUrlSlug);
-        public string ProductUrlSlug
-        {
-            get { return GetProperty(ProductUrlSlugProperty); }
-            private set { LoadProperty(ProductUrlSlugProperty, value); }
-        }
+        //public static PropertyInfo<string> UrlProperty = RegisterProperty<string>(c => c.Url);
+        //public string Url
+        //{
+        //    get { return GetProperty(UrlProperty); }
+        //    private set { LoadProperty(UrlProperty, value); }
+        //}
 
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
+        //public static PropertyInfo<bool> IsUrlAbsoluteProperty = RegisterProperty<bool>(c => c.IsUrlAbsolute);
+        //public bool IsUrlAbsolute
+        //{
+        //    get { return GetProperty(IsUrlAbsoluteProperty); }
+        //    private set { LoadProperty(IsUrlAbsoluteProperty, value); }
+        //}
 
-            BusinessRules.AddRule(new UrlPathProductRule(RouteUrlProperty, ParentPageRouteUrlProperty, ProductUrlSlugProperty) { Priority = 1 });
-            BusinessRules.AddRule(new UrlPathTrailingSlashRule(RouteUrlProperty) { Priority = 2 });
-            BusinessRules.AddRule(new UrlPathLeadingSlashRule(RouteUrlProperty) { Priority = 3 });
-            BusinessRules.AddRule(new UrlPathLocaleRule(RouteUrlProperty, LocaleIdProperty, appContext) { Priority = 4 });
-        }
+        //protected override void AddBusinessRules()
+        //{
+        //    base.AddBusinessRules();
+
+
+        //    //BusinessRules.AddRule(new UrlPathProductRule(RouteUrlProperty, ParentPageUrlProperty, UrlProperty) { Priority = 1 });
+        //    BusinessRules.AddRule(new UrlPathPageRule(RouteUrlProperty, UrlProperty, IsUrlAbsoluteProperty, ParentIdProperty, appContext) { Priority = 1 });
+        //    BusinessRules.AddRule(new UrlPathTrailingSlashRule(RouteUrlProperty) { Priority = 2 });
+        //    BusinessRules.AddRule(new UrlPathLeadingSlashRule(RouteUrlProperty) { Priority = 3 });
+        //    BusinessRules.AddRule(new UrlPathLocaleRule(RouteUrlProperty, LocaleIdProperty, appContext) { Priority = 4 });
+        //}
 
         private void Child_Fetch(RouteUrlProductDto item)
         {
-            LocaleId = item.LocaleId;
-            ParentPageRouteUrl = item.ParentPageRouteUrl;
-            ProductUrlSlug = item.ProductUrlSlug;
-            CategoryXProductXTenantLocaleId = item.CategoryXProductXTenantLocaleId;
-            //ProductXTenantLocaleId = item.ProductXTenantLocaleId;
+            //ParentId = item.ParentId;
+            //LocaleId = item.LocaleId;
+            ////ParentPageUrl = item.ParentPageUrl;
+            //Url = item.Url;
+            //IsUrlAbsolute = item.IsUrlAbsolute;
+            
+            ////ProductXTenantLocaleId = item.ProductXTenantLocaleId;
 
-            // Force the BusinessRules to execute
-            this.BusinessRules.CheckRules();
+
+            this.CategoryXProductXTenantLocaleId = item.CategoryXProductXTenantLocaleId;
+            this.UrlPath = urlBuilder.BuildPath(
+                item.Url, 
+                item.IsUrlAbsolute, 
+                item.ParentId, 
+                appContext.CurrentTenant.Id, 
+                appContext.CurrentLocaleId, 
+                appContext.CurrentTenant.DefaultLocale.LCID);
+
+            //// Force the BusinessRules to execute
+            //this.BusinessRules.CheckRules();
         }
 
         #region Dependency Injection
@@ -117,6 +160,27 @@ namespace ComplexCommerce.Business
                     throw new InvalidOperationException();
                 }
                 this.appContext = value;
+            }
+        }
+
+        [NonSerialized]
+        [NotUndoable]
+        private IUrlBuilder urlBuilder;
+        public IUrlBuilder UrlBuilder
+        {
+            set
+            {
+                // Don't allow the value to be set to null
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+                // Don't allow the value to be set more than once
+                if (this.urlBuilder != null)
+                {
+                    throw new InvalidOperationException();
+                }
+                this.urlBuilder = value;
             }
         }
 

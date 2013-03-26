@@ -1,6 +1,8 @@
 ﻿using System;
 using StructureMap.Configuration.DSL;
+using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
+using ComplexCommerce.Business.Text;
 
 namespace ComplexCommerce.DI.Registries
 {
@@ -26,6 +28,16 @@ namespace ComplexCommerce.DI.Registries
             this.SetAllProperties(p =>
             {
                 p.TypeMatches(t => t == typeof(IApplicationContext));
+            });
+
+            this.SetAllProperties(p =>
+            {
+                p.TypeMatches(t => t == typeof(IUrlBuilder));
+            });
+
+            this.SetAllProperties(p =>
+            {
+                p.TypeMatches(t => t == typeof(IParentUrlPageListFactory));
             });
 
         }
