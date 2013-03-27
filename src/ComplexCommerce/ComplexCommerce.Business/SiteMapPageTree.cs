@@ -46,54 +46,12 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(IdProperty, value); }
         }
 
-        //public static PropertyInfo<Guid> ParentIdProperty = RegisterProperty<Guid>(c => c.ParentId);
-        //public Guid ParentId
-        //{
-        //    get { return GetProperty(ParentIdProperty); }
-        //    private set { LoadProperty(ParentIdProperty, value); }
-        //}
-
-        //public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-        //public int LocaleId
-        //{
-        //    get { return GetProperty(LocaleIdProperty); }
-        //    private set { LoadProperty(LocaleIdProperty, value); }
-        //}
-
-        //public static PropertyInfo<ContentTypeEnum> ContentTypeProperty = RegisterProperty<ContentTypeEnum>(c => c.ContentType);
-        //public ContentTypeEnum ContentType
-        //{
-        //    get { return GetProperty(ContentTypeProperty); }
-        //    private set { LoadProperty(ContentTypeProperty, value); }
-        //}
-
-        //public static PropertyInfo<Guid> ContentIdProperty = RegisterProperty<Guid>(c => c.ContentId);
-        //public Guid ContentId
-        //{
-        //    get { return GetProperty(ContentIdProperty); }
-        //    private set { LoadProperty(ContentIdProperty, value); }
-        //}
-
         public static PropertyInfo<string> TitleProperty = RegisterProperty<string>(c => c.Title);
         public string Title
         {
             get { return GetProperty(TitleProperty); }
             private set { LoadProperty(TitleProperty, value); }
         }
-
-        //public static PropertyInfo<string> UrlProperty = RegisterProperty<string>(c => c.Url);
-        //public string Url
-        //{
-        //    get { return GetProperty(UrlProperty); }
-        //    private set { LoadProperty(UrlProperty, value); }
-        //}
-
-        //public static PropertyInfo<bool> IsUrlAbsoluteProperty = RegisterProperty<bool>(c => c.IsUrlAbsolute);
-        //public bool IsUrlAbsolute
-        //{
-        //    get { return GetProperty(IsUrlAbsoluteProperty); }
-        //    private set { LoadProperty(IsUrlAbsoluteProperty, value); }
-        //}
 
         public static PropertyInfo<string> MetaRobotsProperty = RegisterProperty<string>(c => c.MetaRobots);
         public string MetaRobots
@@ -135,28 +93,11 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(ProductsProperty, value); }
         }
 
-
-
-
-        
-
-        //protected override void AddBusinessRules()
-        //{
-        //    base.AddBusinessRules();
-
-        //    // Route URL
-        //    BusinessRules.AddRule(new UrlPathPageRule(UrlPathProperty, UrlProperty, IsUrlAbsoluteProperty, ParentIdProperty, appContext) { Priority = 1 });
-        //    BusinessRules.AddRule(new UrlPathTrailingSlashRule(UrlPathProperty) { Priority = 2 });
-        //    BusinessRules.AddRule(new UrlPathLeadingSlashRule(UrlPathProperty) { Priority = 3 });
-        //    BusinessRules.AddRule(new UrlPathLocaleRule(UrlPathProperty, LocaleIdProperty, appContext) { Priority = 4 });
-        //}
-
         // Used for entry point
         private void DataPortal_Fetch(Criteria criteria)
         {
             using (var ctx = ContextFactory.GetContext())
             {
-                //var pageList = pageRepository.ListForSiteMap(criteria.TenantId, criteria.LocaleId);
                 var pageList = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId, criteria.LocaleId);
                 var productList = productRepository.ListForSiteMap(criteria.TenantId, criteria.LocaleId);
 
@@ -176,13 +117,7 @@ namespace ComplexCommerce.Business
         private void Child_Fetch(ParentUrlPageInfo page, IEnumerable<ParentUrlPageInfo> pageList, IEnumerable<SiteMapProductDto> productList)
         {
             Id = page.Id;
-            //ParentId = page.ParentId;
-            //LocaleId = page.LocaleId;
-            //ContentType = (ContentTypeEnum)page.ContentType;
-            //ContentId = page.ContentId;
             Title = page.Title;
-            //Url = page.Url;
-            //IsUrlAbsolute = page.IsUrlAbsolute;
             MetaRobots = page.MetaRobots;
             IsVisibleOnMainMenu = page.IsVisibleOnMainMenu;
 
@@ -196,33 +131,9 @@ namespace ComplexCommerce.Business
 
             ChildPages = DataPortal.FetchChild<SiteMapPageList>(page.Id, pageList, productList);
             Products = DataPortal.FetchChild<SiteMapProductList>(page.ContentId, productList);
-
-            //// Force the BusinessRules to execute
-            //this.BusinessRules.CheckRules();
         }
 
         #region Dependency Injection
-
-        //[NonSerialized]
-        //[NotUndoable]
-        //private IPageRepository pageRepository;
-        //public IPageRepository PageRepository
-        //{
-        //    set
-        //    {
-        //        // Don't allow the value to be set to null
-        //        if (value == null)
-        //        {
-        //            throw new ArgumentNullException("value");
-        //        }
-        //        // Don't allow the value to be set more than once
-        //        if (this.pageRepository != null)
-        //        {
-        //            throw new InvalidOperationException();
-        //        }
-        //        this.pageRepository = value;
-        //    }
-        //}
 
         [NonSerialized]
         [NotUndoable]

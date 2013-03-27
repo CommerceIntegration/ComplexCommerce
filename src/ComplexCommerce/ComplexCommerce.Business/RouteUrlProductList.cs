@@ -69,9 +69,6 @@ namespace ComplexCommerce.Business
             }
         }
 
-
-
-
         // TODO: Determine best location for criteria class
         [Serializable()]
         public class Criteria : CriteriaBase<Criteria>
@@ -92,27 +89,6 @@ namespace ComplexCommerce.Business
         }
 
         #region Dependency Injection
-
-        //[NonSerialized]
-        //[NotUndoable]
-        //private IPageRepository pageRepository;
-        //public IPageRepository PageRepository
-        //{
-        //    set
-        //    {
-        //        // Don't allow the value to be set to null
-        //        if (value == null)
-        //        {
-        //            throw new ArgumentNullException("value");
-        //        }
-        //        // Don't allow the value to be set more than once
-        //        if (this.pageRepository != null)
-        //        {
-        //            throw new InvalidOperationException();
-        //        }
-        //        this.pageRepository = value;
-        //    }
-        //}
 
         [NonSerialized]
         [NotUndoable]
@@ -135,29 +111,6 @@ namespace ComplexCommerce.Business
             }
         }
 
-        //[NonSerialized]
-        //[NotUndoable]
-        //private Context.IApplicationContext appContext;
-        //public Context.IApplicationContext AppContext
-        //{
-        //    set
-        //    {
-        //        // Don't allow the value to be set to null
-        //        if (value == null)
-        //        {
-        //            throw new ArgumentNullException("value");
-        //        }
-        //        // Don't allow the value to be set more than once
-        //        if (this.appContext != null)
-        //        {
-        //            throw new InvalidOperationException();
-        //        }
-        //        this.appContext = value;
-        //    }
-        //}
-
         #endregion
-
-
     }
 }

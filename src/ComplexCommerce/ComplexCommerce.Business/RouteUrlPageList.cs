@@ -95,27 +95,6 @@ namespace ComplexCommerce.Business
 
         #region Dependency Injection
 
-        //[NonSerialized]
-        //[NotUndoable]
-        //private IPageRepository repository;
-        //public IPageRepository Repository
-        //{
-        //    set
-        //    {
-        //        // Don't allow the value to be set to null
-        //        if (value == null)
-        //        {
-        //            throw new ArgumentNullException("value");
-        //        }
-        //        // Don't allow the value to be set more than once
-        //        if (this.repository != null)
-        //        {
-        //            throw new InvalidOperationException();
-        //        }
-        //        this.repository = value;
-        //    }
-        //}
-
         [NonSerialized]
         [NotUndoable]
         private IParentUrlPageListFactory parentUrlPageListFactory;

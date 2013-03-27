@@ -27,59 +27,6 @@ namespace ComplexCommerce.Data.SqlServer.Repositories
 
         #region IPageRepository Members
 
-        //// TODO: Remove
-        //public IList<RouteUrlPageDto> ListForRouteUrl(int tenantId, int localeId)
-        //{
-        //    using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
-        //    {
-        //        var result = (from tenantLocale in ctx.ObjectContext.TenantLocale
-        //                     join page in ctx.ObjectContext.Page
-        //                         on tenantLocale.Id equals page.TenantLocaleId
-        //                     where tenantLocale.TenantId == tenantId
-        //                     where tenantLocale.LocaleId == localeId
-        //                     select new RouteUrlPageDto
-        //                     {
-        //                         Id = page.Id,
-        //                         ParentId = (page.ParentId == null) ? Guid.Empty : (Guid)page.ParentId,
-        //                         LocaleId = localeId,
-        //                         Url = page.Url,
-        //                         IsUrlAbsolute = page.IsUrlAbsolute,
-        //                         ContentType = page.ContentType,
-        //                         ContentId = page.ContentId
-        //                     });
-
-        //        return result.ToList();
-        //    }
-        //}
-
-        //// TODO: Remove
-        //public IList<SiteMapPageDto> ListForSiteMap(int tenantId, int localeId)
-        //{
-        //    using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
-        //    {
-        //        var result = (from tenantLocale in ctx.ObjectContext.TenantLocale
-        //                      join page in ctx.ObjectContext.Page
-        //                          on tenantLocale.Id equals page.TenantLocaleId
-        //                      where tenantLocale.TenantId == tenantId
-        //                      where tenantLocale.LocaleId == localeId
-        //                      select new SiteMapPageDto
-        //                      {
-        //                          Id = page.Id,
-        //                          ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
-        //                          LocaleId = localeId,
-        //                          ContentType = page.ContentType,
-        //                          ContentId = page.ContentId,
-        //                          Title = page.Title,
-        //                          Url = page.Url,
-        //                          IsUrlAbsolute = page.IsUrlAbsolute,
-        //                          MetaRobots = page.MetaRobots,
-        //                          IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
-        //                      });
-
-        //        return result.ToList();
-        //    }
-        //}
-
         public IList<ParentUrlPageDto> ListForParentUrl(int tenantId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
