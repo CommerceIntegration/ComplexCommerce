@@ -9,7 +9,7 @@ namespace ComplexCommerce.Business
     public interface IRouteUrlPageListFactory
     {
         RouteUrlPageList EmptyRouteUrlPageList();
-        RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId);
+        RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId, int defaultLocaleId);
     }
 
     public class RouteUrlPageListFactory
@@ -23,9 +23,9 @@ namespace ComplexCommerce.Business
             return RouteUrlPageList.EmptyRouteUrlPageList();
         }
 
-        public RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId)
+        public RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId, int defaultLocaleId)
         {
-            return RouteUrlPageList.GetCachedRouteUrlPageList(tenantId, localeId);
+            return RouteUrlPageList.GetCachedRouteUrlPageList(tenantId, localeId, defaultLocaleId);
         }
 
         #endregion
@@ -40,19 +40,19 @@ namespace ComplexCommerce.Business
             return new RouteUrlPageList();
         }
 
-        internal static RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId)
+        internal static RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId, int defaultLocaleId)
         {
-            return DataPortal.Fetch<RouteUrlPageList>(new Criteria { TenantId = tenantId, LocaleId = localeId });
+            return DataPortal.Fetch<RouteUrlPageList>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
         }
 
-        internal static RouteUrlPageList GetCachedRouteUrlPageList(int tenantId, int localeId)
+        internal static RouteUrlPageList GetCachedRouteUrlPageList(int tenantId, int localeId, int defaultLocaleId)
         {
-            var cmd = new GetCachedRouteUrlPageListCommand(tenantId, localeId);
+            var cmd = new GetCachedRouteUrlPageListCommand(tenantId, localeId, defaultLocaleId);
             cmd = DataPortal.Execute<GetCachedRouteUrlPageListCommand>(cmd);
             return cmd.RouteUrlPageList;
         }
 
-        private void DataPortal_Fetch(Criteria criteria)
+        private void DataPortal_Fetch(TenantLocaleCriteria criteria)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -61,35 +61,13 @@ namespace ComplexCommerce.Business
                 IsReadOnly = false;
 
                 // This list will automatically be request cached
-                var list = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId, criteria.LocaleId);
+                var list = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId, criteria.LocaleId, criteria.DefaultLocaleId);
 
                 foreach (var item in list)
-                    Add(DataPortal.FetchChild<RouteUrlPageInfo>(item));
+                    Add(DataPortal.FetchChild<RouteUrlPageInfo>(item, criteria));
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;
-            }
-        }
-
-
-
-
-        // TODO: Determine best location for criteria class
-        [Serializable()]
-        public class Criteria : CriteriaBase<Criteria>
-        {
-            public static readonly PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
-            public int TenantId
-            {
-                get { return ReadProperty(TenantIdProperty); }
-                set { LoadProperty(TenantIdProperty, value); }
-            }
-
-            public static readonly PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-            public int LocaleId
-            {
-                get { return ReadProperty(LocaleIdProperty); }
-                set { LoadProperty(LocaleIdProperty, value); }
             }
         }
 

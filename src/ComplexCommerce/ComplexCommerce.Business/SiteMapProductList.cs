@@ -11,7 +11,7 @@ namespace ComplexCommerce.Business
     public class SiteMapProductList
         : CslaReadOnlyListBase<SiteMapProductList, SiteMapProductInfo>
     {
-        private void Child_Fetch(Guid categoryId, IEnumerable<SiteMapProductDto> productList)
+        private void Child_Fetch(Guid categoryId, IEnumerable<SiteMapProductDto> productList, ITenantLocale tenantLocale)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -21,7 +21,7 @@ namespace ComplexCommerce.Business
 
                 var category = productList.Where(x => x.CategoryId == categoryId);
                 foreach (var product in category)
-                    Add(DataPortal.FetchChild<SiteMapProductInfo>(product));
+                    Add(DataPortal.FetchChild<SiteMapProductInfo>(product, tenantLocale));
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;

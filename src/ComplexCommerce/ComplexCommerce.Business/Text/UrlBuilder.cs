@@ -21,23 +21,23 @@ namespace ComplexCommerce.Business.Text
         private readonly IParentUrlPageListFactory parentUrlPageListFactory;
 
 
-        public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, int tenantId, int localeId, int defaultLocaleId)
+        public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
         {
-            var path = BuildPathSegments(url, isUrlAbsolute, parentPageId, tenantId, localeId);
+            var path = BuildPathSegments(url, isUrlAbsolute, parentPageId, tenantLocale);
             path = RemoveTrailingSlash(path);
             path = AddLeadingSlash(path);
-            path = AddLocale(path, localeId, defaultLocaleId);
+            path = AddLocale(path, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
             return path;
         }
 
-        protected virtual string BuildPathSegments(string url, bool isUrlAbsolute, Guid parentPageId, int tenantId, int localeId)
+        protected virtual string BuildPathSegments(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
         {
             var result = url;
 
             if (!isUrlAbsolute)
             {
                 // This list is pulled from the request cache.
-                var pageList = parentUrlPageListFactory.GetParentUrlPageList(tenantId, localeId);
+                var pageList = parentUrlPageListFactory.GetParentUrlPageList(tenantLocale.TenantId, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
                 var parentUrl = GetParentPageUrl(parentPageId, pageList);
                 result = JoinUrlSegments(parentUrl, url);
             }

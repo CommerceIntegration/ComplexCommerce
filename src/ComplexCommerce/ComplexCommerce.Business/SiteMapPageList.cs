@@ -15,7 +15,7 @@ namespace ComplexCommerce.Business
         : CslaReadOnlyListBase<SiteMapPageList, SiteMapPageTree>
     {
         // Used for nested calls
-        private void Child_Fetch(Guid parentId, IEnumerable<ParentUrlPageInfo> pageList, IEnumerable<SiteMapProductDto> productList)
+        private void Child_Fetch(Guid parentId, IEnumerable<ParentUrlPageInfo> pageList, IEnumerable<SiteMapProductDto> productList, ITenantLocale tenantLocale)
         {
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
@@ -23,7 +23,7 @@ namespace ComplexCommerce.Business
 
             var childPages = pageList.Where(x => x.ParentId == parentId);
             foreach (var page in childPages)
-                Add(DataPortal.FetchChild<SiteMapPageTree>(page, pageList, productList));
+                Add(DataPortal.FetchChild<SiteMapPageTree>(page, pageList, productList, tenantLocale));
 
             IsReadOnly = true;
             RaiseListChangedEvents = rlce;

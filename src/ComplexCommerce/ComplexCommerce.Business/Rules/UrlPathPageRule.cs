@@ -97,7 +97,6 @@
 //            return result;
 //        }
 
-//        // TODO: Move to Url utility class
 //        private string JoinUrlSegments(string firstSegment, string secondSegment)
 //        {
 //            if (String.IsNullOrEmpty(firstSegment))

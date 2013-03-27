@@ -4,18 +4,30 @@ using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Data.Dto;
+using ComplexCommerce.Business.Context;
 
 namespace ComplexCommerce.Business
 {
     public interface IParentUrlPageListFactory
     {
         ParentUrlPageList EmptyParentUrlPageList();
-        ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId);
+        ParentUrlPageList GetParentUrlPageList();
+        ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId, int defaultLocaleId);
     }
 
     public class ParentUrlPageListFactory
         : IParentUrlPageListFactory
     {
+        public ParentUrlPageListFactory(
+            IApplicationContext appContext
+            )
+        {
+            if (appContext == null)
+                throw new ArgumentNullException("appContext");
+            this.appContext = appContext;
+        }
+
+        private readonly IApplicationContext appContext;
 
         #region IParentUrlPageListFactory Members
 
@@ -24,9 +36,15 @@ namespace ComplexCommerce.Business
             return ParentUrlPageList.EmptyParentUrlPageList();
         }
 
-        public ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId)
+        public ParentUrlPageList GetParentUrlPageList()
         {
-            return ParentUrlPageList.GetRequestCachedParentUrlPageList(tenantId, localeId);
+            return ParentUrlPageList.GetRequestCachedParentUrlPageList(
+                appContext.CurrentTenant.Id, appContext.CurrentLocaleId, appContext.CurrentTenant.DefaultLocale.LCID);
+        }
+
+        public ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId, int defaultLocaleId)
+        {
+            return ParentUrlPageList.GetRequestCachedParentUrlPageList(tenantId, localeId, defaultLocaleId);
         }
 
         #endregion
@@ -41,19 +59,19 @@ namespace ComplexCommerce.Business
             return new ParentUrlPageList();
         }
 
-        internal static ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId)
+        internal static ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId, int defaultLocaleId)
         {
-            return DataPortal.Fetch<ParentUrlPageList>(new Criteria { TenantId = tenantId, LocaleId = localeId });
+            return DataPortal.Fetch<ParentUrlPageList>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
         }
 
-        internal static ParentUrlPageList GetRequestCachedParentUrlPageList(int tenantId, int localeId)
+        internal static ParentUrlPageList GetRequestCachedParentUrlPageList(int tenantId, int localeId, int defaultLocaleId)
         {
-            var cmd = new GetRequestCachedParentUrlPageListCommand(tenantId, localeId);
+            var cmd = new GetRequestCachedParentUrlPageListCommand(tenantId, localeId, defaultLocaleId);
             cmd = DataPortal.Execute<GetRequestCachedParentUrlPageListCommand>(cmd);
             return cmd.ParentUrlPageList;
         }
 
-        private void DataPortal_Fetch(Criteria criteria)
+        private void DataPortal_Fetch(TenantLocaleCriteria criteria)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -95,24 +113,5 @@ namespace ComplexCommerce.Business
         }
 
         #endregion
-
-        // TODO: Determine best location for criteria class
-        [Serializable()]
-        public class Criteria : CriteriaBase<Criteria>
-        {
-            public static readonly PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
-            public int TenantId
-            {
-                get { return ReadProperty(TenantIdProperty); }
-                set { LoadProperty(TenantIdProperty, value); }
-            }
-
-            public static readonly PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-            public int LocaleId
-            {
-                get { return ReadProperty(LocaleIdProperty); }
-                set { LoadProperty(LocaleIdProperty, value); }
-            }
-        }
     }
 }

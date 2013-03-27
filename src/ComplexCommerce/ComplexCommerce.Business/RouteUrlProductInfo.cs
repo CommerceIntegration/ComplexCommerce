@@ -55,7 +55,7 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(CategoryXProductXTenantLocaleIdProperty, value); }
         }
 
-        private void Child_Fetch(RouteUrlProductDto item)
+        private void Child_Fetch(RouteUrlProductDto item, ITenantLocale tenantLocale)
         {
             ////ProductXTenantLocaleId = item.ProductXTenantLocaleId;
 
@@ -64,33 +64,10 @@ namespace ComplexCommerce.Business
                 item.Url, 
                 item.IsUrlAbsolute, 
                 item.ParentId, 
-                appContext.CurrentTenant.Id, 
-                appContext.CurrentLocaleId, 
-                appContext.CurrentTenant.DefaultLocale.LCID);
+                tenantLocale);
         }
 
         #region Dependency Injection
-
-        [NonSerialized]
-        [NotUndoable]
-        private Context.IApplicationContext appContext;
-        public Context.IApplicationContext AppContext
-        {
-            set
-            {
-                // Don't allow the value to be set to null
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-                // Don't allow the value to be set more than once
-                if (this.appContext != null)
-                {
-                    throw new InvalidOperationException();
-                }
-                this.appContext = value;
-            }
-        }
 
         [NonSerialized]
         [NotUndoable]
@@ -114,6 +91,5 @@ namespace ComplexCommerce.Business
         }
 
         #endregion
-
     }
 }

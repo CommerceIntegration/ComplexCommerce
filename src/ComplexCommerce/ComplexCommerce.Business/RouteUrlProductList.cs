@@ -2,18 +2,30 @@
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
+using ComplexCommerce.Business.Context;
 
 namespace ComplexCommerce.Business
 {
     public interface IRouteUrlProductListFactory
     {
         RouteUrlProductList EmptyRouteUrlProductList();
-        RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId);
+        //RouteUrlProductList GetRouteUrlProductList();
+        RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId, int defaultLocaleId);
     }
 
     public class RouteUrlProductListFactory
         : IRouteUrlProductListFactory
     {
+        //public RouteUrlProductListFactory(
+        //    IApplicationContext appContext
+        //    )
+        //{
+        //    if (appContext == null)
+        //        throw new ArgumentNullException("appContext");
+        //    this.appContext = appContext;
+        //}
+
+        //private readonly IApplicationContext appContext;
 
         #region IRouteUrlListFactory Members
 
@@ -22,9 +34,15 @@ namespace ComplexCommerce.Business
             return RouteUrlProductList.EmptyRouteUrlProductList();
         }
 
-        public RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId)
+        //public RouteUrlProductList GetRouteUrlProductList()
+        //{
+        //    return RouteUrlProductList.GetCachedRouteUrlProductList(
+        //        appContext.CurrentTenant.Id, appContext.CurrentLocaleId, appContext.CurrentTenant.DefaultLocale.LCID);
+        //}
+
+        public RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId, int defaultLocaleId)
         {
-            return RouteUrlProductList.GetCachedRouteUrlProductList(tenantId, localeId);
+            return RouteUrlProductList.GetCachedRouteUrlProductList(tenantId, localeId, defaultLocaleId);
         }
 
         #endregion
@@ -40,19 +58,19 @@ namespace ComplexCommerce.Business
             return new RouteUrlProductList();
         }
 
-        internal static RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId)
+        internal static RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId, int defaultLocaleId)
         {
-            return DataPortal.Fetch<RouteUrlProductList>(new Criteria { TenantId = tenantId, LocaleId = localeId });
+            return DataPortal.Fetch<RouteUrlProductList>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
         }
 
-        internal static RouteUrlProductList GetCachedRouteUrlProductList(int tenantId, int localeId)
+        internal static RouteUrlProductList GetCachedRouteUrlProductList(int tenantId, int localeId, int defaultLocaleId)
         {
-            var cmd = new GetCachedRouteUrlProductListCommand(tenantId, localeId);
+            var cmd = new GetCachedRouteUrlProductListCommand(tenantId, localeId, defaultLocaleId);
             cmd = DataPortal.Execute<GetCachedRouteUrlProductListCommand>(cmd);
             return cmd.RouteUrlProductList;
         }
 
-        private void DataPortal_Fetch(Criteria criteria)
+        private void DataPortal_Fetch(TenantLocaleCriteria criteria)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -62,29 +80,10 @@ namespace ComplexCommerce.Business
 
                 var list = repository.ListForRouteUrl(criteria.TenantId, criteria.LocaleId);
                 foreach (var item in list)
-                    Add(DataPortal.FetchChild<RouteUrlProductInfo>(item));
+                    Add(DataPortal.FetchChild<RouteUrlProductInfo>(item, criteria));
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;
-            }
-        }
-
-        // TODO: Determine best location for criteria class
-        [Serializable()]
-        public class Criteria : CriteriaBase<Criteria>
-        {
-            public static readonly PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
-            public int TenantId
-            {
-                get { return ReadProperty(TenantIdProperty); }
-                set { LoadProperty(TenantIdProperty, value); }
-            }
-
-            public static readonly PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-            public int LocaleId
-            {
-                get { return ReadProperty(LocaleIdProperty); }
-                set { LoadProperty(LocaleIdProperty, value); }
             }
         }
 

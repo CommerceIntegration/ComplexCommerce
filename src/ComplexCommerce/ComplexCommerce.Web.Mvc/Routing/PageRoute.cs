@@ -46,7 +46,7 @@ namespace ComplexCommerce.Web.Mvc.Routing
             var pathLength = path.Length;
 
             var page = routeUrlPageListFactory
-                .GetRouteUrlPageList(tenant.Id, localeId)
+                .GetRouteUrlPageList(tenant.Id, localeId, tenant.DefaultLocale.LCID)
                 .Where(x => x.UrlPath.Length.Equals(pathLength))
                 .Where(x => x.UrlPath.Equals(path))
                 .FirstOrDefault();
@@ -84,7 +84,7 @@ namespace ComplexCommerce.Web.Mvc.Routing
             var localeId = appContext.CurrentLocaleId;
 
             // Get all of the pages
-            var pages = routeUrlPageListFactory.GetRouteUrlPageList(tenant.Id, localeId);
+            var pages = routeUrlPageListFactory.GetRouteUrlPageList(tenant.Id, localeId, tenant.DefaultLocale.LCID);
 
             if (TryFindMatch(pages, values, out page))
             {

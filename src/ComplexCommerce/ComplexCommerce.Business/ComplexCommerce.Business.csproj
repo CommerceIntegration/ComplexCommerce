@@ -51,11 +51,8 @@
     <Compile Include="Caching\IMicroObjectCache.cs" />
     <Compile Include="Caching\MicroObjectCache.cs" />
     <Compile Include="Caching\ICachePolicy.cs" />
-    <Compile Include="Caching\IRouteUrlPageListCacheFactory.cs" />
     <Compile Include="Caching\ISingletonObjectCache.cs" />
     <Compile Include="Caching\LazyLock.cs" />
-    <Compile Include="Caching\RouteUrlPageListCache.cs" />
-    <Compile Include="Caching\RouteUrlPageListCacheFactory.cs" />
     <Compile Include="Caching\SingletonObjectCache.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="CategoryProductInfo.cs" />
@@ -67,6 +64,7 @@
     <Compile Include="GetCachedRouteUrlPageListCommand.cs" />
     <Compile Include="GetCachedRouteUrlProductListCommand.cs" />
     <Compile Include="GetRequestCachedParentUrlPageListCommand.cs" />
+    <Compile Include="ITenantLocale.cs" />
     <Compile Include="ParentUrlPageInfo.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductCategoryInfo.cs" />
@@ -86,6 +84,7 @@
     <Compile Include="SiteMapProductInfo.cs" />
     <Compile Include="SiteMapProductList.cs" />
     <Compile Include="Tenant.cs" />
+    <Compile Include="TenantLocaleCriteria.cs" />
     <Compile Include="TenantTypeEnum.cs" />
     <Compile Include="Text\IUrlBuilder.cs" />
     <Compile Include="Text\StringExtensions.cs" />

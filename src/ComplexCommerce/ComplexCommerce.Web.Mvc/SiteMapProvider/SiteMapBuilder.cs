@@ -15,23 +15,18 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
     {
         public SiteMapBuilder(
             ISiteMapPageTreeFactory siteMapPageTreeFactory,
-            IApplicationContext appContext,
             ISiteMapNodeFactory siteMapNodeFactory
             )
         {
             if (siteMapPageTreeFactory == null)
                 throw new ArgumentNullException("siteMapPageTreeFactory");
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
             if (siteMapNodeFactory == null)
                 throw new ArgumentNullException("siteMapNodeFactory");
             this.siteMapPageTreeFactory = siteMapPageTreeFactory;
-            this.appContext = appContext;
             this.siteMapNodeFactory = siteMapNodeFactory;
         }
 
         private readonly ISiteMapPageTreeFactory siteMapPageTreeFactory;
-        private readonly IApplicationContext appContext;
         private readonly ISiteMapNodeFactory siteMapNodeFactory;
 
         #region ISiteMapBuilder Members
@@ -42,10 +37,7 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             siteMap.EnableLocalization = false;
             siteMap.SecurityTrimmingEnabled = true;
             
-            var tenant = appContext.CurrentTenant;
-            var localeId = appContext.CurrentLocaleId;
-
-            var tree = siteMapPageTreeFactory.GetSiteMapPageTree(tenant.Id, localeId);
+            var tree = siteMapPageTreeFactory.GetSiteMapPageTree();
 
             // Get the root node
             var root = GetRootNode(siteMap, tree);

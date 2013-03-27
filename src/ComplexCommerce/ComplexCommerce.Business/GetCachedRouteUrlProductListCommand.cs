@@ -10,15 +10,18 @@ namespace ComplexCommerce.Business
     public class GetCachedRouteUrlProductListCommand
         : CslaCommandBase<GetCachedRouteUrlProductListCommand>
     {
-        public GetCachedRouteUrlProductListCommand(int tenantId, int localeId)
+        public GetCachedRouteUrlProductListCommand(int tenantId, int localeId, int defaultLocaleId)
         {
             if (tenantId < 1)
                 throw new ArgumentOutOfRangeException("tenantId");
             if (localeId < 1)
                 throw new ArgumentOutOfRangeException("localeId");
+            if (defaultLocaleId < 1)
+                throw new ArgumentOutOfRangeException("defaultLocaleId");
             
             this.TenantId = tenantId;
             this.LocaleId = localeId;
+            this.DefaultLocaleId = defaultLocaleId;
         }
 
          public static PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
@@ -35,6 +38,13 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(LocaleIdProperty, value); }
         }
 
+        public static PropertyInfo<int> DefaultLocaleIdProperty = RegisterProperty<int>(c => c.DefaultLocaleId);
+        public int DefaultLocaleId
+        {
+            get { return ReadProperty(DefaultLocaleIdProperty); }
+            private set { LoadProperty(DefaultLocaleIdProperty, value); }
+        }
+
         public static PropertyInfo<RouteUrlProductList> RouteUrlProductListProperty = RegisterProperty<RouteUrlProductList>(c => c.RouteUrlProductList);
         public RouteUrlProductList RouteUrlProductList
         {
@@ -47,9 +57,9 @@ namespace ComplexCommerce.Business
         /// </summary>
         protected override void DataPortal_Execute()
         {
-            var key = "__CC_RouteUrlProductList_" + this.TenantId + "_" + this.LocaleId + "__";
+            var key = "__ML_RouteUrlProductList_" + this.TenantId + "_" + this.LocaleId + "__";
             this.RouteUrlProductList = cache.GetOrAdd(key,
-                () => RouteUrlProductList.GetRouteUrlProductList(this.TenantId, this.LocaleId));
+                () => RouteUrlProductList.GetRouteUrlProductList(this.TenantId, this.LocaleId, this.DefaultLocaleId));
         }
 
         #region Dependency Injection

@@ -10,15 +10,18 @@ namespace ComplexCommerce.Business
     public class GetCachedRouteUrlPageListCommand
         : CslaCommandBase<GetCachedRouteUrlPageListCommand>
     {
-        public GetCachedRouteUrlPageListCommand(int tenantId, int localeId)
+        public GetCachedRouteUrlPageListCommand(int tenantId, int localeId, int defaultLocaleId)
         {
             if (tenantId < 1)
                 throw new ArgumentOutOfRangeException("tenantId");
             if (localeId < 1)
                 throw new ArgumentOutOfRangeException("localeId");
+            if (defaultLocaleId < 1)
+                throw new ArgumentOutOfRangeException("defaultLocaleId");
             
             this.TenantId = tenantId;
             this.LocaleId = localeId;
+            this.DefaultLocaleId = defaultLocaleId;
         }
 
 
@@ -36,6 +39,13 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(LocaleIdProperty, value); }
         }
 
+        public static PropertyInfo<int> DefaultLocaleIdProperty = RegisterProperty<int>(c => c.DefaultLocaleId);
+        public int DefaultLocaleId
+        {
+            get { return ReadProperty(DefaultLocaleIdProperty); }
+            private set { LoadProperty(DefaultLocaleIdProperty, value); }
+        }
+
         public static PropertyInfo<RouteUrlPageList> RouteUrlPageListProperty = RegisterProperty<RouteUrlPageList>(c => c.RouteUrlPageList);
         public RouteUrlPageList RouteUrlPageList
         {
@@ -48,9 +58,9 @@ namespace ComplexCommerce.Business
         /// </summary>
         protected override void DataPortal_Execute()
         {
-            var key = "__CC_RouteUrlPageList_" + this.TenantId + "_" + this.LocaleId + "__";
+            var key = "__ML_RouteUrlPageList_" + this.TenantId + "_" + this.LocaleId + "__";
             this.RouteUrlPageList = cache.GetOrAdd(key,
-                () => RouteUrlPageList.GetRouteUrlPageList(this.TenantId, this.LocaleId));
+                () => RouteUrlPageList.GetRouteUrlPageList(this.TenantId, this.LocaleId, this.DefaultLocaleId));
         }
 
         #region Dependency Injection
