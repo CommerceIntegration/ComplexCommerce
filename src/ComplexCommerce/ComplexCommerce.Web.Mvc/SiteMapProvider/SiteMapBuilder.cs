@@ -89,15 +89,6 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             node.Attributes.Add("isVisibleOnMainMenu", treeNode.IsVisibleOnMainMenu.ToString().ToLowerInvariant());
             node.VisibilityProvider = typeof(VisibilityProvider).ShortAssemblyQualifiedName();
 
-            //// These aren't strictly necessary...
-            //node.Controller = treeNode.ContentType.ToString();
-            //node.Area = "";
-            //node.Action = "Details";
-            //if (!treeNode.ContentId.Equals(Guid.Empty))
-            //{
-            //    node.RouteValues.Add("id", treeNode.ContentId);
-            //}
-            
             // TODO: Figure out how to do canonical URLs for sitemapPageTree
 
             AcquireMetaRobotsValuesFrom(treeNode.MetaRobots, node.MetaRobotsValues);
@@ -119,13 +110,6 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             // Setup visibility
             node.Attributes.Add("isVisibleOnMainMenu", "false");
             node.VisibilityProvider = typeof(VisibilityProvider).ShortAssemblyQualifiedName();
-
-            //// These aren't strictly necessary...
-            //node.Controller = "Product";
-            //node.Area = "";
-            //node.Action = "Details";
-            //node.RouteValues.Add("id", productInfo.ProductXTenantLocaleId);
-
             node.CanonicalUrl = productInfo.CanonicalUrlPath;
 
             AcquireMetaRobotsValuesFrom(productInfo.MetaRobots, node.MetaRobotsValues);
@@ -133,8 +117,6 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             return node;
         }
 
-
-        // TODO: Move this logic into CSLA object
         private void AcquireMetaRobotsValuesFrom(string metaRobots, IList<string> metaRobotsValues)
         {
             if (!string.IsNullOrEmpty(metaRobots))
