@@ -31,12 +31,6 @@ namespace ComplexCommerce.Data.Entity.Repositories
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
-                //var result = (from tenantLocale in ctx.ObjectContext.TenantLocale
-                //              join page in ctx.ObjectContext.Page
-                //                  on tenantLocale.Id equals page.TenantLocaleId
-                //              where tenantLocale.TenantId == tenantId
-                //              where tenantLocale.LocaleId == localeId
-
                 var result = (from pageLocale in ctx.ObjectContext.PageLocale
                               join page in ctx.ObjectContext.Page
                                   on pageLocale.PageId equals page.Id
@@ -52,7 +46,7 @@ namespace ComplexCommerce.Data.Entity.Repositories
                                   Title = pageLocale.Title,
                                   Url = pageLocale.Url,
                                   IsUrlAbsolute = pageLocale.IsUrlAbsolute,
-                                  MetaRobots = pageLocale.MetaRobots,
+                                  MetaRobots = page.MetaRobots,
                                   IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
                               });
 

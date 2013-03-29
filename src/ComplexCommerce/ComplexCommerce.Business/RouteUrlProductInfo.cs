@@ -11,7 +11,7 @@ namespace ComplexCommerce.Business
 {
     public interface IRouteUrlProductInfo
     {
-        Guid CategoryXProductXTenantLocaleId { get; }
+        Guid CategoryXProductId { get; }
         string UrlPath { get; }
         string VirtualPath { get; }
     }
@@ -39,27 +39,17 @@ namespace ComplexCommerce.Business
             }
         }
 
-        //// Route = {id}
-        //public static PropertyInfo<Guid> ProductXTenantLocaleIdProperty = RegisterProperty<Guid>(c => c.ProductXTenantLocaleId);
-        //public Guid ProductXTenantLocaleId
-        //{
-        //    get { return GetProperty(ProductXTenantLocaleIdProperty); }
-        //    private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
-        //}
-
         // Route = {id}
-        public static PropertyInfo<Guid> CategoryXProductXTenantLocaleIdProperty = RegisterProperty<Guid>(c => c.CategoryXProductXTenantLocaleId);
-        public Guid CategoryXProductXTenantLocaleId
+        public static PropertyInfo<Guid> CategoryXProductIdProperty = RegisterProperty<Guid>(c => c.CategoryXProductId);
+        public Guid CategoryXProductId
         {
-            get { return GetProperty(CategoryXProductXTenantLocaleIdProperty); }
-            private set { LoadProperty(CategoryXProductXTenantLocaleIdProperty, value); }
+            get { return GetProperty(CategoryXProductIdProperty); }
+            private set { LoadProperty(CategoryXProductIdProperty, value); }
         }
 
         private void Child_Fetch(RouteUrlProductDto item, ITenantLocale tenantLocale)
         {
-            ////ProductXTenantLocaleId = item.ProductXTenantLocaleId;
-
-            this.CategoryXProductXTenantLocaleId = item.CategoryXProductXTenantLocaleId;
+            this.CategoryXProductId = item.CategoryXProductId;
             this.UrlPath = urlBuilder.BuildPath(
                 item.Url, 
                 item.IsUrlAbsolute, 

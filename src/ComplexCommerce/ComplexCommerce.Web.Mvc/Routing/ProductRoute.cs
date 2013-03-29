@@ -63,10 +63,10 @@ namespace ComplexCommerce.Web.Mvc.Routing
                     result.Values["action"] = "Details";
                     //result.Values["id"] = page.ProductXTenantLocaleId;
 
-                    // NOTE: May need a compound key here (ProductXTenantLocaleID and 
+                    // TODO: May need a compound key here (ProductXTenantLocaleID and 
                     // CategoryId) to allow product to be hosted on pages that are not 
                     // below categories.
-                    result.Values["id"] = page.CategoryXProductXTenantLocaleId;
+                    result.Values["id"] = page.CategoryXProductId;
                 }
             }
             return result;
@@ -99,9 +99,9 @@ namespace ComplexCommerce.Web.Mvc.Routing
         private bool TryFindMatch(IEnumerable<IRouteUrlProductInfo> pages, RouteValueDictionary values, out IRouteUrlProductInfo page)
         {
             page = null;
-            Guid categoryXProductXTenantLocaleId = Guid.Empty;
+            Guid categoryXProductId = Guid.Empty;
 
-            if (!Guid.TryParse(Convert.ToString(values["id"]), out categoryXProductXTenantLocaleId))
+            if (!Guid.TryParse(Convert.ToString(values["id"]), out categoryXProductId))
             {
                 return false;
             }
@@ -111,7 +111,7 @@ namespace ComplexCommerce.Web.Mvc.Routing
 
             if (action == "Details" && controller == "Product")
             {
-                page = pages.Where(x => x.CategoryXProductXTenantLocaleId.Equals(categoryXProductXTenantLocaleId)).FirstOrDefault();
+                page = pages.Where(x => x.CategoryXProductId.Equals(categoryXProductId)).FirstOrDefault();
                 if (page != null)
                 {
                     return true;

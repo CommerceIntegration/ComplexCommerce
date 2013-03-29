@@ -69,9 +69,9 @@ namespace ComplexCommerce.Data.Entity.Model
         {
             var table = new List<Page>
             {
-                new Page { Id = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), ParentId = null, TenantId = 3, ContentType = 1, ContentId = Guid.Empty, IsVisibleOnMainMenu = false },
-                new Page { Id = new Guid("d1ee8545-dd7d-4304-99de-397f880b553e"), ParentId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), TenantId = 3, ContentType = 2, ContentId = new Guid("db4f46b2-9335-4d3a-95c8-43490b6ef6f6"), IsVisibleOnMainMenu = true },
-                new Page { Id = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), ParentId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), TenantId = 3, ContentType = 2, ContentId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa"), IsVisibleOnMainMenu = true }
+                new Page { Id = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), ParentId = null, TenantId = 3, ContentType = 1, ContentId = Guid.Empty, IsVisibleOnMainMenu = false, MetaRobots = "index, follow, noydir" },
+                new Page { Id = new Guid("d1ee8545-dd7d-4304-99de-397f880b553e"), ParentId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), TenantId = 3, ContentType = 2, ContentId = new Guid("db4f46b2-9335-4d3a-95c8-43490b6ef6f6"), IsVisibleOnMainMenu = true, MetaRobots = "index, follow, nosnippet" },
+                new Page { Id = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), ParentId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), TenantId = 3, ContentType = 2, ContentId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa"), IsVisibleOnMainMenu = true, MetaRobots = "" }
             };
             table.ForEach(x => context.Page.Add(x));
             context.SaveChanges();
@@ -81,9 +81,9 @@ namespace ComplexCommerce.Data.Entity.Model
         {
             var table = new List<PageLocale>
             {
-                new PageLocale { Id = new Guid("6e2ba5f4-0fd6-4a0e-8cde-9ca221bf9423"), PageId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), LocaleId = 1033, Url = "", Title = "Home", MetaKeywords = "Easy ABC, Bees, Seas", MetaDescription = "This is the #1 store for purchasing ABC products. Free Shipping, Secure Checkout, Best Experience.", MetaRobots = "index, follow, noydir" },
-                new PageLocale { Id = new Guid("5e33d5ae-ddcf-4dcb-9032-9ee98beeed98"), PageId = new Guid("d1ee8545-dd7d-4304-99de-397f880b553e"), LocaleId = 1033, Url = "bees", Title = "Bees", MetaKeywords = "bees, bee stuff, whatever", MetaDescription = "&#9733;Trying this out &#9733;", MetaRobots = "index, follow, nosnippet" },
-                new PageLocale { Id = new Guid("c320cb36-f0a5-460a-91cf-5c86442375ee"), PageId = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), LocaleId = 1033, Url = "sea", Title = "The Sea", MetaKeywords = "sea, ocean, bay, shore, shell", MetaDescription = "Testing & Whatnot", MetaRobots = "" }
+                new PageLocale { Id = new Guid("6e2ba5f4-0fd6-4a0e-8cde-9ca221bf9423"), PageId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), LocaleId = 1033, Url = "", Title = "Home", MetaKeywords = "Easy ABC, Bees, Seas", MetaDescription = "This is the #1 store for purchasing ABC products. Free Shipping, Secure Checkout, Best Experience." },
+                new PageLocale { Id = new Guid("5e33d5ae-ddcf-4dcb-9032-9ee98beeed98"), PageId = new Guid("d1ee8545-dd7d-4304-99de-397f880b553e"), LocaleId = 1033, Url = "bees", Title = "Bees", MetaKeywords = "bees, bee stuff, whatever", MetaDescription = "&#9733;Trying this out &#9733;" },
+                new PageLocale { Id = new Guid("c320cb36-f0a5-460a-91cf-5c86442375ee"), PageId = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), LocaleId = 1033, Url = "sea", Title = "The Sea", MetaKeywords = "sea, ocean, bay, shore, shell", MetaDescription = "Testing & Whatnot" }
             };
             table.ForEach(x => context.PageLocale.Add(x));
             context.SaveChanges();
@@ -115,7 +115,7 @@ namespace ComplexCommerce.Data.Entity.Model
         {
             var table = new List<Product>
             {
-                new Product { Id = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), ChainId = 1, SKU = "SHELL123", ImageUrl = "", Price = Convert.ToDecimal(6.99), DefaultCategoryId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa") }
+                new Product { Id = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), ChainId = 1, SKU = "SHELL123", ImageUrl = "", Price = Convert.ToDecimal(6.99), DefaultCategoryId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa"), MetaRobots = "" }
             };
             table.ForEach(x => context.Product.Add(x));
             context.SaveChanges();

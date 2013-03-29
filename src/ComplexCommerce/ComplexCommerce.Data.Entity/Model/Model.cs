@@ -62,6 +62,7 @@ namespace ComplexCommerce.Data.Entity.Model
         public int ContentType { get; set; }
         public Guid ContentId { get; set; }
         public bool IsVisibleOnMainMenu { get; set; }
+        public string MetaRobots { get; set; }
     }
 
     public class PageLocale
@@ -74,7 +75,6 @@ namespace ComplexCommerce.Data.Entity.Model
         public string Title { get; set; }
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }
-        public string MetaRobots { get; set; }
     }
 
     public class Category
@@ -106,6 +106,7 @@ namespace ComplexCommerce.Data.Entity.Model
         public string ImageUrl { get; set; }
         public decimal Price { get; set; }
         public Guid DefaultCategoryId { get; set; }
+        public string MetaRobots { get; set; }
     }
 
     public class ProductXTenantXLocale
