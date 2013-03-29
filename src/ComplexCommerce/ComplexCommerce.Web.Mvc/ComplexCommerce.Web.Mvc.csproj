@@ -37,9 +37,6 @@
     <Reference Include="Csla.Web">
       <HintPath>..\packages\CSLA-ASP.NET.4.5.20\lib\net45\Csla.Web.dll</HintPath>
     </Reference>
-    <Reference Include="Csla.Web.Mvc">
-      <HintPath>..\packages\CSLA-ASP.NET-MVC.4.5.10\lib\net45\Csla.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="Csla.Web.Mvc4">
       <HintPath>..\packages\CSLA-ASP.NET-MVC4.4.5.20\lib\net45\Csla.Web.Mvc4.dll</HintPath>
     </Reference>
