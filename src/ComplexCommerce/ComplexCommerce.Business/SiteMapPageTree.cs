@@ -56,11 +56,18 @@ namespace ComplexCommerce.Business
             return DataPortal.Fetch<SiteMapPageTree>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
         }
 
-        public static PropertyInfo<Guid> IdProperty = RegisterProperty<Guid>(c => c.Id);
-        public Guid Id
+        //public static PropertyInfo<Guid> IdProperty = RegisterProperty<Guid>(c => c.Id);
+        //public Guid Id
+        //{
+        //    get { return GetProperty(IdProperty); }
+        //    private set { LoadProperty(IdProperty, value); }
+        //}
+
+        public static PropertyInfo<Guid> PageLocaleIdProperty = RegisterProperty<Guid>(c => c.PageLocaleId);
+        public Guid PageLocaleId
         {
-            get { return GetProperty(IdProperty); }
-            private set { LoadProperty(IdProperty, value); }
+            get { return GetProperty(PageLocaleIdProperty); }
+            private set { LoadProperty(PageLocaleIdProperty, value); }
         }
 
         public static PropertyInfo<string> TitleProperty = RegisterProperty<string>(c => c.Title);
@@ -133,7 +140,8 @@ namespace ComplexCommerce.Business
         // Used for nested calls for pages
         private void Child_Fetch(ParentUrlPageInfo page, IEnumerable<ParentUrlPageInfo> pageList, IEnumerable<SiteMapProductDto> productList, ITenantLocale tenantLocale)
         {
-            Id = page.Id;
+            //Id = page.Id;
+            PageLocaleId = page.PageLocaleId;
             Title = page.Title;
             MetaRobots = page.MetaRobots;
             IsVisibleOnMainMenu = page.IsVisibleOnMainMenu;

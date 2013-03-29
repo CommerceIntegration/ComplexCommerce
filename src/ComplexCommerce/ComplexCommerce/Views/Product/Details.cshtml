@@ -42,7 +42,7 @@
         <ul>
         @foreach (var category in Model.Categories)
         {
-            <li>@Html.MvcSiteMap().SiteMapPath(null, category.PageId.ToString())</li>
+            <li>@Html.MvcSiteMap().SiteMapPath(null, category.PageLocaleId.ToString())</li>
         }
         </ul>
     }

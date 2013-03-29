@@ -78,7 +78,7 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
 
         private ISiteMapNode GetSiteMapNodeFromTreeNode(ISiteMap siteMap, SiteMapPageTree treeNode)
         {
-            var key = treeNode.Id.ToString();
+            var key = treeNode.PageLocaleId.ToString();
             var node = siteMapNodeFactory.Create(siteMap, key, "");
 
             // Assign values
@@ -100,7 +100,8 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
         {
             //var key = productInfo.ProductXTenantLocaleId.ToString();
 
-            var key = productInfo.ProductXTenantLocaleId.ToString() + "|" + productInfo.CategoryId.ToString();
+            //var key = productInfo.ProductXTenantLocaleId.ToString() + "|" + productInfo.CategoryId.ToString();
+            var key = productInfo.CategoryXProductId.ToString();
             var node = siteMapNodeFactory.Create(siteMap, key, "");
 
             // Assign values

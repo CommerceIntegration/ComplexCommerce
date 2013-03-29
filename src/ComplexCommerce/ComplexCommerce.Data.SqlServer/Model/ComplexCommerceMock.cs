@@ -55,12 +55,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
     		set { _tenantLocale = value; }
         }
         private IDbSet<TenantLocale> _tenantLocale;
-        public virtual IDbSet<Category> Category
-        {
-            get { return _category  ?? (_category = new MockDbSet<Category>()); }
-    		set { _category = value; }
-        }
-        private IDbSet<Category> _category;
         public virtual IDbSet<Tenant> Tenant
         {
             get { return _tenant  ?? (_tenant = new MockDbSet<Tenant>()); }

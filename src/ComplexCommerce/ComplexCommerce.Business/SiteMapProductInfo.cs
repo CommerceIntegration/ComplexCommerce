@@ -12,18 +12,32 @@ namespace ComplexCommerce.Business
     public class SiteMapProductInfo
         : CslaReadOnlyBase<SiteMapProductInfo>
     {
-        public static readonly PropertyInfo<Guid> ProductXTenantLocaleIdProperty = RegisterProperty<Guid>(p => p.ProductXTenantLocaleId);
-        public Guid ProductXTenantLocaleId
-        {
-            get { return GetProperty(ProductXTenantLocaleIdProperty); }
-            private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
-        }
+        //public static readonly PropertyInfo<Guid> ProductXTenantLocaleIdProperty = RegisterProperty<Guid>(p => p.ProductXTenantLocaleId);
+        //public Guid ProductXTenantLocaleId
+        //{
+        //    get { return GetProperty(ProductXTenantLocaleIdProperty); }
+        //    private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
+        //}
 
-        public static readonly PropertyInfo<Guid> CategoryIdProperty = RegisterProperty<Guid>(p => p.CategoryId);
-        public Guid CategoryId
+        //public static readonly PropertyInfo<Guid> ProductIdProperty = RegisterProperty<Guid>(p => p.ProductId);
+        //public Guid ProductId
+        //{
+        //    get { return GetProperty(ProductIdProperty); }
+        //    private set { LoadProperty(ProductIdProperty, value); }
+        //}
+
+        //public static readonly PropertyInfo<Guid> CategoryIdProperty = RegisterProperty<Guid>(p => p.CategoryId);
+        //public Guid CategoryId
+        //{
+        //    get { return GetProperty(CategoryIdProperty); }
+        //    private set { LoadProperty(CategoryIdProperty, value); }
+        //}
+
+        public static readonly PropertyInfo<Guid> CategoryXProductIdProperty = RegisterProperty<Guid>(p => p.CategoryXProductId);
+        public Guid CategoryXProductId
         {
-            get { return GetProperty(CategoryIdProperty); }
-            private set { LoadProperty(CategoryIdProperty, value); }
+            get { return GetProperty(CategoryXProductIdProperty); }
+            private set { LoadProperty(CategoryXProductIdProperty, value); }
         }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
@@ -60,8 +74,9 @@ namespace ComplexCommerce.Business
 
         private void Child_Fetch(SiteMapProductDto item, ITenantLocale tenantLocale)
         {
-            ProductXTenantLocaleId = item.ProductXTenantLocaleId;
-            CategoryId = item.CategoryId;
+            //ProductXTenantLocaleId = item.ProductXTenantLocaleId;
+            //CategoryId = item.CategoryId;
+            CategoryXProductId = item.CategoryXProductId;
             Name = item.Name;
             MetaRobots = item.MetaRobots;
 

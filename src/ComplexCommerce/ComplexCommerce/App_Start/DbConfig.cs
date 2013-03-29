@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using ComplexCommerce.Shared.DI;
 using ComplexCommerce.Data;
-using ComplexCommerce.Data.SqlServer.Model;
+using ComplexCommerce.Data.Entity.Model;
 
 namespace ComplexCommerce
 {
@@ -15,7 +15,7 @@ namespace ComplexCommerce
             container.Resolve<IDataInitializer>();
 
             // TODO: Remove the initializer before deploying to production
-            //Database.SetInitializer(new ComplexCommerceSeeder());
+            Database.SetInitializer(new ComplexCommerceSeeder());
         }
     }
 }

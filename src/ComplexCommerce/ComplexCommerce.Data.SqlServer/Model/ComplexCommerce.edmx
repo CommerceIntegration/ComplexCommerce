@@ -6,7 +6,6 @@
     <edmx:StorageModels>
     <Schema Namespace="ComplexCommerce.Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="ComplexCommerceModelStoreContainer">
-          <EntitySet Name="Category" EntityType="ComplexCommerce.Model.Store.Category" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CategoryXProductXTenantLocale" EntityType="ComplexCommerce.Model.Store.CategoryXProductXTenantLocale" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Chain" EntityType="ComplexCommerce.Model.Store.Chain" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Page" EntityType="ComplexCommerce.Model.Store.Page" store:Type="Tables" Schema="dbo" />
@@ -14,10 +13,6 @@
           <EntitySet Name="ProductXTenantLocale" EntityType="ComplexCommerce.Model.Store.ProductXTenantLocale" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Tenant" EntityType="ComplexCommerce.Model.Store.Tenant" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TenantLocale" EntityType="ComplexCommerce.Model.Store.TenantLocale" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_Category_ProductXCategory" Association="ComplexCommerce.Model.Store.FK_Category_ProductXCategory">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="CategoryXProductXTenantLocale" EntitySet="CategoryXProductXTenantLocale" />
-          </AssociationSet>
           <AssociationSet Name="FK_Chain_Tenant" Association="ComplexCommerce.Model.Store.FK_Chain_Tenant">
             <End Role="Chain" EntitySet="Chain" />
             <End Role="Tenant" EntitySet="Tenant" />
@@ -34,10 +29,6 @@
             <End Role="ProductXTenantLocale" EntitySet="ProductXTenantLocale" />
             <End Role="CategoryXProductXTenantLocale" EntitySet="CategoryXProductXTenantLocale" />
           </AssociationSet>
-          <AssociationSet Name="FK_TenantLocale_Category" Association="ComplexCommerce.Model.Store.FK_TenantLocale_Category">
-            <End Role="TenantLocale" EntitySet="TenantLocale" />
-            <End Role="Category" EntitySet="Category" />
-          </AssociationSet>
           <AssociationSet Name="FK_TenantLocale_Page" Association="ComplexCommerce.Model.Store.FK_TenantLocale_Page">
             <End Role="TenantLocale" EntitySet="TenantLocale" />
             <End Role="Page" EntitySet="Page" />
@@ -51,14 +42,6 @@
             <End Role="TenantLocale" EntitySet="TenantLocale" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Category">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="TenantLocaleId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-        </EntityType>
         <EntityType Name="CategoryXProductXTenantLocale">
           <Key>
             <PropertyRef Name="Id" />
@@ -137,18 +120,6 @@
           <Property Name="TenantId" Type="int" Nullable="false" />
           <Property Name="LocaleId" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Category_ProductXCategory">
-          <End Role="Category" Type="ComplexCommerce.Model.Store.Category" Multiplicity="1" />
-          <End Role="CategoryXProductXTenantLocale" Type="ComplexCommerce.Model.Store.CategoryXProductXTenantLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CategoryXProductXTenantLocale">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Chain_Tenant">
           <End Role="Chain" Type="ComplexCommerce.Model.Store.Chain" Multiplicity="1" />
           <End Role="Tenant" Type="ComplexCommerce.Model.Store.Tenant" Multiplicity="*" />
@@ -194,18 +165,6 @@
             </Principal>
             <Dependent Role="CategoryXProductXTenantLocale">
               <PropertyRef Name="ProductXTenantLocaleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TenantLocale_Category">
-          <End Role="TenantLocale" Type="ComplexCommerce.Model.Store.TenantLocale" Multiplicity="1" />
-          <End Role="Category" Type="ComplexCommerce.Model.Store.Category" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TenantLocale">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Category">
-              <PropertyRef Name="TenantLocaleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -258,15 +217,6 @@
           </AssociationSet>
           <EntitySet Name="CategoryXProductXTenantLocale" EntityType="ComplexCommerce.Model.CategoryXProductXTenantLocale" />
           <EntitySet Name="TenantLocale" EntityType="ComplexCommerce.Model.TenantLocale" />
-          <EntitySet Name="Category" EntityType="ComplexCommerce.Model.Category" />
-          <AssociationSet Name="FK_Category_ProductXCategory" Association="ComplexCommerce.Model.FK_Category_ProductXCategory">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="CategoryXProductXTenantLocale" EntitySet="CategoryXProductXTenantLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TenantLocale_Category" Association="ComplexCommerce.Model.FK_TenantLocale_Category">
-            <End Role="TenantLocale" EntitySet="TenantLocale" />
-            <End Role="Category" EntitySet="Category" />
-          </AssociationSet>
           <EntitySet Name="Tenant" EntityType="ComplexCommerce.Model.Tenant" />
           <AssociationSet Name="FK_Chain_Tenant" Association="ComplexCommerce.Model.FK_Chain_Tenant">
             <End Role="Chain" EntitySet="Chain" />
@@ -336,7 +286,6 @@
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="CategoryId" Nullable="false" />
           <Property Type="Guid" Name="ProductXTenantLocaleId" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="ComplexCommerce.Model.FK_Category_ProductXCategory" FromRole="CategoryXProductXTenantLocale" ToRole="Category" />
           <NavigationProperty Name="ProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_ProductXTenantLocale_CategoryXProductXTenantLocale" FromRole="CategoryXProductXTenantLocale" ToRole="ProductXTenantLocale" />
         </EntityType>
         <EntityType Name="TenantLocale">
@@ -346,45 +295,10 @@
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="TenantId" Nullable="false" />
           <Property Type="Int32" Name="LocaleId" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="ComplexCommerce.Model.FK_TenantLocale_Category" FromRole="TenantLocale" ToRole="Category" />
           <NavigationProperty Name="Tenant" Relationship="ComplexCommerce.Model.FK_TenantLocale_Tenant" FromRole="TenantLocale" ToRole="Tenant" />
           <NavigationProperty Name="Page" Relationship="ComplexCommerce.Model.FK_TenantLocale_Page" FromRole="TenantLocale" ToRole="Page" />
           <NavigationProperty Name="ProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_TenantLocale_ProductXTenantLocale" FromRole="TenantLocale" ToRole="ProductXTenantLocale" />
         </EntityType>
-        <EntityType Name="Category">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Guid" Name="TenantLocaleId" Nullable="false" />
-          <Property Type="String" Name="Description" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CategoryXProductXTenantLocale" Relationship="ComplexCommerce.Model.FK_Category_ProductXCategory" FromRole="Category" ToRole="CategoryXProductXTenantLocale" />
-          <NavigationProperty Name="TenantLocale" Relationship="ComplexCommerce.Model.FK_TenantLocale_Category" FromRole="Category" ToRole="TenantLocale" />
-        </EntityType>
-        <Association Name="FK_Category_ProductXCategory">
-          <End Type="ComplexCommerce.Model.Category" Role="Category" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.CategoryXProductXTenantLocale" Role="CategoryXProductXTenantLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CategoryXProductXTenantLocale">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TenantLocale_Category">
-          <End Type="ComplexCommerce.Model.TenantLocale" Role="TenantLocale" Multiplicity="1" />
-          <End Type="ComplexCommerce.Model.Category" Role="Category" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TenantLocale">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Category">
-              <PropertyRef Name="TenantLocaleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Tenant">
           <Key>
             <PropertyRef Name="Id" />
@@ -547,15 +461,6 @@
               <MappingFragment StoreEntitySet="TenantLocale">
                 <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
                 <ScalarProperty Name="TenantId" ColumnName="TenantId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Category">
-            <EntityTypeMapping TypeName="ComplexCommerce.Model.Category">
-              <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="TenantLocaleId" ColumnName="TenantLocaleId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

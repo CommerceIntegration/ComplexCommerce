@@ -14,7 +14,7 @@ namespace ComplexCommerce.Business
     public class ProductCategoryList
         : CslaReadOnlyListBase<ProductCategoryList, ProductCategoryInfo>
     {
-        private void Child_Fetch(Guid productXTenantLocaleId)
+        private void Child_Fetch(Guid productId, int localeId)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -22,11 +22,9 @@ namespace ComplexCommerce.Business
                 RaiseListChangedEvents = false;
                 IsReadOnly = false;
 
-                var list = repository.ListForProduct(productXTenantLocaleId);
+                var list = repository.ListForProduct(productId, localeId);
                 foreach (var item in list)
-                {
                     Add(DataPortal.FetchChild<ProductCategoryInfo>(item));
-                }
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;

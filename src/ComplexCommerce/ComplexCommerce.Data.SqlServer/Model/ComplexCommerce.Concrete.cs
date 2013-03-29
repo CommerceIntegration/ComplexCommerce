@@ -45,7 +45,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public IDbSet<Product> Product { get; set; }
         public IDbSet<CategoryXProductXTenantLocale> CategoryXProductXTenantLocale { get; set; }
         public IDbSet<TenantLocale> TenantLocale { get; set; }
-        public IDbSet<Category> Category { get; set; }
         public IDbSet<Tenant> Tenant { get; set; }
         public IDbSet<Page> Page { get; set; }
         public IDbSet<ProductXTenantLocale> ProductXTenantLocale { get; set; }

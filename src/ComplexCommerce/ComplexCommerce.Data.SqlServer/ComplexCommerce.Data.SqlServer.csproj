@@ -33,11 +33,16 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Csla">
-      <HintPath>..\packages\CSLA-Core.4.5.10\lib\net45\Csla.dll</HintPath>
+    <Reference Include="Csla, Version=4.5.20.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CSLA-Core.4.5.20\lib\net45\Csla.dll</HintPath>
     </Reference>
-    <Reference Include="Csla.XmlSerializers">
-      <HintPath>..\packages\CSLA-Core.4.5.10\lib\net45\Csla.XmlSerializers.dll</HintPath>
+    <Reference Include="Csla.Web">
+      <HintPath>..\packages\CSLA-ASP.NET.4.5.20\lib\net45\Csla.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Csla.XmlSerializers, Version=4.5.20.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CSLA-Core.4.5.20\lib\net45\Csla.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -47,6 +52,7 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,9 +66,6 @@
     <Compile Include="Context\ObjectContextManager.cs" />
     <Compile Include="Context\PersistenceDetails.cs" />
     <Compile Include="DataInitializer.cs" />
-    <Compile Include="Model\Category.cs">
-      <DependentUpon>ComplexCommerce.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\CategoryXProductXTenantLocale.cs">
       <DependentUpon>ComplexCommerce.tt</DependentUpon>
     </Compile>

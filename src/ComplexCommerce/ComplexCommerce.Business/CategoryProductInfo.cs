@@ -16,11 +16,18 @@ namespace ComplexCommerce.Business
         //    private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
         //}
 
-        public static PropertyInfo<Guid> CategoryXProductXTenantLocaleIdProperty = RegisterProperty<Guid>(c => c.CategoryXProductXTenantLocaleId);
-        public Guid CategoryXProductXTenantLocaleId
+        //public static PropertyInfo<Guid> CategoryXProductXTenantLocaleIdProperty = RegisterProperty<Guid>(c => c.CategoryXProductXTenantLocaleId);
+        //public Guid CategoryXProductXTenantLocaleId
+        //{
+        //    get { return GetProperty(CategoryXProductXTenantLocaleIdProperty); }
+        //    private set { LoadProperty(CategoryXProductXTenantLocaleIdProperty, value); }
+        //}
+
+        public static PropertyInfo<Guid> CategoryXProductIdProperty = RegisterProperty<Guid>(c => c.CategoryXProductId);
+        public Guid CategoryXProductId
         {
-            get { return GetProperty(CategoryXProductXTenantLocaleIdProperty); }
-            private set { LoadProperty(CategoryXProductXTenantLocaleIdProperty, value); }
+            get { return GetProperty(CategoryXProductIdProperty); }
+            private set { LoadProperty(CategoryXProductIdProperty, value); }
         }
 
         public static PropertyInfo<string> NameProperty = RegisterProperty<string>(c => c.Name);
@@ -63,7 +70,8 @@ namespace ComplexCommerce.Business
         private void Child_Fetch(CategoryProductDto item)
         {
             //this.ProductXTenantLocaleId = item.ProductXTenantLocaleId;
-            this.CategoryXProductXTenantLocaleId = item.CategoryXProductXTenantLocaleId;
+            //this.CategoryXProductXTenantLocaleId = item.CategoryXProductXTenantLocaleId;
+            this.CategoryXProductId = item.CategoryXProductId;
             this.Name = item.Name;
             this.SKU = item.SKU;
             this.ImageUrl = item.ImageUrl;

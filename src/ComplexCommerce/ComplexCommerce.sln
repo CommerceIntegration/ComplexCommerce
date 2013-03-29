@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplexCommerce.Shared", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplexCommerce.Csla", "ComplexCommerce.Csla\ComplexCommerce.Csla.csproj", "{7507FC2A-83E4-4A37-A556-832A3B976184}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplexCommerce.Data.Entity", "ComplexCommerce.Data.Entity\ComplexCommerce.Data.Entity.csproj", "{AED03DFC-9EE7-4A7B-BEC3-B7689E13AAED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{7507FC2A-83E4-4A37-A556-832A3B976184}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7507FC2A-83E4-4A37-A556-832A3B976184}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7507FC2A-83E4-4A37-A556-832A3B976184}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AED03DFC-9EE7-4A7B-BEC3-B7689E13AAED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AED03DFC-9EE7-4A7B-BEC3-B7689E13AAED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AED03DFC-9EE7-4A7B-BEC3-B7689E13AAED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AED03DFC-9EE7-4A7B-BEC3-B7689E13AAED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

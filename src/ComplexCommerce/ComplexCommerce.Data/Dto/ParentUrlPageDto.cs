@@ -6,6 +6,7 @@ namespace ComplexCommerce.Data.Dto
     {
         public Guid Id { get; set; }
         public Guid ParentId { get; set; }
+        public Guid PageLocaleId { get; set; }
         public int ContentType { get; set; }
         public Guid ContentId { get; set; }
         public string Title { get; set; }

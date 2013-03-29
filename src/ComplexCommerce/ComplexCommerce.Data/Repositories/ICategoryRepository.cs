@@ -9,7 +9,7 @@ namespace ComplexCommerce.Data.Repositories
 {
     public interface ICategoryRepository
     {
-        IList<ProductCategoryDto> ListForProduct(Guid productXTenantLocaleId);
-        CategoryDto Fetch(Guid Id);
+        IList<ProductCategoryDto> ListForProduct(Guid productId, int localeId);
+        CategoryDto Fetch(Guid Id, int localeId);
     }
 }

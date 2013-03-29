@@ -16,7 +16,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
     {
         public TenantLocale()
         {
-            this.Category = new HashSet<Category>();
             this.Page = new HashSet<Page>();
             this.ProductXTenantLocale = new HashSet<ProductXTenantLocale>();
         }
@@ -25,7 +24,6 @@ namespace ComplexCommerce.Data.SqlServer.Model
         public int TenantId { get; set; }
         public int LocaleId { get; set; }
     
-        public virtual ICollection<Category> Category { get; set; }
         public virtual Tenant Tenant { get; set; }
         public virtual ICollection<Page> Page { get; set; }
         public virtual ICollection<ProductXTenantLocale> ProductXTenantLocale { get; set; }

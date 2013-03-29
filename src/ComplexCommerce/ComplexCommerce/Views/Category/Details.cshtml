@@ -18,7 +18,7 @@
     @foreach (var product in Model.Products)
     {
         <ul id="product-list">
-            <a href="@Url.Action("Details", "Product", new { id = product.CategoryXProductXTenantLocaleId })">
+            <a href="@Url.Action("Details", "Product", new { id = product.CategoryXProductId })">
                 <img alt="@product.Name" src="@product.ImageUrl" />
                 <div>@product.Name</div>
                 <div>@product.SKU</div>

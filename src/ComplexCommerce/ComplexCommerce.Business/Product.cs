@@ -3,19 +3,30 @@ using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Data.Dto;
+using ComplexCommerce.Business.Context;
 
 namespace ComplexCommerce.Business
 {
     public interface IProductFactory
     {
         IProduct NewProduct();
-        //IProduct GetProduct(Guid productXTenantLocaleId);
-        IProduct GetProduct(Guid categoryXProductXTenantLocaleId);
+        IProduct GetProduct(Guid categoryXProductId);
+        IProduct GetProduct(Guid categoryXProductId, int localeId);
     }
 
     public class ProductFactory
         : IProductFactory
     {
+        public ProductFactory(
+            IApplicationContext appContext
+            )
+        {
+            if (appContext == null)
+                throw new ArgumentNullException("appContext");
+            this.appContext = appContext;
+        }
+
+        private readonly IApplicationContext appContext;
 
         #region ICategoryFactory Members
 
@@ -24,15 +35,15 @@ namespace ComplexCommerce.Business
             return Product.NewProduct();
         }
 
-        public IProduct GetProduct(Guid categoryXProductXTenantLocaleId)
+        public IProduct GetProduct(Guid categoryXProductId)
         {
-            return Product.GetProduct(categoryXProductXTenantLocaleId);
+            return GetProduct(categoryXProductId, appContext.CurrentLocaleId);
         }
 
-        //public IProduct GetProduct(Guid productXTenantLocaleId)
-        //{
-        //    return Product.GetProduct(productXTenantLocaleId);
-        //}
+        public IProduct GetProduct(Guid categoryXProductId, int localeId)
+        {
+            return Product.GetProduct(categoryXProductId, localeId);
+        }
 
         #endregion
     }
@@ -55,6 +66,17 @@ namespace ComplexCommerce.Business
     public class Product
         : CslaReadOnlyBase<Product>, IProduct
     {
+        internal static IProduct GetProduct(Guid categoryXProductId, int localeId)
+        {
+            return DataPortal.Fetch<Product>(new Criteria(categoryXProductId, localeId));
+        }
+
+        internal static IProduct NewProduct()
+        {
+            //return DataPortal.Create<Product>();
+            return new Product();
+        }
+
         public static readonly PropertyInfo<Guid> IdProperty = RegisterProperty<Guid>(p => p.Id);
         public Guid Id
         {
@@ -126,33 +148,17 @@ namespace ComplexCommerce.Business
         }
 
 
-        //internal static IProduct GetProduct(Guid productXTenantLocaleId)
-        //{
-        //    return DataPortal.Fetch<Product>(productXTenantLocaleId);
-        //}
 
-        internal static IProduct GetProduct(Guid categoryXProductXTenantLocaleId)
-        {
-            return DataPortal.Fetch<Product>(categoryXProductXTenantLocaleId);
-        }
-
-        internal static IProduct NewProduct()
-        {
-            //return DataPortal.Create<Product>();
-            return new Product();
-        }
-
-
-        private void DataPortal_Fetch(Guid categoryXProductXTenantLocaleId)
+        private void DataPortal_Fetch(Criteria criteria)
         {
             using (var ctx = ContextFactory.GetContext())
             {
-                var data = repository.Fetch(categoryXProductXTenantLocaleId);
+                var data = repository.Fetch(criteria.CategoryXProductId, criteria.LocaleId);
 
                 if (data != null)
                 {
                     Id = data.Id;
-                    ProductXTenantLocaleId = data.ProductXTenantLocaleId;
+                    ProductXTenantLocaleId = data.ProductXTenantLocaleId; // TODO: Remove ID
                     Name = data.Name;
                     Description = data.Description;
                     MetaKeywords = data.MetaKeywords;
@@ -161,7 +167,7 @@ namespace ComplexCommerce.Business
                     ImageUrl = data.ImageUrl;
                     Price = data.Price;
 
-                    Categories = DataPortal.FetchChild<ProductCategoryList>(ProductXTenantLocaleId);
+                    Categories = DataPortal.FetchChild<ProductCategoryList>(data.Id, criteria.LocaleId);
                 }
             }
 
@@ -193,5 +199,30 @@ namespace ComplexCommerce.Business
         }
 
         #endregion
+
+        [Serializable]
+        private class Criteria
+            : CriteriaBase<Criteria>
+        {
+            public Criteria(Guid categoryXProductId, int localeId)
+            {
+                this.CategoryXProductId = categoryXProductId;
+                this.LocaleId = localeId;
+            }
+
+            public static readonly PropertyInfo<Guid> CategoryXProductIdProperty = RegisterProperty<Guid>(p => p.CategoryXProductId);
+            public Guid CategoryXProductId
+            {
+                get { return ReadProperty(CategoryXProductIdProperty); }
+                private set { LoadProperty(CategoryXProductIdProperty, value); }
+            }
+
+            public static readonly PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(p => p.LocaleId);
+            public int LocaleId
+            {
+                get { return ReadProperty(LocaleIdProperty); }
+                private set { LoadProperty(LocaleIdProperty, value); }
+            }
+        }
     }
 }
