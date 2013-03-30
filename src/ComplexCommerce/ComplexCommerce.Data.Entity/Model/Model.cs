@@ -4,6 +4,7 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace ComplexCommerce.Data.Entity.Model
 {
@@ -27,6 +28,16 @@ namespace ComplexCommerce.Data.Entity.Model
         public IDbSet<CategoryXProduct> CategoryXProduct { get; set; }
         public IDbSet<Product> Product { get; set; }
         public IDbSet<ProductXTenantXLocale> ProductXTenantXLocale { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+            // TODO: add foreign keys here
+            //http://stackoverflow.com/questions/5656159/entity-framework-4-1-code-first-foreign-key-ids
+        }
     }
 
     public class Chain

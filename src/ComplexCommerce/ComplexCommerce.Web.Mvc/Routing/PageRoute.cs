@@ -88,10 +88,7 @@ namespace ComplexCommerce.Web.Mvc.Routing
 
             if (TryFindMatch(pages, values, out page))
             {
-                if (!string.IsNullOrEmpty(page.VirtualPath))
-                {
-                    result = new VirtualPathData(this, page.VirtualPath);
-                }
+                result = new VirtualPathData(this, page.VirtualPath);
             }
 
             return result;

@@ -28,9 +28,9 @@ namespace ComplexCommerce.Business
             get
             {
                 var path = GetProperty(UrlPathProperty);
-                if (path.Length > 1 && path.StartsWith("/"))
+                if (path.StartsWith("/"))
                 {
-                    return path.Substring(1, path.Length - 1);
+                    return path.Substring(1);
                 }
                 return path;
             }

@@ -24,9 +24,11 @@ namespace ComplexCommerce.Business.Text
         public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
         {
             var path = BuildPathSegments(url, isUrlAbsolute, parentPageId, tenantLocale);
-            path = RemoveTrailingSlash(path);
+            
             path = AddLeadingSlash(path);
             path = AddLocale(path, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
+            path = RemoveTrailingSlash(path);
+
             return path;
         }
 
@@ -93,7 +95,7 @@ namespace ComplexCommerce.Business.Text
 
         protected virtual string RemoveTrailingSlash(string path)
         {
-            if (path.EndsWith("/"))
+            if (path.Length > 1 && path.EndsWith("/"))
             {
                 path = path.Substring(0, path.Length - 1);
             }
@@ -115,7 +117,7 @@ namespace ComplexCommerce.Business.Text
             if (localeId != defaultLocaleId && IsValidLocaleId(localeId))
             {
                 var locale = new CultureInfo(localeId);
-                path = "/" + locale.Name + AddLeadingSlash(path);
+                path = "/" + locale.Name.ToLowerInvariant() + path;
             }
 
             return path;

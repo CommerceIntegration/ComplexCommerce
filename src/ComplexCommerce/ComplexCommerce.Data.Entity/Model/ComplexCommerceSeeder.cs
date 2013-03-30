@@ -82,8 +82,11 @@ namespace ComplexCommerce.Data.Entity.Model
             var table = new List<PageLocale>
             {
                 new PageLocale { Id = new Guid("6e2ba5f4-0fd6-4a0e-8cde-9ca221bf9423"), PageId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), LocaleId = 1033, Url = "", Title = "Home", MetaKeywords = "Easy ABC, Bees, Seas", MetaDescription = "This is the #1 store for purchasing ABC products. Free Shipping, Secure Checkout, Best Experience." },
+                new PageLocale { Id = new Guid("5d2daf5d-6b4f-4799-94b1-47146cc77ead"), PageId = new Guid("bbd915c0-4083-4c9f-949a-3541d7a1a278"), LocaleId = 2058, Url = "", Title = "Casa", MetaKeywords = "Easy ABC, Abejas, Mar", MetaDescription = "Esta es la tienda n º 1 para la compra de productos de ABC. Envío Gratis, Secure Checkout, Best Experience." },
                 new PageLocale { Id = new Guid("5e33d5ae-ddcf-4dcb-9032-9ee98beeed98"), PageId = new Guid("d1ee8545-dd7d-4304-99de-397f880b553e"), LocaleId = 1033, Url = "bees", Title = "Bees", MetaKeywords = "bees, bee stuff, whatever", MetaDescription = "&#9733;Trying this out &#9733;" },
-                new PageLocale { Id = new Guid("c320cb36-f0a5-460a-91cf-5c86442375ee"), PageId = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), LocaleId = 1033, Url = "sea", Title = "The Sea", MetaKeywords = "sea, ocean, bay, shore, shell", MetaDescription = "Testing & Whatnot" }
+                new PageLocale { Id = new Guid("ae6d3023-3c75-4b38-a7b7-bd06ecbc7f91"), PageId = new Guid("d1ee8545-dd7d-4304-99de-397f880b553e"), LocaleId = 2058, Url = "abejas", Title = "Abejas", MetaKeywords = "abejas, abeja cosas, cualesquiera que sean", MetaDescription = "&#9733;Intentar esto &#9733;" },
+                new PageLocale { Id = new Guid("c320cb36-f0a5-460a-91cf-5c86442375ee"), PageId = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), LocaleId = 1033, Url = "sea", Title = "The Sea", MetaKeywords = "sea, ocean, bay, shore, shell", MetaDescription = "Testing & Whatnot" },
+                new PageLocale { Id = new Guid("842ebbd5-afe3-4c00-9cad-29d3257c974e"), PageId = new Guid("505b5f18-e21a-4c99-8bfb-5a758e7012ce"), LocaleId = 2058, Url = "mar", Title = "El Mar", MetaKeywords = "mar, océano, bahía, playa, concha", MetaDescription = "Pruebas y qué sé yo" }
             };
             table.ForEach(x => context.PageLocale.Add(x));
             context.SaveChanges();
@@ -105,7 +108,9 @@ namespace ComplexCommerce.Data.Entity.Model
             var table = new List<CategoryLocale>
             {
                 new CategoryLocale { Id = new Guid("3fe8b207-d34d-4ffd-9f4a-dcd9dba86e72"), CategoryId = new Guid("db4f46b2-9335-4d3a-95c8-43490b6ef6f6"), LocaleId = 1033, Description = "This is all about bees, bee hives, and so forth." },
-                new CategoryLocale { Id = new Guid("9a5138be-d519-4b57-9274-8e017dacb777"), CategoryId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa"), LocaleId = 1033, Description = "This is the sea category. Anything about the sea can be found here." }
+                new CategoryLocale { Id = new Guid("ced0bab7-03b5-4384-92be-af97c549a293"), CategoryId = new Guid("db4f46b2-9335-4d3a-95c8-43490b6ef6f6"), LocaleId = 2058, Description = "Esto es todo sobre las abejas, colmenas, etc." },
+                new CategoryLocale { Id = new Guid("9a5138be-d519-4b57-9274-8e017dacb777"), CategoryId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa"), LocaleId = 1033, Description = "This is the sea category. Anything about the sea can be found here." },
+                new CategoryLocale { Id = new Guid("fb3c68f5-31c5-41e5-a50f-8430493e4374"), CategoryId = new Guid("658c3fc4-77ff-44a5-8bb3-eab48c151faa"), LocaleId = 2058, Description = "Esta es la categoría del mar. Cualquier cosa sobre el mar se puede encontrar aquí." }
             };
             table.ForEach(x => context.CategoryLocale.Add(x));
             context.SaveChanges();
@@ -125,7 +130,8 @@ namespace ComplexCommerce.Data.Entity.Model
         {
             var table = new List<ProductXTenantXLocale>
             {
-                new ProductXTenantXLocale { Id = new Guid("209f1271-2cd9-41bc-986d-7af5bd8198b9") , ProductId = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), TenantId = 3, LocaleId = 1033, Name = "All Purpose Shell Kit", Description = "A collection of sea shells from around the world.", Url = "all-purpose-shell-kit", IsUrlAbsolute = false, MetaKeywords = null, MetaDescription = "A collection of sea shells from around the world." }
+                new ProductXTenantXLocale { Id = new Guid("209f1271-2cd9-41bc-986d-7af5bd8198b9") , ProductId = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), TenantId = 3, LocaleId = 1033, Name = "All Purpose Shell Kit", Description = "A collection of sea shells from around the world.", Url = "all-purpose-shell-kit", IsUrlAbsolute = false, MetaKeywords = null, MetaDescription = "A collection of sea shells from around the world." },
+                new ProductXTenantXLocale { Id = new Guid("ef092e1d-ac51-4026-ab52-0e7e1576eac3") , ProductId = new Guid("78fd9f59-66e0-40d1-96a0-293e6fa0844a"), TenantId = 3, LocaleId = 2058, Name = "Todo Propósito Concha Estuche", Description = "Una colección de conchas de mar de todo el mundo.", Url = "todo-propósito-concha-estuche", IsUrlAbsolute = false, MetaKeywords = null, MetaDescription = "Una colección de conchas de mar de todo el mundo." }
             };
             table.ForEach(x => context.ProductXTenantXLocale.Add(x));
             context.SaveChanges();
