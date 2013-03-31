@@ -1,0 +1,6 @@
+﻿This diagram was generated from the database, but is not used to either create 
+model entities or update the database. Its only purpose is a visual 
+representation of the database for reference during database design.
+
+This Entity model uses the Code First approach, therefore this diagram should
+not be used in any way to automate the process.

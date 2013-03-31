@@ -37,6 +37,100 @@ namespace ComplexCommerce.Data.Entity.Model
 
             // TODO: add foreign keys here
             //http://stackoverflow.com/questions/5656159/entity-framework-4-1-code-first-foreign-key-ids
+
+
+            // Add Foreign Keys (Require a navigation property on at least one side)
+            modelBuilder.Entity<Tenant>()
+                .HasRequired(x => x.Chain)
+                .WithMany()
+                .HasForeignKey(x => x.ChainId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TenantLocale>()
+                .HasRequired(x => x.Tenant)
+                .WithMany()
+                .HasForeignKey(x => x.TenantId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Page>()
+                .HasOptional(x => x.Parent)
+                .WithMany()
+                .HasForeignKey(x => x.ParentId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Page>()
+                .HasRequired(x => x.Tenant)
+                .WithMany()
+                .HasForeignKey(x => x.TenantId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<PageLocale>()
+                .HasRequired(x => x.Page)
+                .WithMany()
+                .HasForeignKey(x => x.PageId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Category>()
+                .HasRequired(x => x.Tenant)
+                .WithMany()
+                .HasForeignKey(x => x.TenantId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CategoryLocale>()
+                .HasRequired(x => x.Category)
+                .WithMany()
+                .HasForeignKey(x => x.CategoryId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CategoryXProduct>()
+                .HasRequired(x => x.Category)
+                .WithMany()
+                .HasForeignKey(x => x.CategoryId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CategoryXProduct>()
+                .HasRequired(x => x.Product)
+                .WithMany()
+                .HasForeignKey(x => x.ProductId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CategoryXProduct>()
+                .HasRequired(x => x.Product)
+                .WithMany()
+                .HasForeignKey(x => x.ProductId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Product>()
+                .HasRequired(x => x.Chain)
+                .WithMany()
+                .HasForeignKey(x => x.ChainId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ProductXTenantXLocale>()
+                .HasRequired(x => x.Product)
+                .WithMany()
+                .HasForeignKey(x => x.ProductId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ProductXTenantXLocale>()
+               .HasRequired(x => x.Tenant)
+               .WithMany()
+               .HasForeignKey(x => x.TenantId)
+               .WillCascadeOnDelete(false);
+
+            // Sample: Probably want to do it this way instead.
+            //modelBuilder.Configurations.Add(new TenantConfiguration());
+        }
+    }
+
+    // Sample: Probably want to do it this way instead.
+    class TenantConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Tenant>
+    {
+        internal TenantConfiguration()
+        {
+            this.HasRequired(x => x.Chain)
+                .WithMany()
+                .HasForeignKey(x => x.ChainId);
         }
     }
 
@@ -51,6 +145,7 @@ namespace ComplexCommerce.Data.Entity.Model
     {
         public int Id { get; set; }
         public int ChainId { get; set; }
+        public Chain Chain { get; set; }
         public string Name { get; set; }
         public string LogoUrl { get; set; }
         public string Host { get; set; }
@@ -62,6 +157,7 @@ namespace ComplexCommerce.Data.Entity.Model
     {
         public Guid Id { get; set; }
         public int TenantId { get; set; }
+        public Tenant Tenant { get; set; }
         public int LocaleId { get; set; }
     }
 
@@ -69,7 +165,9 @@ namespace ComplexCommerce.Data.Entity.Model
     {
         public Guid Id { get; set; }
         public Guid? ParentId { get; set; }
+        public Page Parent { get; set; }
         public int TenantId { get; set; }
+        public Tenant Tenant { get; set; }
         public int ContentType { get; set; }
         public Guid ContentId { get; set; }
         public bool IsVisibleOnMainMenu { get; set; }
@@ -80,6 +178,7 @@ namespace ComplexCommerce.Data.Entity.Model
     {
         public Guid Id { get; set; }
         public Guid PageId { get; set; }
+        public Page Page { get; set; }
         public int LocaleId { get; set; }
         public string Url { get; set; }
         public bool IsUrlAbsolute { get; set; }
@@ -92,12 +191,14 @@ namespace ComplexCommerce.Data.Entity.Model
     {
         public Guid Id { get; set; }
         public int TenantId { get; set; }
+        public Tenant Tenant { get; set; }
     }
 
     public class CategoryLocale
     {
         public Guid Id { get; set; }
         public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
         public int LocaleId { get; set; }
         public string Description { get; set; }
     }
@@ -106,13 +207,16 @@ namespace ComplexCommerce.Data.Entity.Model
     {
         public Guid Id { get; set; }
         public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
         public Guid ProductId { get; set; }
+        public Product Product { get; set; }
     }
 
     public class Product
     {
         public Guid Id { get; set; }
         public int ChainId { get; set; }
+        public Chain Chain { get; set; }
         public string SKU { get; set; }
         public string ImageUrl { get; set; }
         public decimal Price { get; set; }
@@ -124,7 +228,9 @@ namespace ComplexCommerce.Data.Entity.Model
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
+        public Product Product { get; set; }
         public int TenantId { get; set; }
+        public Tenant Tenant { get; set; }
         public int LocaleId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

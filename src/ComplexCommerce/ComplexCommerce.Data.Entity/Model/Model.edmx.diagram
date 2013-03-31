@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="68196a76322b48f7927a53b1df34f2d8" Name="Diagram1">
+        <EntityTypeShape EntityType="ComplexCommerceModel.Category" Width="1.5" PointX="6.125" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.CategoryLocale" Width="1.5" PointX="8.375" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.CategoryXProduct" Width="1.75" PointX="6" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.Chain" Width="1.5" PointX="0.5" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.Page" Width="1.5" PointX="6.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.PageLocale" Width="1.5" PointX="8.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.Product" Width="1.5" PointX="0.5" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.ProductXTenantXLocale" Width="2.125" PointX="2.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.Tenant" Width="1.5" PointX="2.625" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComplexCommerceModel.TenantLocale" Width="1.5" PointX="4.5" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_Category_dbo_Tenant_TenantId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_CategoryLocale_dbo_Category_CategoryId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_CategoryXProduct_dbo_Category_CategoryId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_CategoryXProduct_dbo_Product_ProductId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_Product_dbo_Chain_ChainId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_Tenant_dbo_Chain_ChainId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_Page_dbo_Page_ParentId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_Page_dbo_Tenant_TenantId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_PageLocale_dbo_Page_PageId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_ProductXTenantXLocale_dbo_Product_ProductId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_ProductXTenantXLocale_dbo_Tenant_TenantId" />
+        <AssociationConnector Association="ComplexCommerceModel.FK_dbo_TenantLocale_dbo_Tenant_TenantId" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
