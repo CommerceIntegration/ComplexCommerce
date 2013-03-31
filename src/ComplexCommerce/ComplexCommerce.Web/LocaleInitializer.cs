@@ -19,6 +19,21 @@ namespace ComplexCommerce.Web
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
 
+            this.contextUtilities = contextUtilities;
+            this.httpContextFactory = httpContextFactory;
+            this.appContext = appContext;
+
+            // Execute on creation
+            GetLocaleFromContext();
+        }
+
+        private readonly IContextUtilities contextUtilities;
+        private readonly IHttpContextFactory httpContextFactory;
+        private readonly IApplicationContext appContext;
+        
+
+        public void GetLocaleFromContext()
+        {
             var context = httpContextFactory.GetHttpContext();
             var tenant = appContext.CurrentTenant;
 

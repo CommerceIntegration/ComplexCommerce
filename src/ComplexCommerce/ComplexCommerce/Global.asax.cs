@@ -39,6 +39,9 @@ namespace ComplexCommerce
         {
             container.Resolve<TenantInitializer>();
             container.Resolve<LocaleInitializer>();
+            // TODO: 302 redirect if the preferred culture from the 
+            // HttpContext.Current.Request.UserLanguages exists for the given page and
+            // the UrlReferrer is not the current site.            
         }
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)

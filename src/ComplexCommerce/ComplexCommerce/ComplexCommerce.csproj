@@ -195,7 +195,6 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
-    <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="DI\Conventions\ConnectionStringConvention.cs" />
     <Compile Include="DI\Conventions\HttpContextScopedConvention.cs" />
     <Compile Include="DI\Conventions\RepositoryConvention.cs" />

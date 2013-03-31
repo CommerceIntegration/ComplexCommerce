@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Routing;
 using System.Web.Mvc;
 using System.Threading.Tasks;
@@ -21,17 +22,30 @@ namespace ComplexCommerce.Web.Mvc.DI
         protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
         {
             if (controllerType == null)
-                return base.GetControllerInstance(requestContext, controllerType);
-            try
             {
-                return container.Resolve(controllerType) as IController;
+                try
+                {
+                    return base.GetControllerInstance(requestContext, controllerType);
+                }
+                catch (HttpException ex)
+                {
+                    if (ex.GetHttpCode() == 404)
+                    {
+                        var routeValues = requestContext.RouteData.Values;
+
+                        routeValues.Clear();
+                        routeValues["controller"] = "System";
+                        routeValues["action"] = "Status404";
+
+                        return container.Resolve<Controllers.SystemController>() as IController;
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
             }
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                System.Diagnostics.Debug.WriteLine(message);
-                throw new Exception(message);
-            }
+            return container.Resolve(controllerType) as IController;
         }
     }
 }

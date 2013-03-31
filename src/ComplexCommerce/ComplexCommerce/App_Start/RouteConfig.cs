@@ -15,6 +15,22 @@ namespace ComplexCommerce
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // TODO: Make custom FavIcons per tenant
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
+
+            routes.MapRoute(
+                name: "Error - 404",
+                url: "not-found",
+                defaults: new { controller = "System", action = "Status404" }
+                );
+
+            routes.MapRoute(
+                name: "Error - 500",
+                url: "server-error",
+                defaults: new { controller = "System", action = "Status500" }
+                );
+
+
             routes.Add(container.Resolve<LowerCaseRedirectRoute>());
             routes.Add(container.Resolve<TrailingSlashRedirectRoute>());
             routes.Add(container.Resolve<DefaultLocaleRedirectRoute>());

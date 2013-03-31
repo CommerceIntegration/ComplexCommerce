@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ComplexCommerce.Web;
 
-namespace ComplexCommerce.Controllers
+namespace ComplexCommerce.Web.Mvc.Controllers
 {
-    public class SystemController : Controller
+    public class SystemController 
+        : Controller
     {
         //
         // GET: /System/Status301/?url=(some url)
@@ -15,25 +16,33 @@ namespace ComplexCommerce.Controllers
         {
             // TODO: Add javascript and meta redirects to the view
             // TODO: Localize the view
+            Response.CacheControl = "no-cache";
+            Response.StatusCode = (int)HttpStatusCode.MovedPermanently;
 
             ViewBag.DestinationUrl = url;
             return View();
         }
 
         //
-        // GET: /System/Status404
+        // GET: /not-found
 
         public ActionResult Status404()
         {
+            Response.CacheControl = "no-cache";
+            Response.StatusCode = (int)HttpStatusCode.NotFound;
+
             // TODO: Localize the view
             return View();
         }
 
         //
-        // GET: /System/Status500
+        // GET: /server-error
 
         public ActionResult Status500()
         {
+            Response.CacheControl = "no-cache";
+            Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
             // TODO: Localize the view
             return View();
         }

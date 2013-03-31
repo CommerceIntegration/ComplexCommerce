@@ -35,6 +35,7 @@ namespace ComplexCommerce.DI.Registries
             this.Scan(scan =>
             {
                 scan.TheCallingAssembly();
+                scan.AssemblyContainingType<ComplexCommerce.Web.Mvc.Controllers.SystemController>();
                 scan.AddAllTypesOf<IController>();
                 scan.Include(t => typeof(IController).IsAssignableFrom(t));
                 scan.Convention<TransientConvention>();

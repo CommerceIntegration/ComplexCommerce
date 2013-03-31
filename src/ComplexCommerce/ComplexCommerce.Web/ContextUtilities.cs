@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Routing;
 using System.Diagnostics.Contracts;
@@ -33,20 +34,33 @@ namespace ComplexCommerce.Web
         {
             var result = defaultLocale;
             var cultureName = string.Empty;
+            Uri url = null;
+            Uri relativeUrl = null;
 
-            var url = context.Request.Url;
-            //if (url.Segments.Length > 1)
-            //{
-            //    cultureName = RemoveTrailingSlash(url.Segments[1]);
-            //}
+            // Try to build a Uri from the RawUrl
+            bool success = Uri.TryCreate(context.Request.RawUrl, UriKind.Relative, out relativeUrl);
+            if (success)
+            {
+                success = Uri.TryCreate(context.Request.Url, relativeUrl, out url);
+            }
 
-            //if (IsValidCultureInfoName(cultureName))
-            //{
-            //    // TODO: Check whether culture is configured
-            //    result = new CultureInfo(cultureName);
-            //}
+            // RawUrl couldn't be used, use request Url
+            if (!success)
+            {
+                url = context.Request.Url;
+            }
 
+            // TODO: Check whether culture is configured ??
+
+            // Get Culture Name from Url
             cultureName = GetCultureNameFromUrl(url);
+
+            // If culture name couldn't be found in the normal place, 
+            // try parsing from the query string.
+            if (String.IsNullOrEmpty(cultureName) && url.Query.Length > 1)
+            {
+                cultureName = GetCultureNameFromErrorUrl(url);
+            }
             if (!string.IsNullOrEmpty(cultureName))
             {
                 result = new CultureInfo(cultureName);
@@ -70,14 +84,33 @@ namespace ComplexCommerce.Web
             return string.Empty;
         }
 
+        private string GetCultureNameFromErrorUrl(Uri url)
+        {
+            string query = url.Query;
+            var re = new Regex(@"(?:https?://[^\s]*||aspxerrorpath=)/(?'cultureName'[^/-]{2,3}(?:-[^/-]{2,4})?(?:-[^/]{2})?)/?");
+            var match = re.Match(query);
+            if (match.Success)
+            {
+                var cultureName = match.Groups["cultureName"].Value;
+                if (IsValidCultureInfoName(cultureName))
+                {
+                    return cultureName;
+                }
+            }
+            return string.Empty;
+        }
+
         // TODO: Move this to a CSLA business rule ?
         private bool IsValidCultureInfoName(string name)
         {
             if (!string.IsNullOrEmpty(name))
             {
                 return
-                    CultureInfo
-                    .GetCultures(CultureTypes.SpecificCultures)
+                    CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+                    .Union(
+                        CultureInfo.GetCultures(CultureTypes.NeutralCultures)
+                        .Where(x => x.Name.Length != 0) // exclude the invariant culture
+                    )
                     .Any(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
             }
             return false;
