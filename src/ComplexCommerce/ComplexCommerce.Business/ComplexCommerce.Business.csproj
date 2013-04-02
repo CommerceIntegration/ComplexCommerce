@@ -63,9 +63,6 @@
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\ApplicationContextSourceEnum.cs" />
     <Compile Include="Context\IApplicationContext.cs" />
-    <Compile Include="GetCachedRouteUrlPageListCommand.cs" />
-    <Compile Include="GetCachedRouteUrlProductListCommand.cs" />
-    <Compile Include="GetRequestCachedParentUrlPageListCommand.cs" />
     <Compile Include="ITenantLocale.cs" />
     <Compile Include="Globalization\PageLocaleInfo.cs" />
     <Compile Include="Globalization\PageLocaleList.cs" />
