@@ -51,6 +51,8 @@ namespace ComplexCommerce.Business
     public interface IProduct
     {
         Guid Id { get; }
+        int LocaleId { get; }
+        int TenantId { get; }
         string Name { get; }
         string Description { get; }
         string MetaKeywords { get; } // Move to another interface that is inherited?
@@ -81,6 +83,20 @@ namespace ComplexCommerce.Business
         {
             get { return GetProperty(IdProperty); }
             private set { LoadProperty(IdProperty, value); }
+        }
+
+        public static readonly PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(p => p.LocaleId);
+        public int LocaleId
+        {
+            get { return GetProperty(LocaleIdProperty); }
+            private set { LoadProperty(LocaleIdProperty, value); }
+        }
+
+        public static readonly PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(p => p.TenantId);
+        public int TenantId
+        {
+            get { return GetProperty(TenantIdProperty); }
+            private set { LoadProperty(TenantIdProperty, value); }
         }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
@@ -150,6 +166,8 @@ namespace ComplexCommerce.Business
                 if (data != null)
                 {
                     Id = data.Id;
+                    LocaleId = criteria.LocaleId;
+                    TenantId = data.TenantId;
                     Name = data.Name;
                     Description = data.Description;
                     MetaKeywords = data.MetaKeywords;

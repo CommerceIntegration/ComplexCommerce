@@ -61,6 +61,7 @@ namespace ComplexCommerce.Web.Mvc.Routing
                     // TODO: Add area for different tenant types
                     result.Values["controller"] = "Product";
                     result.Values["action"] = "Details";
+                    result.Values["localeId"] = localeId;
                     //result.Values["id"] = page.ProductXTenantLocaleId;
 
                     // TODO: May need a compound key here (ProductXTenantLocaleID and 
@@ -100,6 +101,12 @@ namespace ComplexCommerce.Web.Mvc.Routing
         {
             page = null;
             Guid categoryXProductId = Guid.Empty;
+            var localeId = (int?)values["localeId"];
+
+            if (localeId == null)
+            {
+                return false;
+            }
 
             if (!Guid.TryParse(Convert.ToString(values["id"]), out categoryXProductId))
             {
@@ -111,7 +118,10 @@ namespace ComplexCommerce.Web.Mvc.Routing
 
             if (action == "Details" && controller == "Product")
             {
-                page = pages.Where(x => x.CategoryXProductId.Equals(categoryXProductId)).FirstOrDefault();
+                page = pages
+                    .Where(x => x.CategoryXProductId.Equals(categoryXProductId))
+                    .Where(x => x.LocaleId.Equals(localeId))
+                    .FirstOrDefault();
                 if (page != null)
                 {
                     return true;

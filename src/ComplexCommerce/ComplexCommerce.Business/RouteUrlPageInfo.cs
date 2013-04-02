@@ -15,6 +15,7 @@ namespace ComplexCommerce.Business
     {
         string VirtualPath { get; }
         string UrlPath { get; }
+        int LocaleId { get; }
         ContentTypeEnum ContentType { get; }
         Guid ContentId { get; }
     }
@@ -52,6 +53,13 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(ContentIdProperty, value); }
         }
 
+        // Route = {localeId}
+        public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
+        public int LocaleId
+        {
+            get { return GetProperty(LocaleIdProperty); }
+            private set { LoadProperty(LocaleIdProperty, value); }
+        }
 
         #region Constructed Properties
 
@@ -66,11 +74,15 @@ namespace ComplexCommerce.Business
 
         private void Child_Fetch(ParentUrlPageInfo item, ITenantLocale tenantLocale)
         {
+            this.LocaleId = item.LocaleId;
+
             this.UrlPath = urlBuilder.BuildPath(
                 item.Url, 
                 item.IsUrlAbsolute, 
                 item.ParentId, 
-                tenantLocale);
+                tenantLocale.TenantId, 
+                item.LocaleId, 
+                tenantLocale.DefaultLocaleId);
 
             this.ContentType = (ContentTypeEnum)item.ContentType;
             this.ContentId = item.ContentId;

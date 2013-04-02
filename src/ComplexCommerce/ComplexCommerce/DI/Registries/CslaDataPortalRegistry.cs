@@ -10,6 +10,7 @@ using ComplexCommerce.DI.Conventions;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
 using ComplexCommerce.Business.Caching;
+using ComplexCommerce.Business.Globalization;
 
 namespace ComplexCommerce.DI.Registries
 {
@@ -96,7 +97,15 @@ namespace ComplexCommerce.DI.Registries
                 p.TypeMatches(t => t == typeof(IMicroObjectCache<RouteUrlProductList>));
             });
 
+            this.SetAllProperties(p =>
+            {
+                p.TypeMatches(t => t == typeof(IMicroObjectCache<PageLocaleList>));
+            });
 
+            this.SetAllProperties(p =>
+            {
+                p.TypeMatches(t => t == typeof(IMicroObjectCache<ProductLocaleList>));
+            });
 
             // We create a new Setter Injection Policy that
             // forces StructureMap to inject all public properties

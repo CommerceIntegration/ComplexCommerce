@@ -87,10 +87,12 @@
   <ItemGroup>
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="DI\InjectableControllerFactory.cs" />
+    <Compile Include="Helpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\ViewDataContainer.cs" />
     <Compile Include="Routing\DefaultLocaleRedirectRoute.cs" />
     <Compile Include="LocalizedModelBinder.cs" />
     <Compile Include="Routing\IRouteUtilities.cs" />
-    <Compile Include="Routing\LowerCaseRedirectRoute.cs" />
+    <Compile Include="Routing\LowercaseRedirectRoute.cs" />
     <Compile Include="Routing\PageRoute.cs" />
     <Compile Include="Routing\ProductRoute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -121,6 +123,7 @@
       <Name>ComplexCommerce.Web</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

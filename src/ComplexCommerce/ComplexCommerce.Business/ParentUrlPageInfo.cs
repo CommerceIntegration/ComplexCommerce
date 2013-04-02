@@ -30,6 +30,13 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(PageLocaleIdProperty, value); }
         }
 
+        public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
+        public int LocaleId
+        {
+            get { return GetProperty(LocaleIdProperty); }
+            private set { LoadProperty(LocaleIdProperty, value); }
+        }
+
         public static PropertyInfo<ContentTypeEnum> ContentTypeProperty = RegisterProperty<ContentTypeEnum>(c => c.ContentType);
         public ContentTypeEnum ContentType
         {
@@ -84,6 +91,7 @@ namespace ComplexCommerce.Business
             Id = item.Id;
             ParentId = item.ParentId;
             PageLocaleId = item.PageLocaleId;
+            LocaleId = item.LocaleId;
             ContentType = (ContentTypeEnum)item.ContentType;
             ContentId = item.ContentId;
             Title = item.Title;

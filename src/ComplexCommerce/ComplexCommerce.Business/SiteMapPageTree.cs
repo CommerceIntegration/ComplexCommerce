@@ -56,12 +56,12 @@ namespace ComplexCommerce.Business
             return DataPortal.Fetch<SiteMapPageTree>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
         }
 
-        //public static PropertyInfo<Guid> IdProperty = RegisterProperty<Guid>(c => c.Id);
-        //public Guid Id
-        //{
-        //    get { return GetProperty(IdProperty); }
-        //    private set { LoadProperty(IdProperty, value); }
-        //}
+        public static PropertyInfo<Guid> IdProperty = RegisterProperty<Guid>(c => c.Id);
+        public Guid Id
+        {
+            get { return GetProperty(IdProperty); }
+            private set { LoadProperty(IdProperty, value); }
+        }
 
         public static PropertyInfo<Guid> PageLocaleIdProperty = RegisterProperty<Guid>(c => c.PageLocaleId);
         public Guid PageLocaleId
@@ -122,7 +122,8 @@ namespace ComplexCommerce.Business
         {
             using (var ctx = ContextFactory.GetContext())
             {
-                var pageList = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId, criteria.LocaleId, criteria.DefaultLocaleId);
+                //var pageList = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId, criteria.LocaleId, criteria.DefaultLocaleId);
+                var pageList = pageRepository.ListForSiteMap(criteria.TenantId, criteria.LocaleId);
                 var productList = productRepository.ListForSiteMap(criteria.TenantId, criteria.LocaleId);
 
                 foreach (var page in pageList)
@@ -138,9 +139,9 @@ namespace ComplexCommerce.Business
         }
 
         // Used for nested calls for pages
-        private void Child_Fetch(ParentUrlPageInfo page, IEnumerable<ParentUrlPageInfo> pageList, IEnumerable<SiteMapProductDto> productList, ITenantLocale tenantLocale)
+        private void Child_Fetch(ParentUrlPageDto page, IEnumerable<ParentUrlPageDto> pageList, IEnumerable<SiteMapProductDto> productList, ITenantLocale tenantLocale)
         {
-            //Id = page.Id;
+            Id = page.Id;
             PageLocaleId = page.PageLocaleId;
             Title = page.Title;
             MetaRobots = page.MetaRobots;
@@ -157,6 +158,27 @@ namespace ComplexCommerce.Business
         }
 
         #region Dependency Injection
+
+        [NonSerialized]
+        [NotUndoable]
+        private IPageRepository pageRepository;
+        public IPageRepository PageRepository
+        {
+            set
+            {
+                // Don't allow the value to be set to null
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+                // Don't allow the value to be set more than once
+                if (this.pageRepository != null)
+                {
+                    throw new InvalidOperationException();
+                }
+                this.pageRepository = value;
+            }
+        }
 
         [NonSerialized]
         [NotUndoable]
@@ -200,26 +222,26 @@ namespace ComplexCommerce.Business
             }
         }
 
-        [NonSerialized]
-        [NotUndoable]
-        private IParentUrlPageListFactory parentUrlPageListFactory;
-        public IParentUrlPageListFactory ParentUrlPageListFactory
-        {
-            set
-            {
-                // Don't allow the value to be set to null
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-                // Don't allow the value to be set more than once
-                if (this.parentUrlPageListFactory != null)
-                {
-                    throw new InvalidOperationException();
-                }
-                this.parentUrlPageListFactory = value;
-            }
-        }
+        //[NonSerialized]
+        //[NotUndoable]
+        //private IParentUrlPageListFactory parentUrlPageListFactory;
+        //public IParentUrlPageListFactory ParentUrlPageListFactory
+        //{
+        //    set
+        //    {
+        //        // Don't allow the value to be set to null
+        //        if (value == null)
+        //        {
+        //            throw new ArgumentNullException("value");
+        //        }
+        //        // Don't allow the value to be set more than once
+        //        if (this.parentUrlPageListFactory != null)
+        //        {
+        //            throw new InvalidOperationException();
+        //        }
+        //        this.parentUrlPageListFactory = value;
+        //    }
+        //}
 
         #endregion
     }

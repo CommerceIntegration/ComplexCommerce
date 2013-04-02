@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComplexCommerce.Data.Dto
 {
@@ -12,5 +8,6 @@ namespace ComplexCommerce.Data.Dto
         public Guid ParentId { get; set; }
         public string Url { get; set; }
         public bool IsUrlAbsolute { get; set; }
+        public int LocaleId { get; set; }
     }
 }

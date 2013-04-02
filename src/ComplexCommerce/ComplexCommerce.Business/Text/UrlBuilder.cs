@@ -21,42 +21,72 @@ namespace ComplexCommerce.Business.Text
         private readonly IParentUrlPageListFactory parentUrlPageListFactory;
 
 
+        //public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
+        //{
+        //    var path = BuildPathSegments(url, isUrlAbsolute, parentPageId, tenantLocale);
+
+        //    path = AddLeadingSlash(path);
+        //    path = AddLocale(path, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
+        //    path = RemoveTrailingSlash(path);
+
+        //    return path;
+        //}
+
         public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
         {
-            var path = BuildPathSegments(url, isUrlAbsolute, parentPageId, tenantLocale);
-            
+            return BuildPath(url, isUrlAbsolute, parentPageId, tenantLocale.TenantId, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
+        }
+
+        public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, int tenantId, int localeId, int defaultLocaleId)
+        {
+            var path = BuildPathSegments(url, isUrlAbsolute, parentPageId, tenantId, localeId, defaultLocaleId);
+
             path = AddLeadingSlash(path);
-            path = AddLocale(path, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
+            path = AddLocale(path, localeId, defaultLocaleId);
             path = RemoveTrailingSlash(path);
 
             return path;
         }
 
-        protected virtual string BuildPathSegments(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
+        //protected virtual string BuildPathSegments(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
+        //{
+        //    var result = url;
+
+        //    if (!isUrlAbsolute)
+        //    {
+        //        // This list is pulled from the request cache.
+        //        var pageList = parentUrlPageListFactory.GetParentUrlPageList(tenantLocale.TenantId, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
+        //        var parentUrl = GetParentPageUrl(parentPageId, pageList);
+        //        result = JoinUrlSegments(parentUrl, url);
+        //    }
+        //    return result;
+        //}
+
+        protected virtual string BuildPathSegments(string url, bool isUrlAbsolute, Guid parentPageId, int tenantId, int localeId, int defaultLocaleId)
         {
             var result = url;
 
             if (!isUrlAbsolute)
             {
                 // This list is pulled from the request cache.
-                var pageList = parentUrlPageListFactory.GetParentUrlPageList(tenantLocale.TenantId, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
-                var parentUrl = GetParentPageUrl(parentPageId, pageList);
+                var pageList = parentUrlPageListFactory.GetParentUrlPageList(tenantId, localeId, defaultLocaleId);
+                var parentUrl = GetParentPageUrl(parentPageId, localeId, pageList);
                 result = JoinUrlSegments(parentUrl, url);
             }
             return result;
         }
 
-        protected virtual string GetParentPageUrl(Guid parentPageId, ParentUrlPageList pageList)
+        protected virtual string GetParentPageUrl(Guid parentPageId, int localeId, ParentUrlPageList pageList)
         {
             var result = "";
             if (!parentPageId.Equals(Guid.Empty))
             {
-                var parentPage = pageList.FirstOrDefault(x => x.Id == parentPageId);
+                var parentPage = pageList.Where(x => x.Id == parentPageId && x.LocaleId == localeId).FirstOrDefault();
                 if (parentPage != null)
                 {
                     if (!parentPage.IsUrlAbsolute)
                     {
-                        result = JoinUrlSegments(GetParentPageUrl(parentPage.ParentId, pageList), parentPage.Url);
+                        result = JoinUrlSegments(GetParentPageUrl(parentPage.ParentId, localeId, pageList), parentPage.Url);
                     }
                     else
                     {

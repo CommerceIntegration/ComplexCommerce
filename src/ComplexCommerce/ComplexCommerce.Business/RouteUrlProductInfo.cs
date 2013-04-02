@@ -14,6 +14,7 @@ namespace ComplexCommerce.Business
         Guid CategoryXProductId { get; }
         string UrlPath { get; }
         string VirtualPath { get; }
+        int LocaleId { get; }
     }
 
     public class RouteUrlProductInfo
@@ -47,14 +48,25 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(CategoryXProductIdProperty, value); }
         }
 
+        // Route = {localeId}
+        public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
+        public int LocaleId
+        {
+            get { return GetProperty(LocaleIdProperty); }
+            private set { LoadProperty(LocaleIdProperty, value); }
+        }
+
         private void Child_Fetch(RouteUrlProductDto item, ITenantLocale tenantLocale)
         {
             this.CategoryXProductId = item.CategoryXProductId;
+            this.LocaleId = item.LocaleId;
             this.UrlPath = urlBuilder.BuildPath(
                 item.Url, 
                 item.IsUrlAbsolute, 
                 item.ParentId, 
-                tenantLocale);
+                tenantLocale.TenantId,
+                item.LocaleId,
+                tenantLocale.DefaultLocaleId);
         }
 
         #region Dependency Injection

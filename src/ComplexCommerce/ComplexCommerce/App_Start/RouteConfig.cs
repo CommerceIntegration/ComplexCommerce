@@ -31,11 +31,11 @@ namespace ComplexCommerce
                 );
 
 
-            routes.Add(container.Resolve<LowerCaseRedirectRoute>());
+            routes.Add(container.Resolve<LowercaseRedirectRoute>());
             routes.Add(container.Resolve<TrailingSlashRedirectRoute>());
             routes.Add(container.Resolve<DefaultLocaleRedirectRoute>());
-            routes.Add(container.Resolve<PageRoute>());
-            routes.Add(container.Resolve<ProductRoute>());
+            routes.Add("Page", container.Resolve<PageRoute>());
+            routes.Add("Product", container.Resolve<ProductRoute>());
 
             
             routes.MapRoute(

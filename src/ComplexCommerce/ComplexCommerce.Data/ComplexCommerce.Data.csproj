@@ -55,9 +55,11 @@
     <Compile Include="DataNotFoundException.cs" />
     <Compile Include="Dto\CategoryDto.cs" />
     <Compile Include="Dto\CategoryProductDto.cs" />
+    <Compile Include="Dto\PageLocaleDto.cs" />
     <Compile Include="Dto\ParentUrlPageDto.cs" />
     <Compile Include="Dto\ProductCategoryDto.cs" />
     <Compile Include="Dto\ProductDto.cs" />
+    <Compile Include="Dto\ProductLocaleDto.cs" />
     <Compile Include="Dto\RouteUrlProductDto.cs" />
     <Compile Include="Dto\SiteMapProductDto.cs" />
     <Compile Include="Dto\TenantDto.cs" />

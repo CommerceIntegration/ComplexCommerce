@@ -49,7 +49,7 @@ namespace ComplexCommerce.Data.Entity.Repositories
             }
         }
 
-        public IList<RouteUrlProductDto> ListForRouteUrl(int tenantId, int localeId)
+        public IList<RouteUrlProductDto> ListForRouteUrl(int tenantId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
@@ -60,24 +60,53 @@ namespace ComplexCommerce.Data.Entity.Repositories
                                   on product.Id equals productXTenantXlocale.ProductId
                               join parentPage in ctx.ObjectContext.Page
                                   on categoryXProduct.CategoryId equals parentPage.ContentId
-                              join parentPageLocale in ctx.ObjectContext.PageLocale
-                                  on parentPage.Id equals parentPageLocale.PageId
+                              //join parentPageLocale in ctx.ObjectContext.PageLocale
+                              //    on parentPage.Id equals parentPageLocale.PageId
 
                               where productXTenantXlocale.TenantId == tenantId
-                              where productXTenantXlocale.LocaleId == localeId
-                              where parentPageLocale.LocaleId == localeId
-                              
+
                               select new RouteUrlProductDto
                               {
                                   CategoryXProductId = categoryXProduct.Id, // TODO: Fix ID
                                   ParentId = parentPage.Id,
                                   Url = productXTenantXlocale.Url,
-                                  IsUrlAbsolute = productXTenantXlocale.IsUrlAbsolute
+                                  IsUrlAbsolute = productXTenantXlocale.IsUrlAbsolute,
+                                  LocaleId = productXTenantXlocale.LocaleId
                               });
 
                 return result.ToList();
             }
         }
+
+        //public IList<RouteUrlProductDto> ListForRouteUrl(int tenantId, int localeId)
+        //{
+        //    using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+        //    {
+        //        var result = (from categoryXProduct in ctx.ObjectContext.CategoryXProduct
+        //                      join product in ctx.ObjectContext.Product
+        //                          on categoryXProduct.ProductId equals product.Id
+        //                      join productXTenantXlocale in ctx.ObjectContext.ProductXTenantXLocale
+        //                          on product.Id equals productXTenantXlocale.ProductId
+        //                      join parentPage in ctx.ObjectContext.Page
+        //                          on categoryXProduct.CategoryId equals parentPage.ContentId
+        //                      join parentPageLocale in ctx.ObjectContext.PageLocale
+        //                          on parentPage.Id equals parentPageLocale.PageId
+
+        //                      where productXTenantXlocale.TenantId == tenantId
+        //                      where productXTenantXlocale.LocaleId == localeId
+        //                      where parentPageLocale.LocaleId == localeId
+                              
+        //                      select new RouteUrlProductDto
+        //                      {
+        //                          CategoryXProductId = categoryXProduct.Id, // TODO: Fix ID
+        //                          ParentId = parentPage.Id,
+        //                          Url = productXTenantXlocale.Url,
+        //                          IsUrlAbsolute = productXTenantXlocale.IsUrlAbsolute
+        //                      });
+
+        //        return result.ToList();
+        //    }
+        //}
 
         public IList<SiteMapProductDto> ListForSiteMap(int tenantId, int localeId)
         {
@@ -115,6 +144,22 @@ namespace ComplexCommerce.Data.Entity.Repositories
             }
         }
 
+        public IList<ProductLocaleDto> ListLocales(Guid productId, int tenantId)
+        {
+            using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+            {
+                var result = (from productXTenantXLocale in ctx.ObjectContext.ProductXTenantXLocale
+                              where productXTenantXLocale.ProductId == productId
+                              where productXTenantXLocale.TenantId == tenantId
+                              select new ProductLocaleDto
+                              {
+                                  LocaleId = productXTenantXLocale.LocaleId
+                              });
+
+                return result.ToList();
+            }
+        }
+
         public ProductDto Fetch(Guid categoryXProductId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
@@ -131,6 +176,7 @@ namespace ComplexCommerce.Data.Entity.Repositories
                               select new ProductDto
                               {
                                   Id = product.Id,
+                                  TenantId = productXTenantXLocale.TenantId,
                                   Name = productXTenantXLocale.Name,
                                   Description = productXTenantXLocale.Description,
                                   MetaKeywords = productXTenantXLocale.MetaKeywords,

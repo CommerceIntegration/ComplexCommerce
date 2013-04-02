@@ -42,9 +42,13 @@
         <ul>
         @foreach (var category in Model.Categories)
         {
-            <li>@Html.MvcSiteMap().SiteMapPath(null, category.PageLocaleId.ToString())</li>
+            <li>@Html.MvcSiteMap().SiteMapPath(null, category.PageId.ToString())</li>
         }
         </ul>
     }
 </div>
 
+
+@section Languages {
+    @Html.ProductLanguages(Model.Id, Model.TenantId, "ProductLanguages")
+}

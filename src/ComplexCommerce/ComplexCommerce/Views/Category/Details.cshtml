@@ -15,17 +15,18 @@
         @Html.DisplayFor(model => model.Description)
     </div>
 
-    @foreach (var product in Model.Products)
-    {
-        <ul id="product-list">
-            <a href="@Url.Action("Details", "Product", new { id = product.CategoryXProductId })">
-                <img alt="@product.Name" src="@product.ImageUrl" />
-                <div>@product.Name</div>
-                <div>@product.SKU</div>
-                <div>@string.Format("{0:F}", product.Price)</div>
-            </a>
-
-        </ul>
-    }
+    <ul id="product-list">
+        @foreach (var product in Model.Products)
+        {
+            <li>
+                <a href="@Url.Action("Details", "Product", new { id = product.CategoryXProductId, localeId = Model.LocaleId})">
+                    <img alt="@product.Name" src="@product.ImageUrl" />
+                    <div>@product.Name</div>
+                    <div>@product.SKU</div>
+                    <div>@string.Format("{0:F}", product.Price)</div>
+                </a>
+            </li>
+        }
+    </ul>
 </fieldset>
 

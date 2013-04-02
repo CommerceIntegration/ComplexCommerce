@@ -51,9 +51,6 @@ namespace ComplexCommerce.Web.Mvc.Routing
                 .Where(x => x.UrlPath.Equals(path))
                 .FirstOrDefault();
             
-            //var page = pages
-            //    .Where(x => x.UrlPath.Equals(path))
-            //    .FirstOrDefault();
             if (page != null)
             {
                 //result = new RouteData(this, new MvcRouteHandler());
@@ -63,6 +60,7 @@ namespace ComplexCommerce.Web.Mvc.Routing
 
                 // TODO: Add area for different tenant types
                 result.Values["controller"] = page.ContentType.ToString();
+                result.Values["localeId"] = localeId;
                 if (!page.ContentId.Equals(Guid.Empty))
                 {
                     result.Values["action"] = "Details";
@@ -101,6 +99,12 @@ namespace ComplexCommerce.Web.Mvc.Routing
 
             var action = Convert.ToString(values["action"]);
             var controller = Convert.ToString(values["controller"]);
+            var localeId = (int?)values["localeId"];
+
+            if (localeId == null)
+            {
+                return false;
+            }
 
             if (!Guid.TryParse(Convert.ToString(values["id"]), out contentId))
             {
@@ -109,7 +113,11 @@ namespace ComplexCommerce.Web.Mvc.Routing
                 // Special case for homepage
                 if (action == "Index" && controller == "Home")
                 {
-                    page = pages.Where(x => x.ContentType == ContentTypeEnum.Home).FirstOrDefault();
+                    page = pages
+                        .Where(x => x.ContentType == ContentTypeEnum.Home)
+                        .Where(x => x.LocaleId.Equals(localeId))
+                        .FirstOrDefault();
+
                     if (page != null)
                     {
                         return true;
@@ -122,7 +130,9 @@ namespace ComplexCommerce.Web.Mvc.Routing
                 page = pages
                     .Where(x => x.ContentId.Equals(contentId) && 
                         x.ContentType.ToString().Equals(controller, StringComparison.InvariantCultureIgnoreCase))
+                    .Where(x => x.LocaleId.Equals(localeId))
                     .FirstOrDefault();
+
                 if (page != null)
                 {
                     return true;

@@ -3,7 +3,7 @@ using Csla;
 
 namespace ComplexCommerce.Business
 {
-    [Serializable()]
+    [Serializable]
     internal class TenantLocaleCriteria
         : CriteriaBase<TenantLocaleCriteria>, ITenantLocale
     {

@@ -337,6 +337,8 @@
     <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
     <Content Include="Views\System\Status404.cshtml" />
     <Content Include="Views\System\Status500.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PageLanguages.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ProductLanguages.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

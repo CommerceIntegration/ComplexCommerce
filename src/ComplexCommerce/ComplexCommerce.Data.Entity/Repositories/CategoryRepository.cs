@@ -85,7 +85,7 @@ namespace ComplexCommerce.Data.Entity.Repositories
 
                               select new ProductCategoryDto
                               {
-                                  PageLocaleId = pageLocale.Id
+                                  PageId = page.Id
                               });
 
                 return result.ToList();

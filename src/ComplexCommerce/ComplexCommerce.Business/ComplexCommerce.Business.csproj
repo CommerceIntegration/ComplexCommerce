@@ -67,10 +67,14 @@
     <Compile Include="GetCachedRouteUrlProductListCommand.cs" />
     <Compile Include="GetRequestCachedParentUrlPageListCommand.cs" />
     <Compile Include="ITenantLocale.cs" />
+    <Compile Include="Globalization\PageLocaleInfo.cs" />
+    <Compile Include="Globalization\PageLocaleList.cs" />
     <Compile Include="ParentUrlPageInfo.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductCategoryInfo.cs" />
     <Compile Include="ProductCategoryList.cs" />
+    <Compile Include="Globalization\ProductLocaleInfo.cs" />
+    <Compile Include="Globalization\ProductLocaleList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteUrlPageInfo.cs" />
     <Compile Include="RouteUrlPageList.cs" />

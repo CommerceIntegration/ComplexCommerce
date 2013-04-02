@@ -1,0 +1,11 @@
+﻿@model IEnumerable<ComplexCommerce.Business.Globalization.PageLocaleInfo>
+
+<div id="languages">
+    <ul>
+    @foreach (var item in Model) {
+        var routeValues = ViewContext.RouteData.Values;
+        routeValues["localeId"] = item.LocaleId;
+        @Html.RouteLink(item.NativeName, "Page", routeValues)
+    }
+    </ul>
+</div>

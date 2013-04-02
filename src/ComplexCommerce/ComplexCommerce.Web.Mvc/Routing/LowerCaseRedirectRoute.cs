@@ -5,10 +5,10 @@ using ComplexCommerce.Business.Text;
 
 namespace ComplexCommerce.Web.Mvc.Routing
 {
-    public class LowerCaseRedirectRoute
+    public class LowercaseRedirectRoute
         : RouteBase
     {
-        public LowerCaseRedirectRoute(
+        public LowercaseRedirectRoute(
             IRouteUtilities routeUtilities
             )
         {

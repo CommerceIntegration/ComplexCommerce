@@ -27,7 +27,63 @@ namespace ComplexCommerce.Data.Entity.Repositories
 
         #region IPageRepository Members
 
-        public IList<ParentUrlPageDto> ListForParentUrl(int tenantId, int localeId)
+        // TODO: Eliminate unnecessary fields
+        public IList<ParentUrlPageDto> ListForParentUrl(int tenantId)
+        {
+            using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+            {
+                var result = (from pageLocale in ctx.ObjectContext.PageLocale
+                              join page in ctx.ObjectContext.Page
+                                  on pageLocale.PageId equals page.Id
+                              where page.TenantId == tenantId
+                              select new ParentUrlPageDto
+                              {
+                                  Id = page.Id,
+                                  ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
+                                  PageLocaleId = pageLocale.Id,
+                                  LocaleId = pageLocale.LocaleId,
+                                  ContentType = page.ContentType,
+                                  ContentId = page.ContentId,
+                                  Title = pageLocale.Title,
+                                  Url = pageLocale.Url,
+                                  IsUrlAbsolute = pageLocale.IsUrlAbsolute,
+                                  MetaRobots = page.MetaRobots,
+                                  IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
+                              });
+
+                return result.ToList();
+            }
+        }
+
+        //public IList<ParentUrlPageDto> ListForParentUrl(int tenantId, int localeId)
+        //{
+        //    using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+        //    {
+        //        var result = (from pageLocale in ctx.ObjectContext.PageLocale
+        //                      join page in ctx.ObjectContext.Page
+        //                          on pageLocale.PageId equals page.Id
+        //                      where page.TenantId == tenantId
+        //                      where pageLocale.LocaleId == localeId
+        //                      select new ParentUrlPageDto
+        //                      {
+        //                          Id = page.Id,
+        //                          ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
+        //                          PageLocaleId = pageLocale.Id,
+        //                          ContentType = page.ContentType,
+        //                          ContentId = page.ContentId,
+        //                          Title = pageLocale.Title,
+        //                          Url = pageLocale.Url,
+        //                          IsUrlAbsolute = pageLocale.IsUrlAbsolute,
+        //                          MetaRobots = page.MetaRobots,
+        //                          IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
+        //                      });
+
+        //        return result.ToList();
+        //    }
+        //}
+
+        // TODO: Eliminate unnecessary fields
+        public IList<ParentUrlPageDto> ListForSiteMap(int tenantId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
@@ -48,6 +104,21 @@ namespace ComplexCommerce.Data.Entity.Repositories
                                   IsUrlAbsolute = pageLocale.IsUrlAbsolute,
                                   MetaRobots = page.MetaRobots,
                                   IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
+                              });
+
+                return result.ToList();
+            }
+        }
+
+        public IList<PageLocaleDto> ListLocales(Guid pageId)
+        {
+            using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
+            {
+                var result = (from pageLocale in ctx.ObjectContext.PageLocale
+                              where pageLocale.PageId == pageId
+                              select new PageLocaleDto
+                              {
+                                  LocaleId = pageLocale.LocaleId
                               });
 
                 return result.ToList();
