@@ -12,7 +12,7 @@ namespace ComplexCommerce.Business
     {
         ParentUrlPageList EmptyParentUrlPageList();
         //ParentUrlPageList GetParentUrlPageList();
-        ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId, int defaultLocaleId);
+        ParentUrlPageList GetParentUrlPageList(int tenantId);
     }
 
     public class ParentUrlPageListFactory
@@ -38,16 +38,12 @@ namespace ComplexCommerce.Business
 
         //public ParentUrlPageList GetParentUrlPageList()
         //{
-        //    return ParentUrlPageList.GetRequestCachedParentUrlPageList(
-        //        appContext.CurrentTenant.Id, appContext.CurrentLocaleId, appContext.CurrentTenant.DefaultLocale.LCID);
-        //    //return ParentUrlPageList.GetParentUrlPageList(
-        //    //    appContext.CurrentTenant.Id, appContext.CurrentLocaleId, appContext.CurrentTenant.DefaultLocale.LCID);
+        //    return ParentUrlPageList.GetRequestCachedParentUrlPageList(appContext.CurrentTenant.Id);
         //}
 
-        public ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId, int defaultLocaleId)
+        public ParentUrlPageList GetParentUrlPageList(int tenantId)
         {
-            return ParentUrlPageList.GetRequestCachedParentUrlPageList(tenantId, localeId, defaultLocaleId);
-            //return ParentUrlPageList.GetParentUrlPageList(tenantId, localeId, defaultLocaleId);
+            return ParentUrlPageList.GetRequestCachedParentUrlPageList(tenantId);
         }
 
         #endregion
@@ -62,19 +58,19 @@ namespace ComplexCommerce.Business
             return new ParentUrlPageList();
         }
 
-        internal static ParentUrlPageList GetParentUrlPageList(int tenantId, int localeId, int defaultLocaleId)
+        internal static ParentUrlPageList GetParentUrlPageList(int tenantId)
         {
-            return DataPortal.Fetch<ParentUrlPageList>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
+            return DataPortal.Fetch<ParentUrlPageList>(tenantId);
         }
 
-        internal static ParentUrlPageList GetRequestCachedParentUrlPageList(int tenantId, int localeId, int defaultLocaleId)
+        internal static ParentUrlPageList GetRequestCachedParentUrlPageList(int tenantId)
         {
-            var cmd = new GetRequestCachedParentUrlPageListCommand(tenantId, localeId, defaultLocaleId);
+            var cmd = new GetRequestCachedParentUrlPageListCommand(tenantId);
             cmd = DataPortal.Execute<GetRequestCachedParentUrlPageListCommand>(cmd);
             return cmd.ParentUrlPageList;
         }
 
-        private void DataPortal_Fetch(TenantLocaleCriteria criteria)
+        private void DataPortal_Fetch(int tenantId)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -83,7 +79,7 @@ namespace ComplexCommerce.Business
                 IsReadOnly = false;
 
                 //var list = repository.ListForParentUrl(criteria.TenantId, criteria.LocaleId);
-                var list = repository.ListForParentUrl(criteria.TenantId);
+                var list = repository.ListForParentUrl(tenantId);
 
                 foreach (var item in list)
                     Add(DataPortal.FetchChild<ParentUrlPageInfo>(item));
@@ -124,40 +120,19 @@ namespace ComplexCommerce.Business
         private class GetRequestCachedParentUrlPageListCommand
             : CslaCommandBase<GetRequestCachedParentUrlPageListCommand>
         {
-            public GetRequestCachedParentUrlPageListCommand(int tenantId, int localeId, int defaultLocaleId)
+            public GetRequestCachedParentUrlPageListCommand(int tenantId)
             {
                 if (tenantId < 1)
                     throw new ArgumentOutOfRangeException("tenantId");
-                if (localeId < 1)
-                    throw new ArgumentOutOfRangeException("localeId");
-                if (defaultLocaleId < 1)
-                    throw new ArgumentOutOfRangeException("defaultLocaleId");
 
                 this.TenantId = tenantId;
-                this.LocaleId = localeId;
-                this.DefaultLocaleId = defaultLocaleId;
             }
-
 
             public static PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
             public int TenantId
             {
                 get { return ReadProperty(TenantIdProperty); }
                 private set { LoadProperty(TenantIdProperty, value); }
-            }
-
-            public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-            public int LocaleId
-            {
-                get { return ReadProperty(LocaleIdProperty); }
-                private set { LoadProperty(LocaleIdProperty, value); }
-            }
-
-            public static PropertyInfo<int> DefaultLocaleIdProperty = RegisterProperty<int>(c => c.DefaultLocaleId);
-            public int DefaultLocaleId
-            {
-                get { return ReadProperty(DefaultLocaleIdProperty); }
-                private set { LoadProperty(DefaultLocaleIdProperty, value); }
             }
 
             public static PropertyInfo<ParentUrlPageList> ParentUrlPageListProperty = RegisterProperty<ParentUrlPageList>(c => c.ParentUrlPageList);
@@ -172,10 +147,9 @@ namespace ComplexCommerce.Business
             /// </summary>
             protected override void DataPortal_Execute()
             {
-                //var key = "__ML_ParentUrlPageList_" + this.TenantId + "_" + this.LocaleId + "__";
                 var key = "__ML_ParentUrlPageList_" + this.TenantId + "__";
                 this.ParentUrlPageList = appContext.GetOrAdd(key,
-                    () => ParentUrlPageList.GetParentUrlPageList(this.TenantId, this.LocaleId, this.DefaultLocaleId));
+                    () => ParentUrlPageList.GetParentUrlPageList(this.TenantId));
             }
 
             #region Dependency Injection
@@ -205,7 +179,5 @@ namespace ComplexCommerce.Business
         }
 
         #endregion
-
-
     }
 }

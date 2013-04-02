@@ -62,7 +62,7 @@ namespace ComplexCommerce.Business
                 IsReadOnly = false;
 
                 // This list will automatically be request cached
-                var list = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId, criteria.LocaleId, criteria.DefaultLocaleId);
+                var list = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId);
 
                 foreach (var item in list)
                     Add(DataPortal.FetchChild<RouteUrlPageInfo>(item, criteria));

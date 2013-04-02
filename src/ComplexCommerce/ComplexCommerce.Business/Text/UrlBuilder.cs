@@ -69,7 +69,7 @@ namespace ComplexCommerce.Business.Text
             if (!isUrlAbsolute)
             {
                 // This list is pulled from the request cache.
-                var pageList = parentUrlPageListFactory.GetParentUrlPageList(tenantId, localeId, defaultLocaleId);
+                var pageList = parentUrlPageListFactory.GetParentUrlPageList(tenantId);
                 var parentUrl = GetParentPageUrl(parentPageId, localeId, pageList);
                 result = JoinUrlSegments(parentUrl, url);
             }
