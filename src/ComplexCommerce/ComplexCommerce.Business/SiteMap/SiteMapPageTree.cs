@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Dto;
@@ -10,12 +7,12 @@ using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Business.Text;
 using ComplexCommerce.Business.Context;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.SiteMap
 {
     public interface ISiteMapPageTreeFactory
     {
         SiteMapPageTree GetSiteMapPageTree();
-        SiteMapPageTree GetSiteMapPageTree(int tenantId, int localeId, int defaultLocaleId);
+        SiteMapPageTree GetSiteMapPageTree(int tenantId, int localeId);
     }
 
     public class SiteMapPageTreeFactory
@@ -37,12 +34,12 @@ namespace ComplexCommerce.Business
         public SiteMapPageTree GetSiteMapPageTree()
         {
             return SiteMapPageTree.GetSiteMapPageTree(
-                appContext.CurrentTenant.Id, appContext.CurrentLocaleId, appContext.CurrentTenant.DefaultLocale.LCID);
+                appContext.CurrentTenant.Id, appContext.CurrentLocaleId);
         }
 
-        public SiteMapPageTree GetSiteMapPageTree(int tenantId, int localeId, int defaultLocaleId)
+        public SiteMapPageTree GetSiteMapPageTree(int tenantId, int localeId)
         {
-            return SiteMapPageTree.GetSiteMapPageTree(tenantId, localeId, defaultLocaleId);
+            return SiteMapPageTree.GetSiteMapPageTree(tenantId, localeId);
         }
 
         #endregion
@@ -51,9 +48,9 @@ namespace ComplexCommerce.Business
     public class SiteMapPageTree
         : CslaReadOnlyBase<SiteMapPageTree>
     {
-        internal static SiteMapPageTree GetSiteMapPageTree(int tenantId, int localeId, int defaultLocaleId)
+        internal static SiteMapPageTree GetSiteMapPageTree(int tenantId, int localeId)
         {
-            return DataPortal.Fetch<SiteMapPageTree>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
+            return DataPortal.Fetch<SiteMapPageTree>(new Criteria(tenantId, localeId));
         }
 
         public static PropertyInfo<Guid> IdProperty = RegisterProperty<Guid>(c => c.Id);
@@ -61,13 +58,6 @@ namespace ComplexCommerce.Business
         {
             get { return GetProperty(IdProperty); }
             private set { LoadProperty(IdProperty, value); }
-        }
-
-        public static PropertyInfo<Guid> PageLocaleIdProperty = RegisterProperty<Guid>(c => c.PageLocaleId);
-        public Guid PageLocaleId
-        {
-            get { return GetProperty(PageLocaleIdProperty); }
-            private set { LoadProperty(PageLocaleIdProperty, value); }
         }
 
         public static PropertyInfo<string> TitleProperty = RegisterProperty<string>(c => c.Title);
@@ -118,11 +108,10 @@ namespace ComplexCommerce.Business
         }
 
         // Used for entry point
-        private void DataPortal_Fetch(TenantLocaleCriteria criteria)
+        private void DataPortal_Fetch(Criteria criteria)
         {
             using (var ctx = ContextFactory.GetContext())
             {
-                //var pageList = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId, criteria.LocaleId, criteria.DefaultLocaleId);
                 var pageList = pageRepository.ListForSiteMap(criteria.TenantId, criteria.LocaleId);
                 var productList = productRepository.ListForSiteMap(criteria.TenantId, criteria.LocaleId);
 
@@ -131,7 +120,7 @@ namespace ComplexCommerce.Business
                     // Find root node
                     if (page.ParentId == Guid.Empty)
                     {
-                        this.Child_Fetch(page, pageList, productList, criteria);
+                        this.Child_Fetch(page, pageList, productList);
                         break;
                     }
                 }
@@ -139,10 +128,9 @@ namespace ComplexCommerce.Business
         }
 
         // Used for nested calls for pages
-        private void Child_Fetch(ParentUrlPageDto page, IEnumerable<ParentUrlPageDto> pageList, IEnumerable<SiteMapProductDto> productList, ITenantLocale tenantLocale)
+        private void Child_Fetch(SiteMapPageDto page, IEnumerable<SiteMapPageDto> pageList, IEnumerable<SiteMapProductDto> productList)
         {
             Id = page.Id;
-            PageLocaleId = page.PageLocaleId;
             Title = page.Title;
             MetaRobots = page.MetaRobots;
             IsVisibleOnMainMenu = page.IsVisibleOnMainMenu;
@@ -151,11 +139,48 @@ namespace ComplexCommerce.Business
                 page.Url, 
                 page.IsUrlAbsolute, 
                 page.ParentId, 
-                tenantLocale);
+                page.TenantId,
+                page.LocaleId);
 
-            ChildPages = DataPortal.FetchChild<SiteMapPageList>(page.Id, pageList, productList, tenantLocale);
-            Products = DataPortal.FetchChild<SiteMapProductList>(page.ContentId, productList, tenantLocale);
+            ChildPages = DataPortal.FetchChild<SiteMapPageList>(page.Id, pageList, productList);
+            Products = DataPortal.FetchChild<SiteMapProductList>(page.ContentId, productList);
         }
+
+        #region Criteria
+
+        [Serializable]
+        private class Criteria
+            : CriteriaBase<Criteria>
+        {
+            public Criteria(
+                int tenantId,
+                int localeId)
+            {
+                if (tenantId < 1)
+                    throw new ArgumentOutOfRangeException("tenantId");
+                if (localeId < 1)
+                    throw new ArgumentOutOfRangeException("localeId");
+
+                this.TenantId = tenantId;
+                this.LocaleId = localeId;
+            }
+
+            public static readonly PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
+            public int TenantId
+            {
+                get { return ReadProperty(TenantIdProperty); }
+                private set { LoadProperty(TenantIdProperty, value); }
+            }
+
+            public static readonly PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
+            public int LocaleId
+            {
+                get { return ReadProperty(LocaleIdProperty); }
+                private set { LoadProperty(LocaleIdProperty, value); }
+            }
+        }
+
+        #endregion
 
         #region Dependency Injection
 
@@ -221,27 +246,6 @@ namespace ComplexCommerce.Business
                 this.urlBuilder = value;
             }
         }
-
-        //[NonSerialized]
-        //[NotUndoable]
-        //private IParentUrlPageListFactory parentUrlPageListFactory;
-        //public IParentUrlPageListFactory ParentUrlPageListFactory
-        //{
-        //    set
-        //    {
-        //        // Don't allow the value to be set to null
-        //        if (value == null)
-        //        {
-        //            throw new ArgumentNullException("value");
-        //        }
-        //        // Don't allow the value to be set more than once
-        //        if (this.parentUrlPageListFactory != null)
-        //        {
-        //            throw new InvalidOperationException();
-        //        }
-        //        this.parentUrlPageListFactory = value;
-        //    }
-        //}
 
         #endregion
     }

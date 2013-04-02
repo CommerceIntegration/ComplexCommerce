@@ -27,7 +27,6 @@ namespace ComplexCommerce.Data.Entity.Repositories
 
         #region IPageRepository Members
 
-        // TODO: Eliminate unnecessary fields
         public IList<ParentUrlPageDto> ListForParentUrl(int tenantId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
@@ -40,50 +39,19 @@ namespace ComplexCommerce.Data.Entity.Repositories
                               {
                                   Id = page.Id,
                                   ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
-                                  PageLocaleId = pageLocale.Id,
+                                  TenantId = tenantId,
                                   LocaleId = pageLocale.LocaleId,
                                   ContentType = page.ContentType,
                                   ContentId = page.ContentId,
-                                  Title = pageLocale.Title,
                                   Url = pageLocale.Url,
-                                  IsUrlAbsolute = pageLocale.IsUrlAbsolute,
-                                  MetaRobots = page.MetaRobots,
-                                  IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
+                                  IsUrlAbsolute = pageLocale.IsUrlAbsolute
                               });
 
                 return result.ToList();
             }
         }
 
-        //public IList<ParentUrlPageDto> ListForParentUrl(int tenantId, int localeId)
-        //{
-        //    using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
-        //    {
-        //        var result = (from pageLocale in ctx.ObjectContext.PageLocale
-        //                      join page in ctx.ObjectContext.Page
-        //                          on pageLocale.PageId equals page.Id
-        //                      where page.TenantId == tenantId
-        //                      where pageLocale.LocaleId == localeId
-        //                      select new ParentUrlPageDto
-        //                      {
-        //                          Id = page.Id,
-        //                          ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
-        //                          PageLocaleId = pageLocale.Id,
-        //                          ContentType = page.ContentType,
-        //                          ContentId = page.ContentId,
-        //                          Title = pageLocale.Title,
-        //                          Url = pageLocale.Url,
-        //                          IsUrlAbsolute = pageLocale.IsUrlAbsolute,
-        //                          MetaRobots = page.MetaRobots,
-        //                          IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
-        //                      });
-
-        //        return result.ToList();
-        //    }
-        //}
-
-        // TODO: Eliminate unnecessary fields
-        public IList<ParentUrlPageDto> ListForSiteMap(int tenantId, int localeId)
+        public IList<SiteMapPageDto> ListForSiteMap(int tenantId, int localeId)
         {
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
@@ -92,18 +60,18 @@ namespace ComplexCommerce.Data.Entity.Repositories
                                   on pageLocale.PageId equals page.Id
                               where page.TenantId == tenantId
                               where pageLocale.LocaleId == localeId
-                              select new ParentUrlPageDto
+                              select new SiteMapPageDto
                               {
                                   Id = page.Id,
                                   ParentId = page.ParentId == null ? Guid.Empty : (Guid)page.ParentId,
-                                  PageLocaleId = pageLocale.Id,
-                                  ContentType = page.ContentType,
                                   ContentId = page.ContentId,
                                   Title = pageLocale.Title,
                                   Url = pageLocale.Url,
                                   IsUrlAbsolute = pageLocale.IsUrlAbsolute,
                                   MetaRobots = page.MetaRobots,
-                                  IsVisibleOnMainMenu = page.IsVisibleOnMainMenu
+                                  IsVisibleOnMainMenu = page.IsVisibleOnMainMenu,
+                                  TenantId = tenantId,
+                                  LocaleId = localeId
                               });
 
                 return result.ToList();

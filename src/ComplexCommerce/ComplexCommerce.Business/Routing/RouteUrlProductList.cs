@@ -5,29 +5,17 @@ using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Business.Context;
 using ComplexCommerce.Business.Caching;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Routing
 {
     public interface IRouteUrlProductListFactory
     {
         RouteUrlProductList EmptyRouteUrlProductList();
-        //RouteUrlProductList GetRouteUrlProductList();
-        RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId, int defaultLocaleId);
+        RouteUrlProductList GetRouteUrlProductList(int tenantId);
     }
 
     public class RouteUrlProductListFactory
         : IRouteUrlProductListFactory
     {
-        //public RouteUrlProductListFactory(
-        //    IApplicationContext appContext
-        //    )
-        //{
-        //    if (appContext == null)
-        //        throw new ArgumentNullException("appContext");
-        //    this.appContext = appContext;
-        //}
-
-        //private readonly IApplicationContext appContext;
-
         #region IRouteUrlListFactory Members
 
         public RouteUrlProductList EmptyRouteUrlProductList()
@@ -35,15 +23,9 @@ namespace ComplexCommerce.Business
             return RouteUrlProductList.EmptyRouteUrlProductList();
         }
 
-        //public RouteUrlProductList GetRouteUrlProductList()
-        //{
-        //    return RouteUrlProductList.GetCachedRouteUrlProductList(
-        //        appContext.CurrentTenant.Id, appContext.CurrentLocaleId, appContext.CurrentTenant.DefaultLocale.LCID);
-        //}
-
-        public RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId, int defaultLocaleId)
+        public RouteUrlProductList GetRouteUrlProductList(int tenantId)
         {
-            return RouteUrlProductList.GetCachedRouteUrlProductList(tenantId, localeId, defaultLocaleId);
+            return RouteUrlProductList.GetCachedRouteUrlProductList(tenantId);
         }
 
         #endregion
@@ -59,19 +41,19 @@ namespace ComplexCommerce.Business
             return new RouteUrlProductList();
         }
 
-        internal static RouteUrlProductList GetRouteUrlProductList(int tenantId, int localeId, int defaultLocaleId)
+        internal static RouteUrlProductList GetRouteUrlProductList(int tenantId)
         {
-            return DataPortal.Fetch<RouteUrlProductList>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
+            return DataPortal.Fetch<RouteUrlProductList>(tenantId);
         }
 
-        internal static RouteUrlProductList GetCachedRouteUrlProductList(int tenantId, int localeId, int defaultLocaleId)
+        internal static RouteUrlProductList GetCachedRouteUrlProductList(int tenantId)
         {
-            var cmd = new GetCachedRouteUrlProductListCommand(tenantId, localeId, defaultLocaleId);
+            var cmd = new GetCachedRouteUrlProductListCommand(tenantId);
             cmd = DataPortal.Execute<GetCachedRouteUrlProductListCommand>(cmd);
             return cmd.RouteUrlProductList;
         }
 
-        private void DataPortal_Fetch(TenantLocaleCriteria criteria)
+        private void DataPortal_Fetch(int tenantId)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -79,9 +61,9 @@ namespace ComplexCommerce.Business
                 RaiseListChangedEvents = false;
                 IsReadOnly = false;
 
-                var list = repository.ListForRouteUrl(criteria.TenantId);
+                var list = repository.ListForRouteUrl(tenantId);
                 foreach (var item in list)
-                    Add(DataPortal.FetchChild<RouteUrlProductInfo>(item, criteria));
+                    Add(DataPortal.FetchChild<RouteUrlProductInfo>(item));
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;
@@ -119,18 +101,12 @@ namespace ComplexCommerce.Business
         private class GetCachedRouteUrlProductListCommand
             : CslaCommandBase<GetCachedRouteUrlProductListCommand>
         {
-            public GetCachedRouteUrlProductListCommand(int tenantId, int localeId, int defaultLocaleId)
+            public GetCachedRouteUrlProductListCommand(int tenantId)
             {
                 if (tenantId < 1)
                     throw new ArgumentOutOfRangeException("tenantId");
-                if (localeId < 1)
-                    throw new ArgumentOutOfRangeException("localeId");
-                if (defaultLocaleId < 1)
-                    throw new ArgumentOutOfRangeException("defaultLocaleId");
 
                 this.TenantId = tenantId;
-                this.LocaleId = localeId;
-                this.DefaultLocaleId = defaultLocaleId;
             }
 
             public static PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
@@ -138,20 +114,6 @@ namespace ComplexCommerce.Business
             {
                 get { return ReadProperty(TenantIdProperty); }
                 private set { LoadProperty(TenantIdProperty, value); }
-            }
-
-            public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-            public int LocaleId
-            {
-                get { return ReadProperty(LocaleIdProperty); }
-                private set { LoadProperty(LocaleIdProperty, value); }
-            }
-
-            public static PropertyInfo<int> DefaultLocaleIdProperty = RegisterProperty<int>(c => c.DefaultLocaleId);
-            public int DefaultLocaleId
-            {
-                get { return ReadProperty(DefaultLocaleIdProperty); }
-                private set { LoadProperty(DefaultLocaleIdProperty, value); }
             }
 
             public static PropertyInfo<RouteUrlProductList> RouteUrlProductListProperty = RegisterProperty<RouteUrlProductList>(c => c.RouteUrlProductList);
@@ -168,7 +130,7 @@ namespace ComplexCommerce.Business
             {
                 var key = "__ML_RouteUrlProductList_" + this.TenantId + "__";
                 this.RouteUrlProductList = cache.GetOrAdd(key,
-                    () => RouteUrlProductList.GetRouteUrlProductList(this.TenantId, this.LocaleId, this.DefaultLocaleId));
+                    () => RouteUrlProductList.GetRouteUrlProductList(this.TenantId));
             }
 
             #region Dependency Injection

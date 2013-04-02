@@ -8,6 +8,7 @@ using System.Threading;
 using System.Globalization;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
+using ComplexCommerce.Business.Routing;
 
 namespace ComplexCommerce.Web.Mvc.Routing
 {
@@ -46,14 +47,13 @@ namespace ComplexCommerce.Web.Mvc.Routing
             var pathLength = path.Length;
 
             var page = routeUrlPageListFactory
-                .GetRouteUrlPageList(tenant.Id, localeId, tenant.DefaultLocale.LCID)
+                .GetRouteUrlPageList(tenant.Id)
                 .Where(x => x.UrlPath.Length.Equals(pathLength))
                 .Where(x => x.UrlPath.Equals(path))
                 .FirstOrDefault();
             
             if (page != null)
             {
-                //result = new RouteData(this, new MvcRouteHandler());
                 result = routeUtilities.CreateRouteData(this);
                 
                 routeUtilities.AddQueryStringParametersToRouteData(result, httpContext);
@@ -79,14 +79,13 @@ namespace ComplexCommerce.Web.Mvc.Routing
             VirtualPathData result = null;
             IRouteUrlPageInfo page = null;
             var tenant = appContext.CurrentTenant;
-            var localeId = appContext.CurrentLocaleId;
 
             // Get all of the pages
-            var pages = routeUrlPageListFactory.GetRouteUrlPageList(tenant.Id, localeId, tenant.DefaultLocale.LCID);
+            var pages = routeUrlPageListFactory.GetRouteUrlPageList(tenant.Id);
 
             if (TryFindMatch(pages, values, out page))
             {
-                result = new VirtualPathData(this, page.VirtualPath);
+                result = routeUtilities.CreateVirtualPathData(this, page.VirtualPath);
             }
 
             return result;

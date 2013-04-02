@@ -6,33 +6,12 @@ using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Business.Context;
 using ComplexCommerce.Business.Text;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.SiteMap
 {
     [Serializable]
     public class SiteMapProductInfo
         : CslaReadOnlyBase<SiteMapProductInfo>
     {
-        //public static readonly PropertyInfo<Guid> ProductXTenantLocaleIdProperty = RegisterProperty<Guid>(p => p.ProductXTenantLocaleId);
-        //public Guid ProductXTenantLocaleId
-        //{
-        //    get { return GetProperty(ProductXTenantLocaleIdProperty); }
-        //    private set { LoadProperty(ProductXTenantLocaleIdProperty, value); }
-        //}
-
-        //public static readonly PropertyInfo<Guid> ProductIdProperty = RegisterProperty<Guid>(p => p.ProductId);
-        //public Guid ProductId
-        //{
-        //    get { return GetProperty(ProductIdProperty); }
-        //    private set { LoadProperty(ProductIdProperty, value); }
-        //}
-
-        //public static readonly PropertyInfo<Guid> CategoryIdProperty = RegisterProperty<Guid>(p => p.CategoryId);
-        //public Guid CategoryId
-        //{
-        //    get { return GetProperty(CategoryIdProperty); }
-        //    private set { LoadProperty(CategoryIdProperty, value); }
-        //}
-
         public static readonly PropertyInfo<Guid> CategoryXProductIdProperty = RegisterProperty<Guid>(p => p.CategoryXProductId);
         public Guid CategoryXProductId
         {
@@ -72,10 +51,8 @@ namespace ComplexCommerce.Business
 
         #endregion
 
-        private void Child_Fetch(SiteMapProductDto item, ITenantLocale tenantLocale)
+        private void Child_Fetch(SiteMapProductDto item)
         {
-            //ProductXTenantLocaleId = item.ProductXTenantLocaleId;
-            //CategoryId = item.CategoryId;
             CategoryXProductId = item.CategoryXProductId;
             Name = item.Name;
             MetaRobots = item.MetaRobots;
@@ -84,13 +61,15 @@ namespace ComplexCommerce.Business
                 item.Url, 
                 item.IsUrlAbsolute, 
                 item.ParentPageId, 
-                tenantLocale);
+                item.TenantId,
+                item.LocaleId);
 
             this.CanonicalUrlPath = urlBuilder.BuildPath(
                 item.Url, 
                 item.IsUrlAbsolute, 
                 item.DefaultCategoryPageId, 
-                tenantLocale);
+                item.TenantId,
+                item.LocaleId);
         }
 
         #region Dependency Injection

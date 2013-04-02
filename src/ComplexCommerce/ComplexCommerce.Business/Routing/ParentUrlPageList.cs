@@ -6,12 +6,11 @@ using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Data.Dto;
 using ComplexCommerce.Business.Context;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Routing
 {
     public interface IParentUrlPageListFactory
     {
         ParentUrlPageList EmptyParentUrlPageList();
-        //ParentUrlPageList GetParentUrlPageList();
         ParentUrlPageList GetParentUrlPageList(int tenantId);
     }
 
@@ -35,11 +34,6 @@ namespace ComplexCommerce.Business
         {
             return ParentUrlPageList.EmptyParentUrlPageList();
         }
-
-        //public ParentUrlPageList GetParentUrlPageList()
-        //{
-        //    return ParentUrlPageList.GetRequestCachedParentUrlPageList(appContext.CurrentTenant.Id);
-        //}
 
         public ParentUrlPageList GetParentUrlPageList(int tenantId)
         {
@@ -78,7 +72,6 @@ namespace ComplexCommerce.Business
                 RaiseListChangedEvents = false;
                 IsReadOnly = false;
 
-                //var list = repository.ListForParentUrl(criteria.TenantId, criteria.LocaleId);
                 var list = repository.ListForParentUrl(tenantId);
 
                 foreach (var item in list)

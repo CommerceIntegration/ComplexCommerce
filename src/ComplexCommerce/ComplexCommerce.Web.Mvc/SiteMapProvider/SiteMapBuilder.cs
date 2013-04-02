@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using MvcSiteMapProvider;
 using MvcSiteMapProvider.Builder;
 using MvcSiteMapProvider.Reflection;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
+using ComplexCommerce.Business.SiteMap;
 
 namespace ComplexCommerce.Web.Mvc.SiteMapProvider
 {
@@ -78,7 +77,6 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
 
         private ISiteMapNode GetSiteMapNodeFromTreeNode(ISiteMap siteMap, SiteMapPageTree treeNode)
         {
-            //var key = treeNode.PageLocaleId.ToString();
             var key = treeNode.Id.ToString();
             var node = siteMapNodeFactory.Create(siteMap, key, "");
 
@@ -99,9 +97,6 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
 
         private ISiteMapNode GetSiteMapNodeFromProductInfo(ISiteMap siteMap, SiteMapProductInfo productInfo)
         {
-            //var key = productInfo.ProductXTenantLocaleId.ToString();
-
-            //var key = productInfo.ProductXTenantLocaleId.ToString() + "|" + productInfo.CategoryId.ToString();
             var key = productInfo.CategoryXProductId.ToString();
             var node = siteMapNodeFactory.Create(siteMap, key, "");
 

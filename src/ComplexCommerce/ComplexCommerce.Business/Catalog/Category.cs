@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Data.Dto;
 using ComplexCommerce.Business.Context;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Catalog
 {
     public interface ICategoryFactory
     {
@@ -56,6 +57,7 @@ namespace ComplexCommerce.Business
         string Description { get; }
         string MetaKeywords { get; } // Move to another interface that is inherited?
         string MetaDescription { get; }
+        IEnumerable<ICategoryProduct> Products { get; }
     }
 
     [Serializable]
@@ -116,8 +118,8 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(MetaDescriptionProperty, value); }
         }
 
-        public static readonly PropertyInfo<CategoryProductList> ProductsProperty = RegisterProperty<CategoryProductList>(c => c.Products);
-        public CategoryProductList Products
+        public static readonly PropertyInfo<IEnumerable<ICategoryProduct>> ProductsProperty = RegisterProperty<IEnumerable<ICategoryProduct>>(c => c.Products);
+        public IEnumerable<ICategoryProduct> Products
         {
             get
             {

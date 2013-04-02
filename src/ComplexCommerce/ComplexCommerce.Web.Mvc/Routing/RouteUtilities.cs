@@ -43,6 +43,11 @@ namespace ComplexCommerce.Web.Mvc.Routing
             return new RouteData(route, new MvcRouteHandler());
         }
 
+        public VirtualPathData CreateVirtualPathData(RouteBase route, string virtualPath)
+        {
+            return new VirtualPathData(route, virtualPath);
+        }
+
         #endregion
     }
 }

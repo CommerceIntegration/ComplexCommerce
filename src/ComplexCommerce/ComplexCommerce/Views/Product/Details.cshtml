@@ -1,4 +1,4 @@
-﻿@model ComplexCommerce.Business.IProduct
+﻿@model ComplexCommerce.Business.Catalog.IProduct
 
 @{
     ViewBag.Title = Model.Name;
@@ -37,7 +37,7 @@
     </div>
 </fieldset>
 <div>
-    @if (Model.Categories.Count >  0)
+    @if (Model.Categories.Count() >  0)
     {
         <ul>
         @foreach (var category in Model.Categories)

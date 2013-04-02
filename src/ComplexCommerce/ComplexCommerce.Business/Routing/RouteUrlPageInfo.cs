@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
 using Csla;
 using Csla.Core;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Dto;
 using ComplexCommerce.Business.Text;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Routing
 {
     public interface IRouteUrlPageInfo
     {
         string VirtualPath { get; }
         string UrlPath { get; }
-        int LocaleId { get; }
         ContentTypeEnum ContentType { get; }
         Guid ContentId { get; }
+        int LocaleId { get; }
     }
 
     [Serializable]
@@ -28,13 +24,20 @@ namespace ComplexCommerce.Business
         {
             get
             {
-                var path = GetProperty(UrlPathProperty);
+                var path = this.UrlPath;
                 if (path.StartsWith("/"))
                 {
                     return path.Substring(1);
                 }
                 return path;
             }
+        }
+
+        public static PropertyInfo<string> UrlPathProperty = RegisterProperty<string>(c => c.UrlPath);
+        public string UrlPath
+        {
+            get { return GetProperty(UrlPathProperty); }
+            private set { LoadProperty(UrlPathProperty, value); }
         }
 
         // Route = {controller}
@@ -61,31 +64,18 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(LocaleIdProperty, value); }
         }
 
-        #region Constructed Properties
-
-        public static PropertyInfo<string> UrlPathProperty = RegisterProperty<string>(c => c.UrlPath);
-        public string UrlPath
+        private void Child_Fetch(ParentUrlPageInfo item)
         {
-            get { return GetProperty(UrlPathProperty); }
-            private set { LoadProperty(UrlPathProperty, value); }
-        }
-
-        #endregion
-
-        private void Child_Fetch(ParentUrlPageInfo item, ITenantLocale tenantLocale)
-        {
-            this.LocaleId = item.LocaleId;
-
             this.UrlPath = urlBuilder.BuildPath(
-                item.Url, 
-                item.IsUrlAbsolute, 
-                item.ParentId, 
-                tenantLocale.TenantId, 
-                item.LocaleId, 
-                tenantLocale.DefaultLocaleId);
+                item.Url,
+                item.IsUrlAbsolute,
+                item.ParentId,
+                item.TenantId,
+                item.LocaleId);
 
             this.ContentType = (ContentTypeEnum)item.ContentType;
             this.ContentId = item.ContentId;
+            this.LocaleId = item.LocaleId;
         }
 
         #region Dependency Injection

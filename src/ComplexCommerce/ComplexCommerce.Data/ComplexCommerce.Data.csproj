@@ -61,6 +61,7 @@
     <Compile Include="Dto\ProductDto.cs" />
     <Compile Include="Dto\ProductLocaleDto.cs" />
     <Compile Include="Dto\RouteUrlProductDto.cs" />
+    <Compile Include="Dto\SiteMapPageDto.cs" />
     <Compile Include="Dto\SiteMapProductDto.cs" />
     <Compile Include="Dto\TenantDto.cs" />
     <Compile Include="IDataInitializer.cs" />

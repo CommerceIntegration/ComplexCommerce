@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ComplexCommerce.Business;
+using ComplexCommerce.Business.Catalog;
 
 namespace ComplexCommerce.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController 
+        : Controller
     {
         public CategoryController(
             ICategoryFactory categoryFactory

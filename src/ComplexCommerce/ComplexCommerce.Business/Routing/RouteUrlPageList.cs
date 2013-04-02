@@ -5,12 +5,12 @@ using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Business.Text;
 using ComplexCommerce.Business.Caching;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Routing
 {
     public interface IRouteUrlPageListFactory
     {
         RouteUrlPageList EmptyRouteUrlPageList();
-        RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId, int defaultLocaleId);
+        RouteUrlPageList GetRouteUrlPageList(int tenantId);
     }
 
     public class RouteUrlPageListFactory
@@ -24,9 +24,9 @@ namespace ComplexCommerce.Business
             return RouteUrlPageList.EmptyRouteUrlPageList();
         }
 
-        public RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId, int defaultLocaleId)
+        public RouteUrlPageList GetRouteUrlPageList(int tenantId)
         {
-            return RouteUrlPageList.GetCachedRouteUrlPageList(tenantId, localeId, defaultLocaleId);
+            return RouteUrlPageList.GetCachedRouteUrlPageList(tenantId);
         }
 
         #endregion
@@ -41,19 +41,19 @@ namespace ComplexCommerce.Business
             return new RouteUrlPageList();
         }
 
-        internal static RouteUrlPageList GetRouteUrlPageList(int tenantId, int localeId, int defaultLocaleId)
+        internal static RouteUrlPageList GetRouteUrlPageList(int tenantId)
         {
-            return DataPortal.Fetch<RouteUrlPageList>(new TenantLocaleCriteria(tenantId, localeId, defaultLocaleId));
+            return DataPortal.Fetch<RouteUrlPageList>(tenantId);
         }
 
-        internal static RouteUrlPageList GetCachedRouteUrlPageList(int tenantId, int localeId, int defaultLocaleId)
+        internal static RouteUrlPageList GetCachedRouteUrlPageList(int tenantId)
         {
-            var cmd = new GetCachedRouteUrlPageListCommand(tenantId, localeId, defaultLocaleId);
+            var cmd = new GetCachedRouteUrlPageListCommand(tenantId);
             cmd = DataPortal.Execute<GetCachedRouteUrlPageListCommand>(cmd);
             return cmd.RouteUrlPageList;
         }
 
-        private void DataPortal_Fetch(TenantLocaleCriteria criteria)
+        private void DataPortal_Fetch(int tenantId)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -62,10 +62,10 @@ namespace ComplexCommerce.Business
                 IsReadOnly = false;
 
                 // This list will automatically be request cached
-                var list = parentUrlPageListFactory.GetParentUrlPageList(criteria.TenantId);
+                var list = parentUrlPageListFactory.GetParentUrlPageList(tenantId);
 
                 foreach (var item in list)
-                    Add(DataPortal.FetchChild<RouteUrlPageInfo>(item, criteria));
+                    Add(DataPortal.FetchChild<RouteUrlPageInfo>(item));
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;
@@ -103,18 +103,12 @@ namespace ComplexCommerce.Business
         private class GetCachedRouteUrlPageListCommand
             : CslaCommandBase<GetCachedRouteUrlPageListCommand>
         {
-            public GetCachedRouteUrlPageListCommand(int tenantId, int localeId, int defaultLocaleId)
+            public GetCachedRouteUrlPageListCommand(int tenantId)
             {
                 if (tenantId < 1)
                     throw new ArgumentOutOfRangeException("tenantId");
-                if (localeId < 1)
-                    throw new ArgumentOutOfRangeException("localeId");
-                if (defaultLocaleId < 1)
-                    throw new ArgumentOutOfRangeException("defaultLocaleId");
 
                 this.TenantId = tenantId;
-                this.LocaleId = localeId;
-                this.DefaultLocaleId = defaultLocaleId;
             }
 
 
@@ -123,20 +117,6 @@ namespace ComplexCommerce.Business
             {
                 get { return ReadProperty(TenantIdProperty); }
                 private set { LoadProperty(TenantIdProperty, value); }
-            }
-
-            public static PropertyInfo<int> LocaleIdProperty = RegisterProperty<int>(c => c.LocaleId);
-            public int LocaleId
-            {
-                get { return ReadProperty(LocaleIdProperty); }
-                private set { LoadProperty(LocaleIdProperty, value); }
-            }
-
-            public static PropertyInfo<int> DefaultLocaleIdProperty = RegisterProperty<int>(c => c.DefaultLocaleId);
-            public int DefaultLocaleId
-            {
-                get { return ReadProperty(DefaultLocaleIdProperty); }
-                private set { LoadProperty(DefaultLocaleIdProperty, value); }
             }
 
             public static PropertyInfo<RouteUrlPageList> RouteUrlPageListProperty = RegisterProperty<RouteUrlPageList>(c => c.RouteUrlPageList);
@@ -151,10 +131,9 @@ namespace ComplexCommerce.Business
             /// </summary>
             protected override void DataPortal_Execute()
             {
-                //var key = "__ML_RouteUrlPageList_" + this.TenantId + "_" + this.LocaleId + "__";
                 var key = "__ML_RouteUrlPageList_" + this.TenantId + "__";
                 this.RouteUrlPageList = cache.GetOrAdd(key,
-                    () => RouteUrlPageList.GetRouteUrlPageList(this.TenantId, this.LocaleId, this.DefaultLocaleId));
+                    () => RouteUrlPageList.GetRouteUrlPageList(this.TenantId));
             }
 
             #region Dependency Injection

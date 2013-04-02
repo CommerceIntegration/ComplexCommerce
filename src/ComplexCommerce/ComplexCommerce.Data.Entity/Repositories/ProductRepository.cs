@@ -71,6 +71,7 @@ namespace ComplexCommerce.Data.Entity.Repositories
                                   ParentId = parentPage.Id,
                                   Url = productXTenantXlocale.Url,
                                   IsUrlAbsolute = productXTenantXlocale.IsUrlAbsolute,
+                                  TenantId = tenantId,
                                   LocaleId = productXTenantXlocale.LocaleId
                               });
 
@@ -137,7 +138,9 @@ namespace ComplexCommerce.Data.Entity.Repositories
                                   Url = productXTenantXlocale.Url,
                                   IsUrlAbsolute = productXTenantXlocale.IsUrlAbsolute,
                                   MetaRobots = product.MetaRobots,
-                                  DefaultCategoryPageId = defaultCategoryPage.Id
+                                  DefaultCategoryPageId = defaultCategoryPage.Id,
+                                  TenantId = tenantId,
+                                  LocaleId = localeId
                               });
 
                 return result.ToList();

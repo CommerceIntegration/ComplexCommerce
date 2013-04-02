@@ -3,6 +3,7 @@ using StructureMap.Configuration.DSL;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
 using ComplexCommerce.Business.Text;
+using ComplexCommerce.Business.Routing;
 
 namespace ComplexCommerce.DI.Registries
 {

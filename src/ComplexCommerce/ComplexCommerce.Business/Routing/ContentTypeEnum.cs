@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Routing
 {
     public enum ContentTypeEnum
     {

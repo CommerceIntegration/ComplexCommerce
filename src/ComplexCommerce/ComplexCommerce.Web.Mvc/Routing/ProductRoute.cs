@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
+using ComplexCommerce.Business.Routing;
 
 namespace ComplexCommerce.Web.Mvc.Routing
 {
@@ -46,14 +47,13 @@ namespace ComplexCommerce.Web.Mvc.Routing
                 var pathLength = path.Length;
 
                 var page = routeUrlProductListFactory
-                    .GetRouteUrlProductList(tenant.Id, localeId, tenant.DefaultLocale.LCID)
+                    .GetRouteUrlProductList(tenant.Id)
                     .Where(x => x.UrlPath.Length.Equals(pathLength))
                     .Where(x => x.UrlPath.Equals(path))
                     .FirstOrDefault();
                 
                 if (page != null)
                 {
-                    //result = new RouteData(this, new MvcRouteHandler());
                     result = routeUtilities.CreateRouteData(this);
 
                     routeUtilities.AddQueryStringParametersToRouteData(result, httpContext);
@@ -84,13 +84,13 @@ namespace ComplexCommerce.Web.Mvc.Routing
                 IRouteUrlProductInfo page = null;
 
                 // Get all of the pages
-                var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id, localeId, tenant.DefaultLocale.LCID);
+                var pages = routeUrlProductListFactory.GetRouteUrlProductList(tenant.Id);
 
                 if (TryFindMatch(pages, values, out page))
                 {
                     if (!string.IsNullOrEmpty(page.VirtualPath))
                     {
-                        result = new VirtualPathData(this, page.VirtualPath);
+                        result = routeUtilities.CreateVirtualPathData(this, page.VirtualPath);
                     }
                 }
             }

@@ -11,6 +11,7 @@ using ComplexCommerce.Business;
 using ComplexCommerce.Business.Context;
 using ComplexCommerce.Business.Caching;
 using ComplexCommerce.Business.Globalization;
+using ComplexCommerce.Business.Routing;
 
 namespace ComplexCommerce.DI.Registries
 {

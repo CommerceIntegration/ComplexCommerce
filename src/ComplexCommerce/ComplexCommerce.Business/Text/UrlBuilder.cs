@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using ComplexCommerce.Business.Context;
+using ComplexCommerce.Business.Routing;
 
 namespace ComplexCommerce.Business.Text
 {
@@ -10,35 +11,25 @@ namespace ComplexCommerce.Business.Text
         : IUrlBuilder
     {
         public UrlBuilder(
-            IParentUrlPageListFactory parentUrlPageListFactory            
+            IApplicationContext appContext,
+            IParentUrlPageListFactory parentUrlPageListFactory
             )
         {
+            if (appContext == null)
+                throw new ArgumentNullException("appContext");
             if (parentUrlPageListFactory == null)
                 throw new ArgumentNullException("parentUrlPageListFactory");
+            
+            this.appContext = appContext;
             this.parentUrlPageListFactory = parentUrlPageListFactory;
         }
 
+        private readonly IApplicationContext appContext;
         private readonly IParentUrlPageListFactory parentUrlPageListFactory;
 
-
-        //public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
-        //{
-        //    var path = BuildPathSegments(url, isUrlAbsolute, parentPageId, tenantLocale);
-
-        //    path = AddLeadingSlash(path);
-        //    path = AddLocale(path, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
-        //    path = RemoveTrailingSlash(path);
-
-        //    return path;
-        //}
-
-        public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
+        public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, int tenantId, int localeId)
         {
-            return BuildPath(url, isUrlAbsolute, parentPageId, tenantLocale.TenantId, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
-        }
-
-        public string BuildPath(string url, bool isUrlAbsolute, Guid parentPageId, int tenantId, int localeId, int defaultLocaleId)
-        {
+            var defaultLocaleId = appContext.CurrentTenant.DefaultLocale.LCID;
             var path = BuildPathSegments(url, isUrlAbsolute, parentPageId, tenantId, localeId, defaultLocaleId);
 
             path = AddLeadingSlash(path);
@@ -47,20 +38,6 @@ namespace ComplexCommerce.Business.Text
 
             return path;
         }
-
-        //protected virtual string BuildPathSegments(string url, bool isUrlAbsolute, Guid parentPageId, ITenantLocale tenantLocale)
-        //{
-        //    var result = url;
-
-        //    if (!isUrlAbsolute)
-        //    {
-        //        // This list is pulled from the request cache.
-        //        var pageList = parentUrlPageListFactory.GetParentUrlPageList(tenantLocale.TenantId, tenantLocale.LocaleId, tenantLocale.DefaultLocaleId);
-        //        var parentUrl = GetParentPageUrl(parentPageId, pageList);
-        //        result = JoinUrlSegments(parentUrl, url);
-        //    }
-        //    return result;
-        //}
 
         protected virtual string BuildPathSegments(string url, bool isUrlAbsolute, Guid parentPageId, int tenantId, int localeId, int defaultLocaleId)
         {

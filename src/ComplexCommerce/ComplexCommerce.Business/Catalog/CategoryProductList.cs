@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Csla;
 using ComplexCommerce.Csla;
-using ComplexCommerce.Data.Dto;
 using ComplexCommerce.Data.Repositories;
+using ComplexCommerce.Data.Dto;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Catalog
 {
     [Serializable]
-    public class ProductCategoryList
-        : CslaReadOnlyListBase<ProductCategoryList, ProductCategoryInfo>
+    public class CategoryProductList
+        : CslaReadOnlyListBase<CategoryProductList, CategoryProductInfo>
     {
-        private void Child_Fetch(Guid productId, int localeId)
+
+        private void Child_Fetch(Guid categoryId, int localeId)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -22,9 +20,9 @@ namespace ComplexCommerce.Business
                 RaiseListChangedEvents = false;
                 IsReadOnly = false;
 
-                var list = repository.ListForProduct(productId, localeId);
+                var list = repository.ListForCategory(categoryId, localeId);
                 foreach (var item in list)
-                    Add(DataPortal.FetchChild<ProductCategoryInfo>(item));
+                    Add(DataPortal.FetchChild<CategoryProductInfo>(item));
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;
@@ -35,8 +33,8 @@ namespace ComplexCommerce.Business
 
         [NonSerialized]
         [NotUndoable]
-        private ICategoryRepository repository;
-        public ICategoryRepository Repository
+        private IProductRepository repository;
+        public IProductRepository Repository
         {
             set
             {

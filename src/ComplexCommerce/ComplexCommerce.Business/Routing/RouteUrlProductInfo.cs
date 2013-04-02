@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Dto;
 using ComplexCommerce.Business.Text;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Routing
 {
     public interface IRouteUrlProductInfo
     {
-        Guid CategoryXProductId { get; }
-        string UrlPath { get; }
         string VirtualPath { get; }
+        string UrlPath { get; }
+        Guid CategoryXProductId { get; }
         int LocaleId { get; }
     }
 
@@ -31,7 +28,7 @@ namespace ComplexCommerce.Business
         {
             get 
             {
-                var path = GetProperty(UrlPathProperty);
+                var path = this.UrlPath;
                 if (path.StartsWith("/"))
                 {
                     return path.Substring(1);
@@ -56,17 +53,17 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(LocaleIdProperty, value); }
         }
 
-        private void Child_Fetch(RouteUrlProductDto item, ITenantLocale tenantLocale)
+        private void Child_Fetch(RouteUrlProductDto item)
         {
+            this.UrlPath = urlBuilder.BuildPath(
+                item.Url,
+                item.IsUrlAbsolute,
+                item.ParentId,
+                item.TenantId,
+                item.LocaleId);
+
             this.CategoryXProductId = item.CategoryXProductId;
             this.LocaleId = item.LocaleId;
-            this.UrlPath = urlBuilder.BuildPath(
-                item.Url, 
-                item.IsUrlAbsolute, 
-                item.ParentId, 
-                tenantLocale.TenantId,
-                item.LocaleId,
-                tenantLocale.DefaultLocaleId);
         }
 
         #region Dependency Injection

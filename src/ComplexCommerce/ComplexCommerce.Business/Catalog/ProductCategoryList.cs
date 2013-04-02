@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using Csla;
 using ComplexCommerce.Csla;
-using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Data.Dto;
+using ComplexCommerce.Data.Repositories;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Catalog
 {
     [Serializable]
-    public class CategoryProductList
-        : CslaReadOnlyListBase<CategoryProductList, CategoryProductInfo>
+    public class ProductCategoryList
+        : CslaReadOnlyListBase<ProductCategoryList, ProductCategoryInfo>
     {
-
-        private void Child_Fetch(Guid categoryId, int localeId)
+        private void Child_Fetch(Guid productId, int localeId)
         {
             using (var ctx = ContextFactory.GetContext())
             {
@@ -20,34 +18,21 @@ namespace ComplexCommerce.Business
                 RaiseListChangedEvents = false;
                 IsReadOnly = false;
 
-                var list = repository.ListForCategory(categoryId, localeId);
+                var list = repository.ListForProduct(productId, localeId);
                 foreach (var item in list)
-                    Add(DataPortal.FetchChild<CategoryProductInfo>(item));
+                    Add(DataPortal.FetchChild<ProductCategoryInfo>(item));
 
                 IsReadOnly = true;
                 RaiseListChangedEvents = rlce;
             }
-
-            //using (var ctx = ProjectTracker.Dal.DalFactory.GetManager())
-            //{
-            //    var dal = ctx.GetProvider<ProjectTracker.Dal.IAssignmentDal>();
-            //    var data = dal.FetchForResource(resourceId);
-            //    var rlce = RaiseListChangedEvents;
-            //    RaiseListChangedEvents = false;
-            //    foreach (var item in data)
-            //        Add(DataPortal.FetchChild<ResourceAssignmentEdit>(item));
-            //    RaiseListChangedEvents = rlce;
-            //}
         }
-
-
 
         #region Dependency Injection
 
         [NonSerialized]
         [NotUndoable]
-        private IProductRepository repository;
-        public IProductRepository Repository
+        private ICategoryRepository repository;
+        public ICategoryRepository Repository
         {
             set
             {

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using ComplexCommerce.Business;
-
-//using System.IO;
-
+using ComplexCommerce.Business.Catalog;
 
 namespace ComplexCommerce.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController 
+        : Controller
     {
         public ProductController(
             IProductFactory productFactory

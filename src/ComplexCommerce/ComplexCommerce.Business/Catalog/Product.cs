@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Data.Dto;
 using ComplexCommerce.Business.Context;
 
-namespace ComplexCommerce.Business
+namespace ComplexCommerce.Business.Catalog
 {
     public interface IProductFactory
     {
@@ -60,7 +61,7 @@ namespace ComplexCommerce.Business
         string SKU { get; }
         string ImageUrl { get; }
         decimal Price { get; }
-        ProductCategoryList Categories { get; }
+        IEnumerable<IProductCategory> Categories { get; }
     }
 
     [Serializable]
@@ -148,8 +149,8 @@ namespace ComplexCommerce.Business
             private set { LoadProperty(PriceProperty, value); }
         }
 
-        public static readonly PropertyInfo<ProductCategoryList> CategoriesProperty = RegisterProperty<ProductCategoryList>(p => p.Categories);
-        public ProductCategoryList Categories
+        public static readonly PropertyInfo<IEnumerable<IProductCategory>> CategoriesProperty = RegisterProperty<IEnumerable<IProductCategory>>(p => p.Categories);
+        public IEnumerable<IProductCategory> Categories
         {
             get { return GetProperty(CategoriesProperty); }
             private set { LoadProperty(CategoriesProperty, value); }
