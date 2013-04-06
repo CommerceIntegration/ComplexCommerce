@@ -1,5 +1,7 @@
 ﻿@{
-    ViewBag.Title = "An Application Error Occurred";
+    ViewBag.Title = this.T("System_Error_Title");
 }
 
-<h2>@ViewBag.Title</h2>
+<h2 class="error">@ViewBag.Title</h2>
+
+@this.T("System_Error")

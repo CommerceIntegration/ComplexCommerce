@@ -55,7 +55,8 @@
       <HintPath>..\packages\CSLA-Core.4.5.20\lib\net45\Csla.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MvcSiteMapProvider">
+    <Reference Include="MvcSiteMapProvider, Version=4.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\MvcSiteMapProvider\MvcSiteMapProvider.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">

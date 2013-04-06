@@ -28,6 +28,9 @@ namespace ComplexCommerce.Data.Entity.Model
         public IDbSet<CategoryXProduct> CategoryXProduct { get; set; }
         public IDbSet<Product> Product { get; set; }
         public IDbSet<ProductXTenantXLocale> ProductXTenantXLocale { get; set; }
+        public IDbSet<View> View { get; set; }
+        public IDbSet<ViewText> ViewText { get; set; }
+        public IDbSet<ViewTextLocale> ViewTextLocale { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -116,6 +119,18 @@ namespace ComplexCommerce.Data.Entity.Model
                .HasRequired(x => x.Tenant)
                .WithMany()
                .HasForeignKey(x => x.TenantId)
+               .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ViewText>()
+               .HasRequired(x => x.View)
+               .WithMany()
+               .HasForeignKey(x => x.ViewId)
+               .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ViewTextLocale>()
+               .HasRequired(x => x.ViewText)
+               .WithMany()
+               .HasForeignKey(x => x.ViewTextId)
                .WillCascadeOnDelete(false);
 
             // Sample: Probably want to do it this way instead.
@@ -238,5 +253,31 @@ namespace ComplexCommerce.Data.Entity.Model
         public bool IsUrlAbsolute { get; set; }
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }
+    }
+
+    public class View
+    {
+        public Guid Id { get; set; }
+        public int TenantId { get; set; }
+        public Tenant Tenant { get; set; }
+        public string VirtualPath { get; set; }
+        public int VirtualPathHashCode { get; set; }
+    }
+
+    public class ViewText
+    {
+        public Guid Id { get; set; }
+        public Guid ViewId { get; set; }
+        public View View { get; set; }
+        public string TextName { get; set; }
+    }
+
+    public class ViewTextLocale
+    {
+        public Guid Id { get; set; }
+        public Guid ViewTextId { get; set; }
+        public ViewText ViewText { get; set; }
+        public int LocaleId { get; set; }
+        public string Value { get; set; }
     }
 }

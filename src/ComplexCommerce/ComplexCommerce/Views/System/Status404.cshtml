@@ -1,7 +1,9 @@
 ﻿@{
-    ViewBag.Title = "404 Page Not Found";
+    ViewBag.Title = this.T("Not_Found_Title");
 }
 
-<h2>@ViewBag.Title</h2>
+<h2 class="error">@ViewBag.Title</h2>
 
-The page was not found on our site.
+@this.T("Not_Found") 
+@Html.ActionLink(this.T("Click_Here").ToString(), "Index", new { controller = "Home", localeId = System.Threading.Thread.CurrentThread.CurrentUICulture.LCID }) 
+@this.T("To_Return_Home")

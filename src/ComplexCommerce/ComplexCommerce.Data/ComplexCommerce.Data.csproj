@@ -64,12 +64,14 @@
     <Compile Include="Dto\SiteMapPageDto.cs" />
     <Compile Include="Dto\SiteMapProductDto.cs" />
     <Compile Include="Dto\TenantDto.cs" />
+    <Compile Include="Dto\ViewLocaleDto.cs" />
     <Compile Include="IDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ICategoryRepository.cs" />
     <Compile Include="Repositories\IPageRepository.cs" />
     <Compile Include="Repositories\IProductRepository.cs" />
     <Compile Include="Repositories\ITenantRepository.cs" />
+    <Compile Include="Repositories\IViewRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ComplexCommerce.Shared\ComplexCommerce.Shared.csproj">

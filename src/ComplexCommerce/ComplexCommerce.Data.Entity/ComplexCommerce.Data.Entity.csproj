@@ -79,6 +79,7 @@
     <Compile Include="Repositories\PageRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\TenantRepository.cs" />
+    <Compile Include="Repositories\ViewRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

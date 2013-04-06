@@ -14,6 +14,7 @@
         {
             <meta name="description" content="@ViewBag.MetaDescription" />
         }
+        @RenderSection("MetaRefresh", required: false)
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
@@ -22,7 +23,7 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+                    <p class="site-title">@Html.ActionLink("your logo here", "Index", new { controller = "Home", localeId = System.Threading.Thread.CurrentThread.CurrentUICulture.LCID })</p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -61,7 +62,7 @@
                     else {
                         @Html.PageLanguages(Guid.Parse(Html.MvcSiteMap().SiteMap.CurrentNode.Key), "PageLanguages")
                     }
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                    <p>&copy; @DateTime.Now.Year - @this.T("App_Name")</p>
                 </div>
             </div>
         </footer>

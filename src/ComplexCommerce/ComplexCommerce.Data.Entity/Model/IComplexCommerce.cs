@@ -23,5 +23,8 @@ namespace ComplexCommerce.Data.Entity.Model
         IDbSet<CategoryXProduct> CategoryXProduct { get; set; }
         IDbSet<Product> Product { get; set; }
         IDbSet<ProductXTenantXLocale> ProductXTenantXLocale { get; set; }
+        IDbSet<View> View { get; set; }
+        IDbSet<ViewText> ViewText { get; set; }
+        IDbSet<ViewTextLocale> ViewTextLocale { get; set; }
     }
 }

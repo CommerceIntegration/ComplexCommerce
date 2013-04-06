@@ -1,8 +1,18 @@
 ﻿@{
-    ViewBag.Title = "Page Moved Permanently";
+    ViewBag.Title = this.T("Page_Moved_Title");
+}
+@section MetaRefresh {
+    <meta http-equiv="refresh" content="5;@ViewBag.DestinationUrl" />
 }
 
-<h2>Page Moved Permanently</h2>
+<h2 class="error">@ViewBag.Title</h2>
 
+@this.T("Page_Moved") <a href="@ViewBag.DestinationUrl">@ViewBag.DestinationUrl</a>.
 
-<a href="@ViewBag.DestinationUrl">Click here</a> if this page does not redirect you automatically.
+<script>
+    //<!--
+    setTimeout(function () {
+        window.location = "@ViewBag.DestinationUrl";
+    }, 5000);
+    //-->
+</script>

@@ -14,10 +14,9 @@ namespace ComplexCommerce.Web.Mvc.Controllers
 
         public ActionResult Status301(string url)
         {
-            // TODO: Add javascript and meta redirects to the view
-            // TODO: Localize the view
             Response.CacheControl = "no-cache";
             Response.StatusCode = (int)HttpStatusCode.MovedPermanently;
+            Response.RedirectLocation = url;
 
             ViewBag.DestinationUrl = url;
             return View();
@@ -31,7 +30,6 @@ namespace ComplexCommerce.Web.Mvc.Controllers
             Response.CacheControl = "no-cache";
             Response.StatusCode = (int)HttpStatusCode.NotFound;
 
-            // TODO: Localize the view
             return View();
         }
 
@@ -43,7 +41,6 @@ namespace ComplexCommerce.Web.Mvc.Controllers
             Response.CacheControl = "no-cache";
             Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            // TODO: Localize the view
             return View();
         }
     }

@@ -108,6 +108,11 @@ namespace ComplexCommerce.DI.Registries
                 p.TypeMatches(t => t == typeof(IMicroObjectCache<ProductLocaleList>));
             });
 
+            this.SetAllProperties(p =>
+            {
+                p.TypeMatches(t => t == typeof(IMicroObjectCache<ViewTextLocaleList>));
+            });
+
             // We create a new Setter Injection Policy that
             // forces StructureMap to inject all public properties
             // where the Property Type equals 'IPersistenceContextFactory'
