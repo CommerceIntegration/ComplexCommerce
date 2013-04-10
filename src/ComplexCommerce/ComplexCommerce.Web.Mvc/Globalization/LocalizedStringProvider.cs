@@ -12,15 +12,20 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         : ILocalizedStringProvider
     {
         public LocalizedStringProvider(
-            IApplicationContext appContext
+            IApplicationContext appContext,
+            IAssemblyTypeTextListFactory assemblyTypeTextListFactory
             )
         {
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
+            if (assemblyTypeTextListFactory == null)
+                throw new ArgumentNullException("assemblyTypeTextListFactory");
             this.appContext = appContext;
+            this.assemblyTypeTextListFactory = assemblyTypeTextListFactory;
         }
 
         private readonly IApplicationContext appContext;
+        private readonly IAssemblyTypeTextListFactory assemblyTypeTextListFactory;
 
         #region ILocalizedStringProvider Members
 
@@ -104,10 +109,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
             if (name == null) 
                 throw new ArgumentNullException("name");
 
-
-            if (!string.IsNullOrEmpty(type.Namespace) && 
-                (type.Namespace.StartsWith("Griffin.MvcContrib") && 
-                !type.Namespace.Contains("TestProject")))
+            if (string.IsNullOrEmpty(type.Namespace))
             {
                 return null;
             }
@@ -116,31 +118,11 @@ namespace ComplexCommerce.Web.Mvc.Globalization
             // 1. TenantId
             // 2. LocaleId
             // 3. Key based on type (for data lookup and cache of entire type's data) [type.FullName + type.FullName.GetHashCode()]
-            var list = AssemblyTypeTextLocaleList.GetCachedAssemblyTypeTextLocaleList(
+            var list = assemblyTypeTextListFactory.GetAssemblyTypeTextLocaleList(
                 appContext.CurrentTenant.Id, appContext.CurrentLocaleId, type.FullName);
 
             // Then we need to locally match the correct item in the collection based on name
             return list.GetLocalizedText(name);
-
-
-            //var key = new TypePromptKey(type.FullName, name);
-            //var prompt = _repository.GetPrompt(CultureInfo.CurrentUICulture, key) ??
-            //             _repository.GetPrompt(CultureInfo.CurrentUICulture,
-            //                                   new TypePromptKey(typeof(CommonPrompts).FullName, name));
-
-
-            //if (prompt == null)
-            //{
-            //    _repository.Save(CultureInfo.CurrentUICulture, type.FullName, name, "");
-            //}
-            //else
-            //{
-            //    if (!string.IsNullOrEmpty(prompt.TranslatedText))
-            //        return prompt.TranslatedText;
-            //}
-
-
-            //return name.EndsWith("NullDisplayText") ? "" : null;
         }
     }
 }

@@ -5,7 +5,8 @@ using ComplexCommerce.Web;
 using ComplexCommerce.Web.Mvc.DI;
 using ComplexCommerce.Web.Mvc.Routing;
 using ComplexCommerce.DI.Conventions;
-//using Griffin.MvcContrib.Localization.Types;
+using ComplexCommerce.Web.Mvc.Globalization;
+using ComplexCommerce.Web.Mvc.Globalization.ValidationMessages;
 
 namespace ComplexCommerce.DI.Registries
 {
@@ -47,10 +48,36 @@ namespace ComplexCommerce.DI.Registries
                 .Use<InjectableControllerFactory>();
 
 
-            // Griffin.MvcContrib
-            this.For<ComplexCommerce.Web.Mvc.Globalization.ILocalizedStringProvider>()
-                .Use<ComplexCommerce.Web.Mvc.Globalization.LocalizedStringProvider>();
+            // Localization
+            //this.For<ILocalizedStringProvider>()
+            //    .Use<LocalizedStringProvider>();
+            this.Scan(scan =>
+            {
+                scan.TheCallingAssembly();
+                scan.AssemblyContainingType<IValidationMessageDataSource>();
+                scan.WithDefaultConventions();
+            });
 
+            this.For<LocalizedModelValidatorProvider>()
+                .Use<LocalizedModelValidatorProvider>();
+
+            this.Scan(scan =>
+            {
+                scan.TheCallingAssembly();
+                scan.AssemblyContainingType<IValidationMessageDataSource>();
+                scan.AddAllTypesOf<IValidationMessageDataSource>();
+            });
+
+            this.For<IValidationMessageDataSource>().Use<CompositeValidationMessageDataSource>()
+                .EnumerableOf<IValidationMessageDataSource>().Contains(x =>
+                {
+                    x.Type<ValidationMessageDataSource>();
+                    x.Type<MvcValidationMessageDataSource>();
+                    x.Type<DataAnnotationDefaultStrings>();
+                });
+
+            //this.For<IValidationAttributeAdaptorFactory>()
+            //    .Use<ValidationAttributeAdaptorFactory>();
         }
     }
 }

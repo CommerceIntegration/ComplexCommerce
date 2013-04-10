@@ -10,6 +10,24 @@ using ComplexCommerce.Data.Repositories;
 
 namespace ComplexCommerce.Business.Globalization
 {
+    public interface IAssemblyTypeTextListFactory
+    {
+        AssemblyTypeTextLocaleList GetAssemblyTypeTextLocaleList(int tenantId, int localeId, string typeName);
+    }
+
+    public class AssemblyTypeTextListFactory
+        : IAssemblyTypeTextListFactory
+    {
+        #region IAssemblyTypeTextListFactory Members
+
+        public AssemblyTypeTextLocaleList GetAssemblyTypeTextLocaleList(int tenantId, int localeId, string typeName)
+        {
+            return AssemblyTypeTextLocaleList.GetCachedAssemblyTypeTextLocaleList(tenantId, localeId, typeName);
+        }
+
+        #endregion
+    }
+
     [Serializable]
     public class AssemblyTypeTextLocaleList
         : CslaReadOnlyListBase<AssemblyTypeTextLocaleList, AssemblyTypeTextLocaleInfo>
@@ -20,7 +38,7 @@ namespace ComplexCommerce.Business.Globalization
                 new Criteria(tenantId, localeId, typeName.GetHashCode(), typeName));
         }
 
-        public static AssemblyTypeTextLocaleList GetCachedAssemblyTypeTextLocaleList(int tenantId, int localeId, string typeName)
+        internal static AssemblyTypeTextLocaleList GetCachedAssemblyTypeTextLocaleList(int tenantId, int localeId, string typeName)
         {
             var cmd = new GetCachedAssemblyTypeTextLocaleListCommand(tenantId, localeId, typeName);
             cmd = DataPortal.Execute<GetCachedAssemblyTypeTextLocaleListCommand>(cmd);

@@ -53,8 +53,8 @@ namespace ComplexCommerce
 
             ModelValidatorProviders.Providers.Clear();
             ModelMetadataProviders.Current = new ComplexCommerce.Web.Mvc.Globalization.LocalizedModelMetadataProvider(stringProvider);
-            //ModelValidatorProviders.Providers.Add(container.Resolve<ILocalizedModelValidatorProvider>());
-            ModelValidatorProviders.Providers.Add(new ComplexCommerce.Web.Mvc.Globalization.LocalizedModelValidatorProvider(new ComplexCommerce.Web.Mvc.Globalization.ValidationAttributeAdaptorFactory()));
+            ModelValidatorProviders.Providers.Add(container.Resolve<ComplexCommerce.Web.Mvc.Globalization.LocalizedModelValidatorProvider>());
+            //ModelValidatorProviders.Providers.Add(new ComplexCommerce.Web.Mvc.Globalization.LocalizedModelValidatorProvider(new ComplexCommerce.Web.Mvc.Globalization.ValidationAttributeAdaptorFactory()));
         }
 
         protected void Application_BeginRequest(Object sender, EventArgs e)

@@ -27,16 +27,22 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         : DataAnnotationsModelValidatorProvider
     {
         public LocalizedModelValidatorProvider(
-            ValidationAttributeAdaptorFactory adapterFactory
+            IValidationAttributeAdaptorFactory adapterFactory,
+            IValidationMessageDataSource validationMessageDataSource
             )
         {
             if (adapterFactory == null)
                 throw new ArgumentNullException("adapterFactory");
+            if (validationMessageDataSource == null)
+                throw new ArgumentNullException("validationMessageDataSource");
             this.adapterFactory = adapterFactory;
+            this.validationMessageDataSource = validationMessageDataSource;
         }
 
         private const string WorkaroundMarker = "#g#";
-        private readonly ValidationAttributeAdaptorFactory adapterFactory = new ValidationAttributeAdaptorFactory();
+        private readonly IValidationAttributeAdaptorFactory adapterFactory;
+        private readonly IValidationMessageDataSource validationMessageDataSource;
+
         //private readonly ILogger _logger = LogProvider.Current.GetLogger<LocalizedModelValidatorProvider>();
 
 
@@ -77,7 +83,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
 
                 var ctx = new MessageContext(attr, metadata.ContainerType, metadata.PropertyName,
                                                 Thread.CurrentThread.CurrentUICulture);
-                var errorMessage = ValidationMessageProviders.GetMessage(ctx);
+                var errorMessage = validationMessageDataSource.GetMessage(ctx);
                 var formattedError = errorMessage == null
                                          ? GetMissingTranslationMessage(metadata, attr)
                                          : FormatErrorMessage(metadata, attr, errorMessage);

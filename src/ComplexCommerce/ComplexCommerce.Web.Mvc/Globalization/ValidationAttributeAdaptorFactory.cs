@@ -9,6 +9,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     /// creates adapters for client side validation
     /// </summary>
     public class ValidationAttributeAdaptorFactory
+        : IValidationAttributeAdaptorFactory
     {
         private readonly Dictionary<Type, IValidationAttributeAdaptorFactory> _factories =
             new Dictionary<Type, IValidationAttributeAdaptorFactory>();

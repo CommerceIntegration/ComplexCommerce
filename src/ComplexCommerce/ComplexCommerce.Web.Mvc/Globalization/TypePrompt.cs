@@ -9,12 +9,9 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     /// <summary>
     /// Used to store translated prompts.
     /// </summary>
-    /// <remarks>Will </remarks>
     [DataContract]
     public class TypePrompt : IEquatable<TypePrompt>
     {
-        private Type _subject;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TypePrompt"/> class.
         /// </summary>
