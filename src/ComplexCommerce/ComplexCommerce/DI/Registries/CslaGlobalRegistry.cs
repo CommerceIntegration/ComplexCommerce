@@ -41,6 +41,9 @@ namespace ComplexCommerce.DI.Registries
                 p.TypeMatches(t => t == typeof(IParentUrlPageListFactory));
             });
 
+
+            
+
         }
     }
 }

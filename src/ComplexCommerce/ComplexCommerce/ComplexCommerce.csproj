@@ -55,7 +55,7 @@
       <HintPath>..\packages\CSLA-Core.4.5.20\lib\net45\Csla.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MvcSiteMapProvider, Version=4.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MvcSiteMapProvider, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\MvcSiteMapProvider\MvcSiteMapProvider.dll</HintPath>
     </Reference>
@@ -207,6 +207,7 @@
     <Compile Include="DI\Registries\MvcSiteMapProviderRegistry.cs" />
     <Compile Include="DI\Registries\PresentationRegistry.cs" />
     <Compile Include="DI\Registries\StructureMapRegistry.cs" />
+    <Compile Include="DI\SMDependencyResolver.cs" />
     <Compile Include="DI\StructureMapContainer.cs" />
     <Compile Include="DI\StructureMapResolver.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -214,6 +215,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

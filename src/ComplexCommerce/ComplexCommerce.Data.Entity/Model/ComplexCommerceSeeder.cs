@@ -6,7 +6,8 @@ using System.Data.Entity;
 namespace ComplexCommerce.Data.Entity.Model
 {
     public class ComplexCommerceSeeder
-        : DropCreateDatabaseIfModelChanges<ComplexCommerce>
+        //: DropCreateDatabaseIfModelChanges<ComplexCommerce>
+        : DropCreateDatabaseAlways<ComplexCommerce>
     {
         protected override void Seed(ComplexCommerce context)
         {
@@ -23,6 +24,9 @@ namespace ComplexCommerce.Data.Entity.Model
             this.SeedView(context);
             this.SeedViewText(context);
             this.SeedViewTextLocale(context);
+            this.SeedAssemblyType(context);
+            this.SeedAssemblyTypeText(context);
+            this.SeedAssemblyTypeTextLocale(context);
         }
 
         private void SeedChain(ComplexCommerce context)
@@ -275,6 +279,140 @@ namespace ComplexCommerce.Data.Entity.Model
 
             };
             table.ForEach(x => context.ViewTextLocale.Add(x));
+            context.SaveChanges();
+        }
+
+        private void SeedAssemblyType(ComplexCommerce context)
+        {
+            var table = new List<AssemblyType>
+            {
+                // System Views (should always populate this data)
+                new AssemblyType { Id = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TenantId = 3, TypeName = "ComplexCommerce.Models.HomeViewModel", TypeNameHashCode = "ComplexCommerce.Models.HomeViewModel".GetHashCode() },
+                new AssemblyType { Id = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TenantId = 3, TypeName = "ComplexCommerce.Business.Catalog.IProduct", TypeNameHashCode = "ComplexCommerce.Business.Catalog.IProduct".GetHashCode() }
+                //new AssemblyType { Id = new Guid("a4a02c26-0fda-4c42-9f08-35b30615ccca"), TenantId = 3, TypeName = "~/Views/System/Status500.cshtml", TypeNameHashCode = "~/Views/System/Status500.cshtml".GetHashCode() },
+
+                //new AssemblyType { Id = new Guid("c9c31471-0ea7-4c19-a2a6-086cefab21a6"), TenantId = 3, TypeName = "~/Views/Shared/_Layout.cshtml", TypeNameHashCode = "~/Views/Shared/_Layout.cshtml".GetHashCode() },
+                //new AssemblyType { Id = new Guid("46ea2251-591a-4d19-9a35-4ba9a2dc9b3a"), TenantId = 3, TypeName = "~/Views/Shared/_LoginPartial.cshtml", TypeNameHashCode = "~/Views/Shared/_LoginPartial.cshtml".GetHashCode() },
+                //new AssemblyType { Id = new Guid("a793c1fe-a610-40a6-9c90-7425dab1e237"), TenantId = 3, TypeName = "~/Views/Home/Index.cshtml", TypeNameHashCode = "~/Views/Home/Index.cshtml".GetHashCode() }
+                
+            };
+            table.ForEach(x => context.AssemblyType.Add(x));
+            context.SaveChanges();
+        }
+
+        private void SeedAssemblyTypeText(ComplexCommerce context)
+        {
+            var table = new List<AssemblyTypeText>
+            {
+                new AssemblyTypeText { Id = new Guid("4091858b-633f-4bcb-9a97-3fc3ef744e9b"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Name" },
+                new AssemblyTypeText { Id = new Guid("d7c0d308-d5a1-4847-8268-5b66fd72af0d"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Name_Watermark" },
+
+                new AssemblyTypeText { Id = new Guid("2aa17195-e151-448a-998e-f45dc6094a81"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Name_Description" },
+                new AssemblyTypeText { Id = new Guid("4d0f8aa5-82fc-4071-a71e-cf26a982e53f"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Name_NullDisplayText" },
+                new AssemblyTypeText { Id = new Guid("ae3fcdda-b629-43c2-9e9e-57f817ff83c2"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Name_StringLengthAttribute" },
+                new AssemblyTypeText { Id = new Guid("0868620a-773b-45ba-9bc8-990df340c61a"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Name_RequiredAttribute" },
+
+                
+
+
+
+
+
+                new AssemblyTypeText { Id = new Guid("78fd3ec0-ce92-4702-8375-d4b18ce41731"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Age" },
+                new AssemblyTypeText { Id = new Guid("b7dae7b9-49d5-4918-a712-55364fc7203c"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Age_RequiredAttribute" },
+
+
+                new AssemblyTypeText { Id = new Guid("c358e463-8a89-434c-90cc-9578732a19c0"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Password1" },
+
+                new AssemblyTypeText { Id = new Guid("efd36a89-e9bd-4e40-85b6-bde323622f76"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Password1_RequiredAttribute" },
+                new AssemblyTypeText { Id = new Guid("635fb9d0-e03f-456c-9df6-d7c97519f113"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Password2" },
+                //new AssemblyTypeText { Id = new Guid("90eb018e-30fa-465f-b92f-c431c77d8127"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Log_In" },
+                //new AssemblyTypeText { Id = new Guid("96a17e9e-456f-44bd-9162-fe6c005f8ef9"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Register" },
+                //new AssemblyTypeText { Id = new Guid("4eb0e460-d7da-4019-a76c-f864d0b6e7b5"), AssemblyTypeId = new Guid("f9d4bc14-3db0-46f7-97d7-441b8c9cd967"), TextName = "Log_Off" },
+
+                new AssemblyTypeText { Id = new Guid("cb9772ec-3a5b-4b9a-ad76-79e4eca6cb2a"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "SKU" },
+                new AssemblyTypeText { Id = new Guid("79723003-8062-489b-9e69-64032b2b3299"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "ImageUrl" },
+                new AssemblyTypeText { Id = new Guid("388265e4-fb45-4701-a478-19d312b9910e"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "ImageUrl_NullDisplayText" },
+                new AssemblyTypeText { Id = new Guid("af09bc00-5011-41b7-92f3-ecb12f1e3562"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "Price" }
+                //new AssemblyTypeText { Id = new Guid("091857b8-b22c-4139-a0e1-f7276c27e5e3"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "We_Suggest" },
+                //new AssemblyTypeText { Id = new Guid("41ac2b17-1546-4a0d-af5c-f12c8254b8ae"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "Learn_More" },
+                //new AssemblyTypeText { Id = new Guid("f248a1ac-016d-4dbb-a923-eda07d175834"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "Getting_Started_Header" },
+                //new AssemblyTypeText { Id = new Guid("14e3c2b3-66f6-4306-b3f9-627643ec3cec"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "Getting_Started" },
+                //new AssemblyTypeText { Id = new Guid("f636da7a-ee0d-44be-8373-c4148826f1ff"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "Add_Nuget_Header" },
+                //new AssemblyTypeText { Id = new Guid("346c865b-506d-460c-ba74-ce6b70c2250d"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "Add_Nuget" },
+                //new AssemblyTypeText { Id = new Guid("7f1600db-da73-4784-bff3-b648d5a95fd3"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "Find_Hosting_Header" },
+                //new AssemblyTypeText { Id = new Guid("fa5df3ad-7881-4dec-bd00-ae6fc702bc33"), AssemblyTypeId = new Guid("57a8c17c-d171-41f7-b4e2-535325a381f8"), TextName = "Find_Hosting" }
+                
+                };
+            table.ForEach(x => context.AssemblyTypeText.Add(x));
+            context.SaveChanges();
+        }
+
+        private void SeedAssemblyTypeTextLocale(ComplexCommerce context)
+        {
+            var table = new List<AssemblyTypeTextLocale>
+            {
+                new AssemblyTypeTextLocale { Id = new Guid("2bf42417-7530-4a4a-8afc-20139bc47c10"), AssemblyTypeTextId = new Guid("4091858b-633f-4bcb-9a97-3fc3ef744e9b"), LocaleId = 1033, Value = @"Name" },
+                new AssemblyTypeTextLocale { Id = new Guid("01780846-5f34-4fb6-8dfb-c4536ea05046"), AssemblyTypeTextId = new Guid("4091858b-633f-4bcb-9a97-3fc3ef744e9b"), LocaleId = 2058, Value = @"Nombre" },
+                new AssemblyTypeTextLocale { Id = new Guid("6d4b2397-3615-4c0f-a359-45b8ea8eb374"), AssemblyTypeTextId = new Guid("d7c0d308-d5a1-4847-8268-5b66fd72af0d"), LocaleId = 1033, Value = @"Water mark??" },
+                new AssemblyTypeTextLocale { Id = new Guid("6d980d8c-2c9a-44b0-9e7e-6c722e9fa217"), AssemblyTypeTextId = new Guid("d7c0d308-d5a1-4847-8268-5b66fd72af0d"), LocaleId = 2058, Value = @"Marca de agua" },
+
+                new AssemblyTypeTextLocale { Id = new Guid("79bf3c3a-b3a4-4a97-b353-3e38cfcd3196"), AssemblyTypeTextId = new Guid("2aa17195-e151-448a-998e-f45dc6094a81"), LocaleId = 1033, Value = @"Enter your name, dude" },
+                new AssemblyTypeTextLocale { Id = new Guid("61bac5ee-51cb-4824-9d68-ab8cf41b3ee2"), AssemblyTypeTextId = new Guid("2aa17195-e151-448a-998e-f45dc6094a81"), LocaleId = 2058, Value = @"Escriba su nombre, amigo" },
+                new AssemblyTypeTextLocale { Id = new Guid("ba1ab181-66e0-4c5f-8d55-3bae1b23b1fc"), AssemblyTypeTextId = new Guid("4d0f8aa5-82fc-4071-a71e-cf26a982e53f"), LocaleId = 1033, Value = @"Enter something here" },
+                new AssemblyTypeTextLocale { Id = new Guid("5817c9a6-b902-428e-8aa3-9c99c53823bf"), AssemblyTypeTextId = new Guid("4d0f8aa5-82fc-4071-a71e-cf26a982e53f"), LocaleId = 2058, Value = @"Oops, wrong language" },
+                new AssemblyTypeTextLocale { Id = new Guid("1cbbef8f-3dc8-455d-be25-6e3be0ea9913"), AssemblyTypeTextId = new Guid("ae3fcdda-b629-43c2-9e9e-57f817ff83c2"), LocaleId = 1033, Value = @"Name cannot be longer than 40 characters" },
+                new AssemblyTypeTextLocale { Id = new Guid("9bab4706-cc40-47b2-987f-b7974fe55b2a"), AssemblyTypeTextId = new Guid("ae3fcdda-b629-43c2-9e9e-57f817ff83c2"), LocaleId = 2058, Value = @"El nombre no puede tener más de 40 caracteres" },
+                new AssemblyTypeTextLocale { Id = new Guid("96b3d49a-57b6-4eea-8f6c-0ad012249adb"), AssemblyTypeTextId = new Guid("0868620a-773b-45ba-9bc8-990df340c61a"), LocaleId = 1033, Value = @"Name is required" },
+                new AssemblyTypeTextLocale { Id = new Guid("afd81c9c-d705-4bd8-ae7c-8bdfb7ef5fb6"), AssemblyTypeTextId = new Guid("0868620a-773b-45ba-9bc8-990df340c61a"), LocaleId = 2058, Value = @"El nombre es requerido" },
+
+
+                new AssemblyTypeTextLocale { Id = new Guid("5c5f3b73-117d-47a0-84b2-49dda9756c79"), AssemblyTypeTextId = new Guid("78fd3ec0-ce92-4702-8375-d4b18ce41731"), LocaleId = 1033, Value = @"Age" },
+                new AssemblyTypeTextLocale { Id = new Guid("3890ebb6-547a-44fc-bd1a-5861e5ae14a8"), AssemblyTypeTextId = new Guid("78fd3ec0-ce92-4702-8375-d4b18ce41731"), LocaleId = 2058, Value = @"Edad" },
+                new AssemblyTypeTextLocale { Id = new Guid("38755a83-75df-4db9-a9ce-a0b66f4912d8"), AssemblyTypeTextId = new Guid("b7dae7b9-49d5-4918-a712-55364fc7203c"), LocaleId = 1033, Value = @"Age is required" },
+                new AssemblyTypeTextLocale { Id = new Guid("d86bdc97-4d86-486e-86e9-e87f2c43fe9f"), AssemblyTypeTextId = new Guid("b7dae7b9-49d5-4918-a712-55364fc7203c"), LocaleId = 2058, Value = @"Se requiere edad" },
+
+
+                new AssemblyTypeTextLocale { Id = new Guid("201e0c87-1ceb-4ece-bb6d-4882badb5848"), AssemblyTypeTextId = new Guid("c358e463-8a89-434c-90cc-9578732a19c0"), LocaleId = 1033, Value = @"Password" },
+                new AssemblyTypeTextLocale { Id = new Guid("4e010569-0c94-42a0-b2cb-d255b36bb967"), AssemblyTypeTextId = new Guid("c358e463-8a89-434c-90cc-9578732a19c0"), LocaleId = 2058, Value = @"Contraseña" },
+
+                new AssemblyTypeTextLocale { Id = new Guid("028ee1ed-362c-43af-a5ec-eb08c397b4af"), AssemblyTypeTextId = new Guid("efd36a89-e9bd-4e40-85b6-bde323622f76"), LocaleId = 1033, Value = @"Password is required" },
+                new AssemblyTypeTextLocale { Id = new Guid("79a00cbe-96b1-40b8-8001-3686484304b3"), AssemblyTypeTextId = new Guid("efd36a89-e9bd-4e40-85b6-bde323622f76"), LocaleId = 2058, Value = @"Se requiere contraseña" },
+                new AssemblyTypeTextLocale { Id = new Guid("a2cffe63-0d0f-46b4-a219-d861a6c85503"), AssemblyTypeTextId = new Guid("635fb9d0-e03f-456c-9df6-d7c97519f113"), LocaleId = 1033, Value = @"Confirm Password" },
+                new AssemblyTypeTextLocale { Id = new Guid("d67fc117-64b0-4f3b-aa88-5ba6c86289ab"), AssemblyTypeTextId = new Guid("635fb9d0-e03f-456c-9df6-d7c97519f113"), LocaleId = 2058, Value = @"Confirmar Contraseña" },
+                //new AssemblyTypeTextLocale { Id = new Guid("b2da7909-60c4-4a13-b259-49a84f380c59"), AssemblyTypeTextId = new Guid("8e32a053-44fc-4493-b3f2-783dd88d51cf"), LocaleId = 1033, Value = @"Log In" },
+                //new AssemblyTypeTextLocale { Id = new Guid("91a7cda1-685a-43ef-9c3d-a4f1e4704f80"), AssemblyTypeTextId = new Guid("8e32a053-44fc-4493-b3f2-783dd88d51cf"), LocaleId = 2058, Value = @"Iniciar La Sesión" },
+                //new AssemblyTypeTextLocale { Id = new Guid("4ba1e9df-d064-4823-9d8d-bba8cd8e12ed"), AssemblyTypeTextId = new Guid("ca4b9594-d961-47d4-9b9f-16c116ac18f2"), LocaleId = 1033, Value = @"Register" },
+                //new AssemblyTypeTextLocale { Id = new Guid("0944bdcb-8f93-4644-a2c9-20d7dbf6a435"), AssemblyTypeTextId = new Guid("ca4b9594-d961-47d4-9b9f-16c116ac18f2"), LocaleId = 2058, Value = @"Registro" },
+                //new AssemblyTypeTextLocale { Id = new Guid("26d8c4f5-4ea8-47af-ad4a-beca0126313a"), AssemblyTypeTextId = new Guid("9ec6c5ba-ffc1-42a8-a82e-e1d11c88c8a0"), LocaleId = 1033, Value = @"Log Off" },
+                //new AssemblyTypeTextLocale { Id = new Guid("58067397-d113-4396-a165-782980882905"), AssemblyTypeTextId = new Guid("9ec6c5ba-ffc1-42a8-a82e-e1d11c88c8a0"), LocaleId = 2058, Value = @"Salir Del Sistema" },
+
+
+                new AssemblyTypeTextLocale { Id = new Guid("6e4b881b-d0fa-46b9-af38-3ea886ed5002"), AssemblyTypeTextId = new Guid("cb9772ec-3a5b-4b9a-ad76-79e4eca6cb2a"), LocaleId = 1033, Value = @"SKU" },
+                new AssemblyTypeTextLocale { Id = new Guid("42121edc-089b-447e-8c03-5a361ee3a467"), AssemblyTypeTextId = new Guid("cb9772ec-3a5b-4b9a-ad76-79e4eca6cb2a"), LocaleId = 2058, Value = @"SKU" },
+                new AssemblyTypeTextLocale { Id = new Guid("1bff9c9b-f563-4512-8787-7ad00521f73e"), AssemblyTypeTextId = new Guid("79723003-8062-489b-9e69-64032b2b3299"), LocaleId = 1033, Value = @"Image URL" },
+                new AssemblyTypeTextLocale { Id = new Guid("c01d4743-5ce2-4f1a-b2ae-516a21b6ae38"), AssemblyTypeTextId = new Guid("79723003-8062-489b-9e69-64032b2b3299"), LocaleId = 2058, Value = @"URL de la imagen" },
+                new AssemblyTypeTextLocale { Id = new Guid("58fdc243-0d4e-4f0c-9d0e-ac878dd1ab6c"), AssemblyTypeTextId = new Guid("388265e4-fb45-4701-a478-19d312b9910e"), LocaleId = 1033, Value = @"Nothing" },
+                new AssemblyTypeTextLocale { Id = new Guid("7547cc5c-80e3-469c-bc1b-01e9de8643ea"), AssemblyTypeTextId = new Guid("388265e4-fb45-4701-a478-19d312b9910e"), LocaleId = 2058, Value = @"Nada" },
+                new AssemblyTypeTextLocale { Id = new Guid("f2cab486-b4f1-4dd4-9a99-eed2cd5dcf84"), AssemblyTypeTextId = new Guid("af09bc00-5011-41b7-92f3-ecb12f1e3562"), LocaleId = 1033, Value = @"Price" },
+                new AssemblyTypeTextLocale { Id = new Guid("25117cac-ed87-4a82-8e0f-d105a83b7e69"), AssemblyTypeTextId = new Guid("af09bc00-5011-41b7-92f3-ecb12f1e3562"), LocaleId = 2058, Value = @"Precio" }
+                //new AssemblyTypeTextLocale { Id = new Guid("1061be78-a524-48a3-914a-b79045b605a4"), AssemblyTypeTextId = new Guid("091857b8-b22c-4139-a0e1-f7276c27e5e3"), LocaleId = 1033, Value = @"We suggest the following:" },
+                //new AssemblyTypeTextLocale { Id = new Guid("49dcbbec-79af-43f1-8be7-b4dbcbb6f77a"), AssemblyTypeTextId = new Guid("091857b8-b22c-4139-a0e1-f7276c27e5e3"), LocaleId = 2058, Value = @"Le sugerimos lo siguiente:" },
+                //new AssemblyTypeTextLocale { Id = new Guid("225444b3-9d44-49ac-987f-b5edcb63a4bd"), AssemblyTypeTextId = new Guid("f248a1ac-016d-4dbb-a923-eda07d175834"), LocaleId = 1033, Value = @"Getting Started" },
+                //new AssemblyTypeTextLocale { Id = new Guid("b017405b-ee84-42c7-800d-714451c0f66a"), AssemblyTypeTextId = new Guid("f248a1ac-016d-4dbb-a923-eda07d175834"), LocaleId = 2058, Value = @"Introducción" },
+                //new AssemblyTypeTextLocale { Id = new Guid("31d14f9d-1313-4a1e-aba2-2c9485b6aca1"), AssemblyTypeTextId = new Guid("14e3c2b3-66f6-4306-b3f9-627643ec3cec"), LocaleId = 1033, Value = @"ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that enables a clean separation of concerns and that gives you full control over markup for enjoyable, agile development. ASP.NET MVC includes many features that enable fast, TDD-friendly development for creating sophisticated applications that use the latest web standards." },
+                //new AssemblyTypeTextLocale { Id = new Guid("e686afbc-c3a2-4419-9d79-cf4b5f56fd29"), AssemblyTypeTextId = new Guid("14e3c2b3-66f6-4306-b3f9-627643ec3cec"), LocaleId = 2058, Value = @"ASP.NET MVC le da una manera poderosa, basada en patrones para construir sitios web dinámicos que permiten una separación clara de las preocupaciones y que le da un control total sobre el marcado de agradable, desarrollo ágil. ASP.NET MVC incluye muchas características que permiten el desarrollo rápido, TDD de usar para la creación de aplicaciones sofisticadas que utilizan los últimos estándares web." },
+                //new AssemblyTypeTextLocale { Id = new Guid("dd1c07ad-1f48-4f70-8ea9-90b982b02cba"), AssemblyTypeTextId = new Guid("f636da7a-ee0d-44be-8373-c4148826f1ff"), LocaleId = 1033, Value = @"Add NuGet packages and jump-start your coding" },
+                //new AssemblyTypeTextLocale { Id = new Guid("7399ce37-3bf1-4d8e-922b-9ede85d2abc6"), AssemblyTypeTextId = new Guid("f636da7a-ee0d-44be-8373-c4148826f1ff"), LocaleId = 2058, Value = @"Agregar paquetes NuGet y poner en marcha su codificación" },
+                //new AssemblyTypeTextLocale { Id = new Guid("e4d67bab-8cd2-4ef1-9df5-31d50d029814"), AssemblyTypeTextId = new Guid("346c865b-506d-460c-ba74-ce6b70c2250d"), LocaleId = 1033, Value = @"NuGet makes it easy to install and update free libraries and tools." },
+                //new AssemblyTypeTextLocale { Id = new Guid("c6675885-d99e-4b08-8446-366610b86605"), AssemblyTypeTextId = new Guid("346c865b-506d-460c-ba74-ce6b70c2250d"), LocaleId = 2058, Value = @"NuGet hace que sea fácil de instalar y actualizar las bibliotecas y herramientas libres." },
+                //new AssemblyTypeTextLocale { Id = new Guid("c8508692-2472-4c50-95b7-280bd8e042d8"), AssemblyTypeTextId = new Guid("7f1600db-da73-4784-bff3-b648d5a95fd3"), LocaleId = 1033, Value = @"Find Web Hosting" },
+                //new AssemblyTypeTextLocale { Id = new Guid("6c01f160-bae2-4bf4-bf6b-a2e5c78ad481"), AssemblyTypeTextId = new Guid("7f1600db-da73-4784-bff3-b648d5a95fd3"), LocaleId = 2058, Value = @"Encontrar Web Hosting" },
+                //new AssemblyTypeTextLocale { Id = new Guid("f5443770-d926-4627-97f0-0af0bb711898"), AssemblyTypeTextId = new Guid("fa5df3ad-7881-4dec-bd00-ae6fc702bc33"), LocaleId = 1033, Value = @"You can easily find a web hosting company that offers the right mix of features and price for your applications." },
+                //new AssemblyTypeTextLocale { Id = new Guid("77c32c2f-624b-46dc-adaf-010ce49c699b"), AssemblyTypeTextId = new Guid("fa5df3ad-7881-4dec-bd00-ae6fc702bc33"), LocaleId = 2058, Value = @"Usted puede encontrar fácilmente una empresa de alojamiento web que ofrece la combinación perfecta de características y precios para sus aplicaciones." }
+
+            };
+            table.ForEach(x => context.AssemblyTypeTextLocale.Add(x));
             context.SaveChanges();
         }
     }

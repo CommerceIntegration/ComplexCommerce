@@ -54,7 +54,6 @@ namespace ComplexCommerce.Web.Mvc.SiteMapProvider
             foreach (var page in tree.ChildPages)
             {
                 var childNode = GetSiteMapNodeFromTreeNode(siteMap, page);
-                childNode.ParentNode = parentNode;
 
                 siteMap.AddNode(childNode, parentNode);
 

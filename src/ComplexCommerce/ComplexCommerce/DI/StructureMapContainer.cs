@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using StructureMap;
 using ComplexCommerce.Shared.DI;
 
@@ -28,6 +29,11 @@ namespace ComplexCommerce.DI
                 string message = ex.Message + "\n" + container.WhatDoIHave();
                 throw new Exception(message);
             }
+        }
+
+        public IEnumerable<object> GetInstances(Type type)
+        {
+            return container.GetAllInstances(type) as IEnumerable<object>;
         }
 
         #endregion

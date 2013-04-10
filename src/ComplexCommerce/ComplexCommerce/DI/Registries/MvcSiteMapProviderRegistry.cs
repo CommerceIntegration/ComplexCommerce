@@ -62,6 +62,8 @@ namespace ComplexCommerce.DI.Registries
             this.For<IBuildManager>()
                 .Use<BuildManagerAdaptor>();
 
+            this.For<System.Web.Routing.RouteCollection>().Use(System.Web.Routing.RouteTable.Routes);
+
             // Configure Security
             this.For<IAclModule>().Use<CompositeAclModule>()
                 .EnumerableOf<IAclModule>().Contains(x =>

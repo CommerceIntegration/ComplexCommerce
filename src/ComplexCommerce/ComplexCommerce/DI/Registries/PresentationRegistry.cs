@@ -5,6 +5,7 @@ using ComplexCommerce.Web;
 using ComplexCommerce.Web.Mvc.DI;
 using ComplexCommerce.Web.Mvc.Routing;
 using ComplexCommerce.DI.Conventions;
+//using Griffin.MvcContrib.Localization.Types;
 
 namespace ComplexCommerce.DI.Registries
 {
@@ -44,6 +45,12 @@ namespace ComplexCommerce.DI.Registries
             this.For<IControllerFactory>()
                 .Singleton()
                 .Use<InjectableControllerFactory>();
+
+
+            // Griffin.MvcContrib
+            this.For<ComplexCommerce.Web.Mvc.Globalization.ILocalizedStringProvider>()
+                .Use<ComplexCommerce.Web.Mvc.Globalization.LocalizedStringProvider>();
+
         }
     }
 }

@@ -11,6 +11,8 @@ using ComplexCommerce.Web;
 using ComplexCommerce.Shared.DI;
 using ComplexCommerce.Business.Context;
 
+using System.Globalization;
+
 namespace ComplexCommerce
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -33,6 +35,25 @@ namespace ComplexCommerce
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
             DbConfig.Register(container);
+
+            //var stringProvider = new ResourceStringProvider(Resources.LocalizedStrings.ResourceManager);
+
+            //var stringProvider = new ComplexCommerce.Web.Mvc.Globalization.LocalizedStringProvider();
+
+            var stringProvider = container.Resolve<ComplexCommerce.Web.Mvc.Globalization.ILocalizedStringProvider>();
+
+            //ModelMetadataProviders.Current = new LocalizedModelMetadataProvider(stringProvider);
+            ////ModelValidatorProviders.Providers.Clear();
+            ////ModelValidatorProviders.Providers.Add(new LocalizedModelValidatorProvider(stringProvider)); 
+
+
+            // Crappy dependency resolver required by Griffin.MvcContrib - gotta go.
+            //DependencyResolver.SetResolver(new DI.SMDependencyResolver(container));
+
+
+            ModelValidatorProviders.Providers.Clear();
+            ModelMetadataProviders.Current = new ComplexCommerce.Web.Mvc.Globalization.LocalizedModelMetadataProvider(stringProvider);
+            ModelValidatorProviders.Providers.Add(new ComplexCommerce.Web.Mvc.Globalization.LocalizedModelValidatorProvider());
         }
 
         protected void Application_BeginRequest(Object sender, EventArgs e)

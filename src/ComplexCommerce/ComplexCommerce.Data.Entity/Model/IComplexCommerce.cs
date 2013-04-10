@@ -26,5 +26,8 @@ namespace ComplexCommerce.Data.Entity.Model
         IDbSet<View> View { get; set; }
         IDbSet<ViewText> ViewText { get; set; }
         IDbSet<ViewTextLocale> ViewTextLocale { get; set; }
+        IDbSet<AssemblyType> AssemblyType { get; set; }
+        IDbSet<AssemblyTypeText> AssemblyTypeText { get; set; }
+        IDbSet<AssemblyTypeTextLocale> AssemblyTypeTextLocale { get; set; }
     }
 }

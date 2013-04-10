@@ -48,12 +48,14 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="MvcSiteMapProvider, Version=4.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MvcSiteMapProvider, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Projects\MvcSiteMapProvider\src\MvcSiteMapProvider\MvcSiteMapProvider\bin\Debug\MvcSiteMapProvider.dll</HintPath>
+      <HintPath>..\..\..\lib\MvcSiteMapProvider\MvcSiteMapProvider.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -88,6 +90,25 @@
   <ItemGroup>
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="DI\InjectableControllerFactory.cs" />
+    <Compile Include="Globalization\DelegateValidationAttributeAdaptorFactory.cs" />
+    <Compile Include="Globalization\IClientValidationRule.cs" />
+    <Compile Include="Globalization\LocalizedModelMetadataProvider.cs" />
+    <Compile Include="Globalization\TypePrompt.cs" />
+    <Compile Include="Globalization\TypePromptKey.cs" />
+    <Compile Include="Globalization\ValidatableObjectAdapter.cs" />
+    <Compile Include="Globalization\ValidationMessages\DataAnnotationDefaultStrings.cs" />
+    <Compile Include="Globalization\ValidationMessages\GetMessageContext.cs" />
+    <Compile Include="Globalization\ValidationMessages\IGetMessageContext.cs" />
+    <Compile Include="Globalization\ILocalizedStringProvider.cs" />
+    <Compile Include="Globalization\IValidationAttributeAdaptorFactory.cs" />
+    <Compile Include="Globalization\LocalizedModelValidatorProvider-OLD.cs" />
+    <Compile Include="Globalization\LocalizedModelValidatorProvider.cs" />
+    <Compile Include="Globalization\LocalizedStringProvider.cs" />
+    <Compile Include="Globalization\ValidationAttributeAdaptorFactory.cs" />
+    <Compile Include="Globalization\ValidationMessages\IValidationMessageDataSource.cs" />
+    <Compile Include="Globalization\ValidationMessages\MvcValidationMessageDataSource.cs" />
+    <Compile Include="Globalization\ValidationMessages\ValidationMessageDataSource.cs" />
+    <Compile Include="Globalization\ValidationMessages\ValidationMessageProviders.cs" />
     <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\ViewDataContainer.cs" />
     <Compile Include="Helpers\WebPageExecutingBaseExtensions.cs" />
@@ -129,7 +150,6 @@
       <Name>ComplexCommerce.Web</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

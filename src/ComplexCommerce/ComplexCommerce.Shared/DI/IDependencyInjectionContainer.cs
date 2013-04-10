@@ -9,6 +9,9 @@ namespace ComplexCommerce.Shared.DI
     public interface IDependencyInjectionContainer
     {
         object Resolve(Type type);
+
+        // TODO: Remove when taking out IDependencyResolver
+        IEnumerable<object> GetInstances(Type type);
     }
 
     public static class DependencyInjectionContainerExtensions

@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Globalization;
+using System.Threading;
 using Csla;
 using ComplexCommerce.Csla;
-using ComplexCommerce.Data.Repositories;
 using ComplexCommerce.Business.Caching;
+using ComplexCommerce.Data.Repositories;
 
 namespace ComplexCommerce.Business.Globalization
 {
     [Serializable]
-    public class ViewTextLocaleList
-        : CslaReadOnlyListBase<ViewTextLocaleList, ViewTextLocaleInfo>
+    public class AssemblyTypeTextLocaleList
+        : CslaReadOnlyListBase<AssemblyTypeTextLocaleList, AssemblyTypeTextLocaleInfo>
     {
-        internal static ViewTextLocaleList GetViewTextLocaleList(int tenantId, int localeId, string virtualPath)
+        internal static AssemblyTypeTextLocaleList GetAssemblyTypeTextLocaleList(int tenantId, int localeId, string typeName)
         {
-            return DataPortal.Fetch<ViewTextLocaleList>(
-                new Criteria(tenantId, localeId, virtualPath.GetHashCode(), virtualPath));
+            return DataPortal.Fetch<AssemblyTypeTextLocaleList>(
+                new Criteria(tenantId, localeId, typeName.GetHashCode(), typeName));
         }
 
-        public static ViewTextLocaleList GetCachedViewTextLocaleList(int tenantId, int localeId, string virtualPath)
+        public static AssemblyTypeTextLocaleList GetCachedAssemblyTypeTextLocaleList(int tenantId, int localeId, string typeName)
         {
-            var cmd = new GetCachedViewTextLocaleListCommand(tenantId, localeId, virtualPath);
-            cmd = DataPortal.Execute<GetCachedViewTextLocaleListCommand>(cmd);
-            return cmd.ViewTextLocaleList;
+            var cmd = new GetCachedAssemblyTypeTextLocaleListCommand(tenantId, localeId, typeName);
+            cmd = DataPortal.Execute<GetCachedAssemblyTypeTextLocaleListCommand>(cmd);
+            return cmd.AssemblyTypeTextLocaleList;
         }
 
         public string GetLocalizedText(string textName)
@@ -46,7 +46,7 @@ namespace ComplexCommerce.Business.Globalization
                 IsReadOnly = false;
 
                 var list = repository
-                    .List(criteria.TenantId, criteria.LocaleId, criteria.HashCode, criteria.VirtualPath)
+                    .List(criteria.TenantId, criteria.LocaleId, criteria.HashCode, criteria.TypeName)
                     .OrderBy(x => x.LocaleId == criteria.LocaleId ? 0 : 1); // Requested locale first, default locale second
                 var textNamesAdded = new List<string>();
 
@@ -54,7 +54,7 @@ namespace ComplexCommerce.Business.Globalization
                 {
                     if (item.LocaleId == criteria.LocaleId)
                     {
-                        Add(DataPortal.FetchChild<ViewTextLocaleInfo>(item));
+                        Add(DataPortal.FetchChild<AssemblyTypeTextLocaleInfo>(item));
                         textNamesAdded.Add(item.TextName);
                     }
                     else
@@ -63,7 +63,7 @@ namespace ComplexCommerce.Business.Globalization
                         {
                             // Format phrase for non-default locale
                             item.Value = string.Format("{1}:[{0}]", item.Value, new CultureInfo(criteria.LocaleId));
-                            Add(DataPortal.FetchChild<ViewTextLocaleInfo>(item));
+                            Add(DataPortal.FetchChild<AssemblyTypeTextLocaleInfo>(item));
                         }
                     }
                 }
@@ -83,19 +83,19 @@ namespace ComplexCommerce.Business.Globalization
                 int tenantId,
                 int localeId,
                 int hashCode,
-                string virtualPath)
+                string typeName)
             {
                 if (tenantId < 1)
                     throw new ArgumentOutOfRangeException("tenantId");
                 if (localeId < 1)
                     throw new ArgumentOutOfRangeException("localeId");
-                if (string.IsNullOrEmpty(virtualPath))
-                    throw new ArgumentNullException("virtualPath");
+                if (string.IsNullOrEmpty(typeName))
+                    throw new ArgumentNullException("typeName");
 
                 this.TenantId = tenantId;
                 this.LocaleId = localeId;
                 this.HashCode = hashCode;
-                this.VirtualPath = virtualPath;
+                this.TypeName = typeName;
             }
 
             public static readonly PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
@@ -119,11 +119,11 @@ namespace ComplexCommerce.Business.Globalization
                 private set { LoadProperty(HashCodeProperty, value); }
             }
 
-            public static readonly PropertyInfo<string> VirtualPathProperty = RegisterProperty<string>(p => p.VirtualPath);
-            public string VirtualPath
+            public static readonly PropertyInfo<string> TypeNameProperty = RegisterProperty<string>(p => p.TypeName);
+            public string TypeName
             {
-                get { return ReadProperty(VirtualPathProperty); }
-                private set { LoadProperty(VirtualPathProperty, value); }
+                get { return ReadProperty(TypeNameProperty); }
+                private set { LoadProperty(TypeNameProperty, value); }
             }
         }
 
@@ -133,8 +133,8 @@ namespace ComplexCommerce.Business.Globalization
 
         [NonSerialized]
         [NotUndoable]
-        private IViewRepository repository;
-        public IViewRepository Repository
+        private IAssemblyTypeRepository repository;
+        public IAssemblyTypeRepository Repository
         {
             set
             {
@@ -157,21 +157,21 @@ namespace ComplexCommerce.Business.Globalization
         #region GetCachedViewTextLocaleListCommand
 
         [Serializable]
-        private class GetCachedViewTextLocaleListCommand
-            : CslaCommandBase<GetCachedViewTextLocaleListCommand>
+        private class GetCachedAssemblyTypeTextLocaleListCommand
+            : CslaCommandBase<GetCachedAssemblyTypeTextLocaleListCommand>
         {
-            public GetCachedViewTextLocaleListCommand(int tenantId, int localeId, string virtualPath)
+            public GetCachedAssemblyTypeTextLocaleListCommand(int tenantId, int localeId, string typeName)
             {
                 if (tenantId < 1)
                     throw new ArgumentOutOfRangeException("tenantId");
                 if (localeId < 1)
                     throw new ArgumentOutOfRangeException("localeId");
-                if (string.IsNullOrEmpty(virtualPath))
-                    throw new ArgumentNullException("virtualPath");
+                if (string.IsNullOrEmpty(typeName))
+                    throw new ArgumentNullException("typeName");
 
                 this.TenantId = tenantId;
                 this.LocaleId = localeId;
-                this.VirtualPath = virtualPath;
+                this.TypeName = typeName;
             }
 
 
@@ -189,18 +189,18 @@ namespace ComplexCommerce.Business.Globalization
                 private set { LoadProperty(LocaleIdProperty, value); }
             }
 
-            public static PropertyInfo<string> VirtualPathProperty = RegisterProperty<string>(c => c.VirtualPath);
-            public string VirtualPath
+            public static PropertyInfo<string> TypeNameProperty = RegisterProperty<string>(c => c.TypeName);
+            public string TypeName
             {
-                get { return ReadProperty(VirtualPathProperty); }
-                private set { LoadProperty(VirtualPathProperty, value); }
+                get { return ReadProperty(TypeNameProperty); }
+                private set { LoadProperty(TypeNameProperty, value); }
             }
 
-            public static PropertyInfo<ViewTextLocaleList> ViewTextLocaleListProperty = RegisterProperty<ViewTextLocaleList>(c => c.ViewTextLocaleList);
-            public ViewTextLocaleList ViewTextLocaleList
+            public static PropertyInfo<AssemblyTypeTextLocaleList> AssemblyTypeTextLocaleListProperty = RegisterProperty<AssemblyTypeTextLocaleList>(c => c.AssemblyTypeTextLocaleList);
+            public AssemblyTypeTextLocaleList AssemblyTypeTextLocaleList
             {
-                get { return ReadProperty(ViewTextLocaleListProperty); }
-                private set { LoadProperty(ViewTextLocaleListProperty, value); }
+                get { return ReadProperty(AssemblyTypeTextLocaleListProperty); }
+                private set { LoadProperty(AssemblyTypeTextLocaleListProperty, value); }
             }
 
             /// <summary>
@@ -212,20 +212,20 @@ namespace ComplexCommerce.Business.Globalization
                 // categorize between resources that are expensive to keep in memory and resources that are
                 // expensive to pull from the database.
 
-                var key = "__ML_ViewTextLocaleList_" + 
-                    this.TenantId.ToString() + "_" + 
-                    this.LocaleId.ToString() + "_" + 
-                    this.VirtualPath + "__";
-                this.ViewTextLocaleList = cache.GetOrAdd(key,
-                    () => ViewTextLocaleList.GetViewTextLocaleList(this.TenantId, this.LocaleId, this.VirtualPath));
+                var key = "__ML_AssemblyTypeTextLocaleList_" +
+                    this.TenantId.ToString() + "_" +
+                    this.LocaleId.ToString() + "_" +
+                    this.TypeName + "__";
+                this.AssemblyTypeTextLocaleList = cache.GetOrAdd(key,
+                    () => AssemblyTypeTextLocaleList.GetAssemblyTypeTextLocaleList(this.TenantId, this.LocaleId, this.TypeName));
             }
 
             #region Dependency Injection
 
             [NonSerialized]
             [NotUndoable]
-            private IMicroObjectCache<ViewTextLocaleList> cache;
-            public IMicroObjectCache<ViewTextLocaleList> Cache
+            private IMicroObjectCache<AssemblyTypeTextLocaleList> cache;
+            public IMicroObjectCache<AssemblyTypeTextLocaleList> Cache
             {
                 set
                 {

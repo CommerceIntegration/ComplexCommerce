@@ -31,6 +31,9 @@ namespace ComplexCommerce.Data.Entity.Model
         public IDbSet<View> View { get; set; }
         public IDbSet<ViewText> ViewText { get; set; }
         public IDbSet<ViewTextLocale> ViewTextLocale { get; set; }
+        public IDbSet<AssemblyType> AssemblyType { get; set; }
+        public IDbSet<AssemblyTypeText> AssemblyTypeText { get; set; }
+        public IDbSet<AssemblyTypeTextLocale> AssemblyTypeTextLocale { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -131,6 +134,18 @@ namespace ComplexCommerce.Data.Entity.Model
                .HasRequired(x => x.ViewText)
                .WithMany()
                .HasForeignKey(x => x.ViewTextId)
+               .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AssemblyTypeText>()
+              .HasRequired(x => x.AssemblyType)
+              .WithMany()
+              .HasForeignKey(x => x.AssemblyTypeId)
+              .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AssemblyTypeTextLocale>()
+               .HasRequired(x => x.AssemblyTypeText)
+               .WithMany()
+               .HasForeignKey(x => x.AssemblyTypeTextId)
                .WillCascadeOnDelete(false);
 
             // Sample: Probably want to do it this way instead.
@@ -255,6 +270,8 @@ namespace ComplexCommerce.Data.Entity.Model
         public string MetaDescription { get; set; }
     }
 
+    // Localized MVC Views
+
     public class View
     {
         public Guid Id { get; set; }
@@ -277,6 +294,34 @@ namespace ComplexCommerce.Data.Entity.Model
         public Guid Id { get; set; }
         public Guid ViewTextId { get; set; }
         public ViewText ViewText { get; set; }
+        public int LocaleId { get; set; }
+        public string Value { get; set; }
+    }
+
+    // Localized .NET types
+
+    public class AssemblyType
+    {
+        public Guid Id { get; set; }
+        public int TenantId { get; set; }
+        public Tenant Tenant { get; set; }
+        public string TypeName { get; set; }
+        public int TypeNameHashCode { get; set; }
+    }
+
+    public class AssemblyTypeText
+    {
+        public Guid Id { get; set; }
+        public Guid AssemblyTypeId { get; set; }
+        public AssemblyType AssemblyType { get; set; }
+        public string TextName { get; set; }
+    }
+
+    public class AssemblyTypeTextLocale
+    {
+        public Guid Id { get; set; }
+        public Guid AssemblyTypeTextId { get; set; }
+        public AssemblyTypeText AssemblyTypeText { get; set; }
         public int LocaleId { get; set; }
         public string Value { get; set; }
     }

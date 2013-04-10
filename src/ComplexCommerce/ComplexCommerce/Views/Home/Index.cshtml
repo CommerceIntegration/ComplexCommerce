@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ComplexCommerce.Models.HomeViewModel
+@{
     ViewBag.Title = this.T("Title");
 }
 @section featured {
@@ -35,4 +36,29 @@
     </li>
 </ol>
 
-@this.T("Test")
+<h3>@this.T("Test")</h3>
+@using (Html.BeginForm())
+{
+    
+
+    <p>
+        @Html.LabelFor(x => x.Name)
+        @Html.EditorFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+    </p>
+    <p>
+        @Html.LabelFor(x => x.Age)
+        @Html.EditorFor(x => x.Age)
+        @Html.ValidationMessageFor(x => x.Age)
+    </p>
+    <p>
+        @Html.LabelFor(x => x.Password1)
+        @Html.EditorFor(x => x.Password1)
+        @Html.ValidationMessageFor(x => x.Password1)
+        @Html.LabelFor(x => x.Password2)
+        @Html.EditorFor(x => x.Password2)
+        @Html.ValidationMessageFor(x => x.Password2)
+
+    </p>
+    <input type="submit" />
+}
