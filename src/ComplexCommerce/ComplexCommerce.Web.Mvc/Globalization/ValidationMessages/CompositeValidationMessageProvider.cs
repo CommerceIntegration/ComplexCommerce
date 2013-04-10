@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
 {
-    public class CompositeValidationMessageDataSource
-        : IValidationMessageDataSource
+    public class CompositeValidationMessageProvider
+        : IValidationMessageProvider
     {
-        public CompositeValidationMessageDataSource(
-            params IValidationMessageDataSource[] dataSources
+        public CompositeValidationMessageProvider(
+            params IValidationMessageProvider[] dataSources
             )
         {
             if (dataSources == null)
@@ -18,9 +18,9 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
             this.dataSources = dataSources;
         }
 
-        private readonly IValidationMessageDataSource[] dataSources;
+        private readonly IValidationMessageProvider[] dataSources;
 
-        #region IValidationMessageDataSource Members
+        #region IValidationMessageProvider Members
 
         public string GetMessage(IMessageContext context)
         {

@@ -6,7 +6,8 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
     /// <summary>
     /// Provides messages for all attributes in ASP.NET MVC
     /// </summary>
-    public class MvcValidationMessageDataSource : IValidationMessageDataSource
+    public class MvcValidationMessageProvider 
+        : IValidationMessageProvider
     {
         /// <summary>
         /// Get a validation message

@@ -5,7 +5,7 @@ using System.Globalization;
 namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
 {
     /// <summary>
-    /// Context used when fetching the string from one of the <see cref="IValidationMessageDataSource"/>.
+    /// Context used when fetching the string from one of the <see cref="IValidationMessageProvider"/>.
     /// </summary>
     public interface IMessageContext
     {

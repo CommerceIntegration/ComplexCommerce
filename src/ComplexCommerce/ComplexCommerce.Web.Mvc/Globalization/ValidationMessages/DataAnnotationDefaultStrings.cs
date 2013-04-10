@@ -13,7 +13,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
     /// Loads the default DataAnnotation strings from the resource file System.ComponentModel.DataAnnotations.Resources.DataAnnotationsResources
     /// </summary>
     /// <remarks>Do note that resource files can fallback to default culture (and therefore return the incorrect language)</remarks>
-    public class DataAnnotationDefaultStrings : IValidationMessageDataSource
+    public class DataAnnotationDefaultStrings : IValidationMessageProvider
     {
         private readonly ResourceManager _resourceManager;
 

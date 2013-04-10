@@ -54,7 +54,7 @@ namespace ComplexCommerce.DI.Registries
             this.Scan(scan =>
             {
                 scan.TheCallingAssembly();
-                scan.AssemblyContainingType<IValidationMessageDataSource>();
+                scan.AssemblyContainingType<IValidationMessageProvider>();
                 scan.WithDefaultConventions();
             });
 
@@ -64,15 +64,15 @@ namespace ComplexCommerce.DI.Registries
             this.Scan(scan =>
             {
                 scan.TheCallingAssembly();
-                scan.AssemblyContainingType<IValidationMessageDataSource>();
-                scan.AddAllTypesOf<IValidationMessageDataSource>();
+                scan.AssemblyContainingType<IValidationMessageProvider>();
+                scan.AddAllTypesOf<IValidationMessageProvider>();
             });
 
-            this.For<IValidationMessageDataSource>().Use<CompositeValidationMessageDataSource>()
-                .EnumerableOf<IValidationMessageDataSource>().Contains(x =>
+            this.For<IValidationMessageProvider>().Use<CompositeValidationMessageProvider>()
+                .EnumerableOf<IValidationMessageProvider>().Contains(x =>
                 {
-                    x.Type<ValidationMessageDataSource>();
-                    x.Type<MvcValidationMessageDataSource>();
+                    x.Type<ValidationMessageProvider>();
+                    x.Type<MvcValidationMessageProvider>();
                     x.Type<DataAnnotationDefaultStrings>();
                 });
 

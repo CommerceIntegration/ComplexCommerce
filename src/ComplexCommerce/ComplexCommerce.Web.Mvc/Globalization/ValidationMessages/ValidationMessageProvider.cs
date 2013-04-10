@@ -6,7 +6,8 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
     /// Uses <see cref="ILocalizedStringProvider"/> to find attribute translations.
     /// </summary>
     /// <remarks>Uses the <see cref="DependencyResolver"/> to find the localized string provider.</remarks>
-    public class ValidationMessageDataSource : IValidationMessageDataSource
+    public class ValidationMessageProvider 
+        : IValidationMessageProvider
     {
         private readonly ILocalizedStringProvider _stringProvider;
 
@@ -14,7 +15,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// Initializes a new instance of the <see cref="GriffinStringsProvider"/> class.
         /// </summary>
         /// <param name="stringProvider">The string provider.</param>
-        public ValidationMessageDataSource(ILocalizedStringProvider stringProvider)
+        public ValidationMessageProvider(ILocalizedStringProvider stringProvider)
         {
             if (stringProvider == null) throw new ArgumentNullException("stringProvider");
             _stringProvider = stringProvider;

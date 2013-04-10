@@ -96,7 +96,7 @@
     <Compile Include="Globalization\TypePrompt.cs" />
     <Compile Include="Globalization\TypePromptKey.cs" />
     <Compile Include="Globalization\ValidatableObjectAdapter.cs" />
-    <Compile Include="Globalization\ValidationMessages\CompositeValidationMessageDataSource.cs" />
+    <Compile Include="Globalization\ValidationMessages\CompositeValidationMessageProvider.cs" />
     <Compile Include="Globalization\ValidationMessages\DataAnnotationDefaultStrings.cs" />
     <Compile Include="Globalization\ValidationMessages\MessageContext.cs" />
     <Compile Include="Globalization\ValidationMessages\IMessageContext.cs" />
@@ -105,9 +105,9 @@
     <Compile Include="Globalization\LocalizedModelValidatorProvider.cs" />
     <Compile Include="Globalization\LocalizedStringProvider.cs" />
     <Compile Include="Globalization\ValidationAttributeAdaptorFactory.cs" />
-    <Compile Include="Globalization\ValidationMessages\IValidationMessageDataSource.cs" />
-    <Compile Include="Globalization\ValidationMessages\MvcValidationMessageDataSource.cs" />
-    <Compile Include="Globalization\ValidationMessages\ValidationMessageDataSource.cs" />
+    <Compile Include="Globalization\ValidationMessages\IValidationMessageProvider.cs" />
+    <Compile Include="Globalization\ValidationMessages\MvcValidationMessageProvider.cs" />
+    <Compile Include="Globalization\ValidationMessages\ValidationMessageProvider.cs" />
     <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\ViewDataContainer.cs" />
     <Compile Include="Helpers\WebPageExecutingBaseExtensions.cs" />

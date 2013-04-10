@@ -20,7 +20,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     /// <para>Are you missing validation rules for an attribute? Do not try to use the original validation rules. The standard attributes
     /// uses some nasty delegates to handle the error message. Screwing with them should be handled with care. 
     /// </para>
-    /// <para>Create a new <see cref="IValidationMessageDataSource"/> and register it in <see cref="ValidationMessageProviders"/> to customized the translated strings.</para>
+    /// <para>Create a new <see cref="IValidationMessageProvider"/> and register it in <see cref="ValidationMessageProviders"/> to customized the translated strings.</para>
     /// <para>You have to let the results returned from <c>Validate()</c> implement <see cref="IClientValidationRule"/> if you want to enable client validation when using <see cref="IValidatableObject"/>.</para>
     /// </remarks>
     public class LocalizedModelValidatorProvider 
@@ -28,7 +28,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     {
         public LocalizedModelValidatorProvider(
             IValidationAttributeAdaptorFactory adapterFactory,
-            IValidationMessageDataSource validationMessageDataSource
+            IValidationMessageProvider validationMessageDataSource
             )
         {
             if (adapterFactory == null)
@@ -41,7 +41,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
 
         private const string WorkaroundMarker = "#g#";
         private readonly IValidationAttributeAdaptorFactory adapterFactory;
-        private readonly IValidationMessageDataSource validationMessageDataSource;
+        private readonly IValidationMessageProvider validationMessageDataSource;
 
         //private readonly ILogger _logger = LogProvider.Current.GetLogger<LocalizedModelValidatorProvider>();
 
