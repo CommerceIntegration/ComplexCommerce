@@ -61,6 +61,8 @@
     <Compile Include="Catalog\CategoryProductList.cs" />
     <Compile Include="Globalization\AssemblyTypeTextLocaleInfo.cs" />
     <Compile Include="Globalization\AssemblyTypeTextLocaleList.cs" />
+    <Compile Include="Globalization\ValidationAttributeTypeInfo.cs" />
+    <Compile Include="Globalization\ValidationAttributeTypeList.cs" />
     <Compile Include="Globalization\ViewTextLocaleInfo.cs" />
     <Compile Include="Globalization\ViewTextLocaleList.cs" />
     <Compile Include="Routing\ContentTypeEnum.cs" />

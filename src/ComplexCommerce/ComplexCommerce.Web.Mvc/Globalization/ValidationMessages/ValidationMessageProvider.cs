@@ -9,17 +9,15 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
     public class ValidationMessageProvider 
         : IValidationMessageProvider
     {
-        private readonly ILocalizedStringProvider _stringProvider;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GriffinStringsProvider"/> class.
-        /// </summary>
-        /// <param name="stringProvider">The string provider.</param>
         public ValidationMessageProvider(ILocalizedStringProvider stringProvider)
         {
-            if (stringProvider == null) throw new ArgumentNullException("stringProvider");
-            _stringProvider = stringProvider;
+            if (stringProvider == null) 
+                throw new ArgumentNullException("stringProvider");
+
+            this.stringProvider = stringProvider;
         }
+
+        private readonly ILocalizedStringProvider stringProvider;
 
         /// <summary>
         /// Gets the string provider.
@@ -27,7 +25,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// <returns></returns>
         protected virtual ILocalizedStringProvider GetStringProvider()
         {
-            return _stringProvider;
+            return stringProvider;
         }
 
         /// <summary>
@@ -40,7 +38,6 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         public string GetMessage(IMessageContext context)
         {
             var provider = GetStringProvider();
-
             return provider.GetValidationString(context.Attribute.GetType(), context.ContainerType, context.PropertyName) ??
                         provider.GetValidationString(context.Attribute.GetType());
         }

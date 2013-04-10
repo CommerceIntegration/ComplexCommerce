@@ -125,8 +125,8 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         /// <param name="attr">Attribute to localize</param>
         /// <param name="errorMessage">Localized message with <c>{}</c> formatters.</param>
         /// <returns>Formatted message (<c>{}</c> has been replaced with values)</returns>
-        protected virtual string FormatErrorMessage(ModelMetadata metadata, ValidationAttribute attr,
-                                                    string errorMessage)
+        protected virtual string FormatErrorMessage(
+            ModelMetadata metadata, ValidationAttribute attr, string errorMessage)
         {
             string formattedError;
             try
@@ -153,10 +153,11 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         /// <param name="attr">Attribute being localized</param>
         /// <param name="formattedError">Localized error message</param>
         /// <returns>Collection (may be empty) with error messages for client side</returns>
-        protected virtual IEnumerable<ModelClientValidationRule> GetClientRules(ModelMetadata metadata,
-                                                                                ControllerContext context,
-                                                                                ValidationAttribute attr,
-                                                                                string formattedError)
+        protected virtual IEnumerable<ModelClientValidationRule> GetClientRules(
+            ModelMetadata metadata,
+            ControllerContext context,
+            ValidationAttribute attr,
+            string formattedError)
         {
             var clientValidable = attr as IClientValidatable;
             var clientRules = clientValidable == null
@@ -176,45 +177,49 @@ namespace ComplexCommerce.Web.Mvc.Globalization
 
         private class LocalizedModelValidator : ModelValidator
         {
-            private readonly ValidationAttribute _attribute;
-            private readonly IEnumerable<ModelClientValidationRule> _clientRules;
-            private readonly string _errorMsg;
-
-            public LocalizedModelValidator(ValidationAttribute attribute, string errorMsg, ModelMetadata metadata,
-                               ControllerContext controllerContext, IEnumerable<ModelClientValidationRule> clientRules)
+            public LocalizedModelValidator(
+                ValidationAttribute attribute, 
+                string errorMsg, 
+                ModelMetadata metadata, 
+                ControllerContext controllerContext, 
+                IEnumerable<ModelClientValidationRule> clientRules
+                )
                 : base(metadata, controllerContext)
             {
-                _attribute = attribute;
-                _errorMsg = errorMsg;
-                _clientRules = clientRules;
+                this.attribute = attribute;
+                this.errorMsg = errorMsg;
+                this.clientRules = clientRules;
             }
+
+            private readonly ValidationAttribute attribute;
+            private readonly IEnumerable<ModelClientValidationRule> clientRules;
+            private readonly string errorMsg;
 
             public override bool IsRequired
             {
-                get { return _attribute is RequiredAttribute; }
+                get { return attribute is RequiredAttribute; }
             }
 
             public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
             {
-
-                return _clientRules;
+                return clientRules;
             }
 
             public override IEnumerable<ModelValidationResult> Validate(object container)
             {
                 var context = new ValidationContext(container, null, null);
-                var result = _attribute.GetValidationResult(Metadata.Model, context);
+                var result = attribute.GetValidationResult(Metadata.Model, context);
                 if (result == null)
                     yield break;
 
-                string errorMsg;
-                lock (_attribute)
+                string tempErrorMsg;
+                lock (attribute)
                 {
-                    _attribute.ErrorMessage = _errorMsg;
-                    errorMsg = _attribute.FormatErrorMessage(Metadata.GetDisplayName());
-                    _attribute.ErrorMessage = WorkaroundMarker;
+                    attribute.ErrorMessage = this.errorMsg;
+                    tempErrorMsg = attribute.FormatErrorMessage(Metadata.GetDisplayName());
+                    attribute.ErrorMessage = WorkaroundMarker;
                 }
-                yield return new ModelValidationResult { Message = errorMsg };
+                yield return new ModelValidationResult { Message = tempErrorMsg };
             }
         }
 

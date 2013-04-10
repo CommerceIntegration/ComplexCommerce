@@ -9,30 +9,28 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
     /// </summary>
     public class MessageContext : IMessageContext
     {
-        private readonly ValidationAttribute _attribute;
-        private readonly Type _containerType;
-        private readonly CultureInfo _cultureInfo;
-        private readonly string _propertyName;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageContext"/> class.
-        /// </summary>
-        /// <param name="attribute">The attribute.</param>
-        /// <param name="containerType">Model that the property is in.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <param name="cultureInfo">Requested language.</param>
         public MessageContext(ValidationAttribute attribute, Type containerType, string propertyName,
                                  CultureInfo cultureInfo)
         {
-            if (attribute == null) throw new ArgumentNullException("attribute");
-            if (containerType == null) throw new ArgumentNullException("containerType");
-            if (propertyName == null) throw new ArgumentNullException("propertyName");
-            if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
-            _attribute = attribute;
-            _containerType = containerType;
-            _propertyName = propertyName;
-            _cultureInfo = cultureInfo;
+            if (attribute == null) 
+                throw new ArgumentNullException("attribute");
+            if (containerType == null) 
+                throw new ArgumentNullException("containerType");
+            if (propertyName == null) 
+                throw new ArgumentNullException("propertyName");
+            if (cultureInfo == null) 
+                throw new ArgumentNullException("cultureInfo");
+
+            this.attribute = attribute;
+            this.containerType = containerType;
+            this.propertyName = propertyName;
+            this.cultureInfo = cultureInfo;
         }
+
+        private readonly ValidationAttribute attribute;
+        private readonly Type containerType;
+        private readonly CultureInfo cultureInfo;
+        private readonly string propertyName;
 
         #region IMessageContext Members
 
@@ -41,7 +39,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// </summary>
         public ValidationAttribute Attribute
         {
-            get { return _attribute; }
+            get { return attribute; }
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// </summary>
         public Type ContainerType
         {
-            get { return _containerType; }
+            get { return containerType; }
         }
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// </summary>
         public string PropertyName
         {
-            get { return _propertyName; }
+            get { return propertyName; }
         }
 
         /// <summary>
@@ -65,7 +63,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// </summary>
         public CultureInfo CultureInfo
         {
-            get { return _cultureInfo; }
+            get { return cultureInfo; }
         }
 
         #endregion

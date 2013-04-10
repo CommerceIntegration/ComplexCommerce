@@ -13,9 +13,10 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
     /// Loads the default DataAnnotation strings from the resource file System.ComponentModel.DataAnnotations.Resources.DataAnnotationsResources
     /// </summary>
     /// <remarks>Do note that resource files can fallback to default culture (and therefore return the incorrect language)</remarks>
-    public class DataAnnotationDefaultStrings : IValidationMessageProvider
+    public class DataAnnotationDefaultStrings 
+        : IValidationMessageProvider
     {
-        private readonly ResourceManager _resourceManager;
+        private readonly ResourceManager resourceManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationAttributesStringProvider"/> class.
@@ -29,50 +30,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
             if (resourceStringType == null)
                 return;
 
-            _resourceManager = new ResourceManager(resourceStringType);
-        }
-
-
-        /// <summary>
-        ///   Get all strings.
-        /// </summary>
-        /// <param name="culture">Culture to get prompts for</param>
-        /// <returns>A colleciton of prompts (or an empty collection)</returns>
-        public virtual IEnumerable<TypePrompt> GetPrompts(CultureInfo culture)
-        {
-            if (culture == null) throw new ArgumentNullException("culture");
-
-            var prompts = new List<TypePrompt>();
-
-            var baseAttribte = typeof(ValidationAttribute);
-            var attributes =
-                typeof(RequiredAttribute).Assembly.GetTypes().Where(
-                    p => baseAttribte.IsAssignableFrom(p) && !p.IsAbstract).ToList();
-            foreach (var type in attributes)
-            {
-                var key = new TypePromptKey(type.FullName, "class");
-                var typePrompt = new TypePrompt
-                {
-                    Key = key,
-                    LocaleId = CultureInfo.CurrentUICulture.LCID,
-                    TypeFullName = type.FullName,
-                    TextName = "class",
-                    UpdatedAt = DateTime.Now,
-                    UpdatedBy = Thread.CurrentPrincipal.Identity.Name
-                };
-
-                var value = GetString(type, culture);
-                if (value != null)
-                {
-                    // TODO: Need to work out default culture....?
-                    //typePrompt.TranslatedText = DefaultUICulture.IsActive ? value : "";
-                    typePrompt.TranslatedText = value;
-                }
-
-                prompts.Add(typePrompt);
-            }
-
-            return prompts;
+            resourceManager = new ResourceManager(resourceStringType);
         }
 
         /// <summary>
@@ -86,9 +44,9 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
             var resourceName = string.Format("{0}_ValidationError", type.Name);
 
             if (culture.Name.StartsWith("en"))
-                return _resourceManager.GetString(resourceName, culture);
+                return resourceManager.GetString(resourceName, culture);
 
-            var rs = _resourceManager.GetResourceSet(culture, false, true);
+            var rs = resourceManager.GetResourceSet(culture, false, true);
             return rs == null ? null : rs.GetString(resourceName);
         }
 

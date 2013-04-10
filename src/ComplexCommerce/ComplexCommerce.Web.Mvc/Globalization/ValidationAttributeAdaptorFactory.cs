@@ -11,7 +11,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     public class ValidationAttributeAdaptorFactory
         : IValidationAttributeAdaptorFactory
     {
-        private readonly Dictionary<Type, IValidationAttributeAdaptorFactory> _factories =
+        private readonly Dictionary<Type, IValidationAttributeAdaptorFactory> factories =
             new Dictionary<Type, IValidationAttributeAdaptorFactory>();
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         /// <remarks>Replaces any existing factories.</remarks>
         public virtual void Map<T>(IValidationAttributeAdaptorFactory factory) where T : ValidationAttribute
         {
-            _factories[typeof(T)] = factory;
+            factories[typeof(T)] = factory;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         public virtual IEnumerable<ModelClientValidationRule> Create(ValidationAttribute attribute, string errorMessage)
         {
             IValidationAttributeAdaptorFactory factory;
-            if (!_factories.TryGetValue(attribute.GetType(), out factory))
+            if (!factories.TryGetValue(attribute.GetType(), out factory))
                 return new ModelClientValidationRule[0];
 
             return factory.Create(attribute, errorMessage);

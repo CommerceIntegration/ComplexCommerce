@@ -8,18 +8,19 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     /// <summary>
     /// Uses a delegate to create the client validation rules.
     /// </summary>
-    public class DelegateValidationAttributeAdaptorFactory : IValidationAttributeAdaptorFactory
+    public class DelegateValidationAttributeAdaptorFactory 
+        : IValidationAttributeAdaptorFactory
     {
-        private readonly Func<ValidationAttribute, string, IEnumerable<ModelClientValidationRule>> _factory;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegateValidationAttributeAdapterFactory"/> class.
         /// </summary>
         /// <param name="factory">Takes attribute + error Message and returns client rules.</param>
         public DelegateValidationAttributeAdaptorFactory(Func<ValidationAttribute, string, IEnumerable<ModelClientValidationRule>> factory)
         {
-            _factory = factory;
+            this.factory = factory;
         }
+
+        private readonly Func<ValidationAttribute, string, IEnumerable<ModelClientValidationRule>> factory;
 
         /// <summary>
         /// Generate client rules for a validation attribute
@@ -29,7 +30,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         /// <returns>Validation rules</returns>
         public IEnumerable<ModelClientValidationRule> Create(ValidationAttribute attribute, string errorMessage)
         {
-            return _factory(attribute, errorMessage);
+            return factory(attribute, errorMessage);
         }
     }
 }

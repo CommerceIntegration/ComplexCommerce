@@ -93,8 +93,6 @@
     <Compile Include="Globalization\DelegateValidationAttributeAdaptorFactory.cs" />
     <Compile Include="Globalization\IClientValidationRule.cs" />
     <Compile Include="Globalization\LocalizedModelMetadataProvider.cs" />
-    <Compile Include="Globalization\TypePrompt.cs" />
-    <Compile Include="Globalization\TypePromptKey.cs" />
     <Compile Include="Globalization\ValidatableObjectAdapter.cs" />
     <Compile Include="Globalization\ValidationMessages\CompositeValidationMessageProvider.cs" />
     <Compile Include="Globalization\ValidationMessages\DataAnnotationDefaultStrings.cs" />
