@@ -36,7 +36,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// <returns>
         /// String if found; otherwise <c>null</c>.
         /// </returns>
-        public string GetMessage(IGetMessageContext context)
+        public string GetMessage(IMessageContext context)
         {
             var provider = GetStringProvider();
 

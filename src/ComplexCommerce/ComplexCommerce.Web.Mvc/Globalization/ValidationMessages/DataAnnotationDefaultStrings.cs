@@ -92,7 +92,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
             return rs == null ? null : rs.GetString(resourceName);
         }
 
-        public string GetMessage(IGetMessageContext context)
+        public string GetMessage(IMessageContext context)
         {
 
             return GetString(context.Attribute.GetType(), context.CultureInfo);

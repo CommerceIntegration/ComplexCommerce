@@ -1,33 +1,10 @@
-﻿/*
- * Copyright (c) 2011, Jonas Gauffin. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301 USA
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
-//using Griffin.MvcContrib.Localization.Types;
-//using Griffin.MvcContrib.Localization.ValidationMessages;
-//using Griffin.MvcContrib.Logging;
-
 using ComplexCommerce.Web.Mvc.Globalization.ValidationMessages;
 
 namespace ComplexCommerce.Web.Mvc.Globalization
@@ -46,32 +23,22 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     /// <para>Create a new <see cref="IValidationMessageDataSource"/> and register it in <see cref="ValidationMessageProviders"/> to customized the translated strings.</para>
     /// <para>You have to let the results returned from <c>Validate()</c> implement <see cref="IClientValidationRule"/> if you want to enable client validation when using <see cref="IValidatableObject"/>.</para>
     /// </remarks>
-    public class LocalizedModelValidatorProvider : DataAnnotationsModelValidatorProvider, IDisposable
+    public class LocalizedModelValidatorProvider 
+        : DataAnnotationsModelValidatorProvider
     {
-        private const string WorkaroundMarker = "#g#";
-
-        //public LocalizedModelValidatorProvider(
-        //    ValidationAttributeAdaptorFactory adapterFactory
-        //    )
-        //{
-        //    if (adapterFactory == null)
-        //        throw new ArgumentNullException("adapterFactory");
-        //    this._adapterFactory = adapterFactory;
-        //}
-
-        private readonly ValidationAttributeAdaptorFactory _adapterFactory = new ValidationAttributeAdaptorFactory();
-        //private readonly ILogger _logger = LogProvider.Current.GetLogger<LocalizedModelValidatorProvider>();
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
+        public LocalizedModelValidatorProvider(
+            ValidationAttributeAdaptorFactory adapterFactory
+            )
         {
+            if (adapterFactory == null)
+                throw new ArgumentNullException("adapterFactory");
+            this.adapterFactory = adapterFactory;
         }
 
-        #endregion
+        private const string WorkaroundMarker = "#g#";
+        private readonly ValidationAttributeAdaptorFactory adapterFactory = new ValidationAttributeAdaptorFactory();
+        //private readonly ILogger _logger = LogProvider.Current.GetLogger<LocalizedModelValidatorProvider>();
+
 
         /// <summary>
         /// Gets a list of validators.
@@ -89,8 +56,6 @@ namespace ComplexCommerce.Web.Mvc.Globalization
             if (AddImplicitRequiredAttributeForValueTypes && metadata.IsRequired &&
                 !items.Any(a => a is RequiredAttribute))
                 items.Add(new RequiredAttribute());
-
-
 
             var validators = new List<ModelValidator>();
             foreach (var attr in items.OfType<ValidationAttribute>())
@@ -110,7 +75,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
                 }
 
 
-                var ctx = new GetMessageContext(attr, metadata.ContainerType, metadata.PropertyName,
+                var ctx = new MessageContext(attr, metadata.ContainerType, metadata.PropertyName,
                                                 Thread.CurrentThread.CurrentUICulture);
                 var errorMessage = ValidationMessageProviders.GetMessage(ctx);
                 var formattedError = errorMessage == null
@@ -119,7 +84,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
 
                 var clientRules = GetClientRules(metadata, context, attr,
                                                  formattedError);
-                validators.Add(new MyValidator(attr, formattedError, metadata, context, clientRules));
+                validators.Add(new LocalizedModelValidator(attr, formattedError, metadata, context, clientRules));
             }
 
 
@@ -189,7 +154,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         {
             var clientValidable = attr as IClientValidatable;
             var clientRules = clientValidable == null
-                                  ? _adapterFactory.Create(attr, formattedError)
+                                  ? adapterFactory.Create(attr, formattedError)
                                   : clientValidable.GetClientValidationRules(
                                       metadata, context).ToList();
 
@@ -201,15 +166,15 @@ namespace ComplexCommerce.Web.Mvc.Globalization
             return clientRules;
         }
 
-        #region Nested type: MyValidator
+        #region Nested type: LocalizedModelValidator
 
-        private class MyValidator : ModelValidator
+        private class LocalizedModelValidator : ModelValidator
         {
             private readonly ValidationAttribute _attribute;
             private readonly IEnumerable<ModelClientValidationRule> _clientRules;
             private readonly string _errorMsg;
 
-            public MyValidator(ValidationAttribute attribute, string errorMsg, ModelMetadata metadata,
+            public LocalizedModelValidator(ValidationAttribute attribute, string errorMsg, ModelMetadata metadata,
                                ControllerContext controllerContext, IEnumerable<ModelClientValidationRule> clientRules)
                 : base(metadata, controllerContext)
             {
@@ -235,9 +200,6 @@ namespace ComplexCommerce.Web.Mvc.Globalization
                 var result = _attribute.GetValidationResult(Metadata.Model, context);
                 if (result == null)
                     yield break;
-
-                //if (_attribute.IsValid(Metadata.Model))
-                //  yield break;
 
                 string errorMsg;
                 lock (_attribute)

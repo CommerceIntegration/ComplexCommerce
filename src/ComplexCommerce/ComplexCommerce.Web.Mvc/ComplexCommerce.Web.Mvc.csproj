@@ -97,8 +97,8 @@
     <Compile Include="Globalization\TypePromptKey.cs" />
     <Compile Include="Globalization\ValidatableObjectAdapter.cs" />
     <Compile Include="Globalization\ValidationMessages\DataAnnotationDefaultStrings.cs" />
-    <Compile Include="Globalization\ValidationMessages\GetMessageContext.cs" />
-    <Compile Include="Globalization\ValidationMessages\IGetMessageContext.cs" />
+    <Compile Include="Globalization\ValidationMessages\MessageContext.cs" />
+    <Compile Include="Globalization\ValidationMessages\IMessageContext.cs" />
     <Compile Include="Globalization\ILocalizedStringProvider.cs" />
     <Compile Include="Globalization\IValidationAttributeAdaptorFactory.cs" />
     <Compile Include="Globalization\LocalizedModelValidatorProvider.cs" />

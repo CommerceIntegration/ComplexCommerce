@@ -7,7 +7,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
     /// <summary>
     /// Context used when fetching the string from one of the <see cref="IValidationMessageDataSource"/>.
     /// </summary>
-    public interface IGetMessageContext
+    public interface IMessageContext
     {
         /// <summary>
         /// Gets attribute to get a message for

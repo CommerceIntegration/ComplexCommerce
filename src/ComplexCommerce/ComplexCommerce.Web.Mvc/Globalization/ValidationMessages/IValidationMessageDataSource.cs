@@ -12,6 +12,6 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// </summary>
         /// <param name="context"></param>
         /// <returns>String if found; otherwise <c>null</c>.</returns>
-        string GetMessage(IGetMessageContext context);
+        string GetMessage(IMessageContext context);
     }
 }

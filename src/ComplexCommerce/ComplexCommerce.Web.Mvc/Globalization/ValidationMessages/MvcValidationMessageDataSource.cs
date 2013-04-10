@@ -15,7 +15,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// <returns>
         /// String if found; otherwise <c>null</c>.
         /// </returns>
-        public string GetMessage(IGetMessageContext context)
+        public string GetMessage(IMessageContext context)
         {
             if (context.Attribute is CompareAttribute)
                 return "The {0} and {1} fields to not match.";

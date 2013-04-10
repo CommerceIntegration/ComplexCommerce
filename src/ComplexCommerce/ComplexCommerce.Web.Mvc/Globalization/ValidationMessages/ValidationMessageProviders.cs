@@ -67,7 +67,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         /// </summary>
         /// <param name="context">Context information</param>
         /// <returns>String if found; otherwise <c>null</c>.</returns>
-        public static string GetMessage(IGetMessageContext context)
+        public static string GetMessage(IMessageContext context)
         {
             foreach (var dataSource in _dataSources)
             {

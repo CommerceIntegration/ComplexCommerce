@@ -7,7 +7,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
     /// <summary>
     /// Context information used to be able to identify and load the correct translation
     /// </summary>
-    public class GetMessageContext : IGetMessageContext
+    public class MessageContext : IMessageContext
     {
         private readonly ValidationAttribute _attribute;
         private readonly Type _containerType;
@@ -15,13 +15,13 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
         private readonly string _propertyName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GetMessageContext"/> class.
+        /// Initializes a new instance of the <see cref="MessageContext"/> class.
         /// </summary>
         /// <param name="attribute">The attribute.</param>
         /// <param name="containerType">Model that the property is in.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="cultureInfo">Requested language.</param>
-        public GetMessageContext(ValidationAttribute attribute, Type containerType, string propertyName,
+        public MessageContext(ValidationAttribute attribute, Type containerType, string propertyName,
                                  CultureInfo cultureInfo)
         {
             if (attribute == null) throw new ArgumentNullException("attribute");
@@ -34,7 +34,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization.ValidationMessages
             _cultureInfo = cultureInfo;
         }
 
-        #region IGetMessageContext Members
+        #region IMessageContext Members
 
         /// <summary>
         /// Gets attribute to get message for.

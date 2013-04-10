@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-//using Griffin.MvcContrib.Providers;
 
 namespace ComplexCommerce.Web.Mvc.Globalization
 {
@@ -105,14 +104,6 @@ namespace ComplexCommerce.Web.Mvc.Globalization
                         new ModelClientValidationEqualToRule(errMsg, System.Web.Mvc.CompareAttribute.FormatPropertyForClientValidation(attr.OtherProperty))
                     };
             });
-            //AddDelegateRule<System.ComponentModel.DataAnnotations.CompareAttribute>((attribute, errMsg) =>
-            //{
-            //    var attr = (System.ComponentModel.DataAnnotations.CompareAttribute)attribute;
-            //    return new[]
-            //        {
-            //            new ModelClientValidationEqualToRule(errMsg, System.ComponentModel.DataAnnotations.CompareAttribute.FormatPropertyForClientValidation(attr.OtherProperty))
-            //        };
-            //});
         }
     }
 }
