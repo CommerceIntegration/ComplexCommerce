@@ -101,7 +101,6 @@
     <Compile Include="Globalization\ValidationMessages\IGetMessageContext.cs" />
     <Compile Include="Globalization\ILocalizedStringProvider.cs" />
     <Compile Include="Globalization\IValidationAttributeAdaptorFactory.cs" />
-    <Compile Include="Globalization\LocalizedModelValidatorProvider-OLD.cs" />
     <Compile Include="Globalization\LocalizedModelValidatorProvider.cs" />
     <Compile Include="Globalization\LocalizedStringProvider.cs" />
     <Compile Include="Globalization\ValidationAttributeAdaptorFactory.cs" />

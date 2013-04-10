@@ -1,30 +1,10 @@
-﻿/*
- * Copyright (c) 2011, Jonas Gauffin. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301 USA
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-//using Griffin.MvcContrib.Localization.Types;
 
 namespace ComplexCommerce.Web.Mvc.Globalization
 {
@@ -34,53 +14,17 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     /// <remarks>
     /// <para>Check the namespace documentation for an example on how to use the provider.</para>
     /// </remarks>
-    public class LocalizedModelMetadataProvider : DataAnnotationsModelMetadataProvider
+    public class LocalizedModelMetadataProvider 
+        : DataAnnotationsModelMetadataProvider
     {
-        private ILocalizedStringProvider _stringProviderDontUseDirectly;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalizedModelMetadataProvider"/> class.
-        /// </summary>
-        /// <param name="stringProvider">The string provider.</param>
-        public LocalizedModelMetadataProvider(ILocalizedStringProvider stringProvider)
+        public LocalizedModelMetadataProvider(ILocalizedStringProvider localizedStringProvider)
         {
-            if (stringProvider == null) throw new ArgumentNullException("stringProvider");
-            _stringProviderDontUseDirectly = stringProvider;
+            if (localizedStringProvider == null) 
+                throw new ArgumentNullException("localizedStringProvider");
+            this.localizedStringProvider = localizedStringProvider;
         }
 
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="LocalizedModelMetadataProvider"/> class.
-        ///// </summary>
-        ///// <remarks>you need to register <see cref="ILocalizedStringProvider"/> in your IoC container.</remarks>
-        //public LocalizedModelMetadataProvider()
-        //{
-        //}
-
-        private ILocalizedStringProvider Provider
-        {
-            get
-            {
-                //if (_stringProviderDontUseDirectly != null)
-                    return _stringProviderDontUseDirectly;
-
-
-                //// ASP.NET doesn't honor the IoC scope of the provider
-                //// which means that we can't set the dependency one,
-                //// but need to resolve it per request
-                //var provider = HttpContext.Current.Items["ILocalizedStringProvider"] as ILocalizedStringProvider;
-                //if (provider == null)
-                //{
-                //    provider = DependencyResolver.Current.GetService<ILocalizedStringProvider>();
-                //    HttpContext.Current.Items["ILocalizedStringProvider"] = provider;
-                //}
-
-                //if (provider == null)
-                //    throw new InvalidOperationException(
-                //        "Failed to find an 'ILocalizedStringProvider' implementation. Either include one in the LocalizedModelMetadataProvider constructor, or register an implementation in your Inversion Of Control container.");
-
-                //return provider;
-            }
-        }
+        private readonly ILocalizedStringProvider localizedStringProvider;
 
         /// <summary>
         /// Gets the metadata for the specified property.
@@ -104,9 +48,8 @@ namespace ComplexCommerce.Web.Mvc.Globalization
             {
                 metadata.DisplayName = Translate(containerType, propertyName);
 
-                // TODO: Work out default culture fallback formatting
-                //if (!DefaultUICulture.IsActive && metadata.DisplayName == null)
-                //    metadata.DisplayName = string.Format("[{0}: {1}]", CultureInfo.CurrentUICulture.Name, propertyName);
+                if (metadata.DisplayName == null)
+                    metadata.DisplayName = string.Format("[{0}: {1}]", CultureInfo.CurrentUICulture.Name, propertyName);
             }
 
             if (metadata.Watermark == null)
@@ -132,7 +75,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         /// <returns>Translated string</returns>
         protected virtual string Translate(Type type, string propertyName)
         {
-            return Provider.GetModelString(type, propertyName);
+            return localizedStringProvider.GetModelString(type, propertyName);
         }
 
         /// <summary>
@@ -144,7 +87,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         /// <returns>Translated string</returns>
         protected virtual string Translate(Type type, string propertyName, string metadataName)
         {
-            return Provider.GetModelString(type, propertyName, metadataName);
+            return localizedStringProvider.GetModelString(type, propertyName, metadataName);
         }
     }
 }
