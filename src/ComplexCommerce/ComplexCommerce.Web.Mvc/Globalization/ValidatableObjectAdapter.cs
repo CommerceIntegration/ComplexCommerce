@@ -8,21 +8,18 @@ namespace ComplexCommerce.Web.Mvc.Globalization
     /// <summary>
     /// Adapter which convers the result from <see cref="IValidatableObject"/> to <see cref="ModelValidationResult"/>
     /// </summary>
-    /// <remarks>Client side validation will only work if the rules from <see cref="IValidatableObject.Validate"/> implements <see cref="IClientValidationRule"/></remarks>
-    public class ValidatableObjectAdapter : ModelValidator
+    /// <remarks>Client side validation will only work if the rules from <see cref="IValidatableObject.Validate"/> 
+    /// implements <see cref="IClientValidationRule"/></remarks>
+    public class ValidatableObjectAdapter 
+        : ModelValidator
     {
-        private readonly ModelMetadata _metadata;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ValidatableObjectAdapter"/> class.
-        /// </summary>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="controllerContext">The controller context.</param>
         public ValidatableObjectAdapter(ModelMetadata metadata, ControllerContext controllerContext)
             : base(metadata, controllerContext)
         {
-            _metadata = metadata;
+            this.metadata = metadata;
         }
+
+        private readonly ModelMetadata metadata;
 
         /// <summary>
         /// Gets or sets a value that indicates whether a model property is required.
@@ -42,8 +39,8 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         /// <remarks>Will only work if the rules from <see cref="IValidatableObject.Validate"/> implements <see cref="IClientValidationRule"/></remarks>
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
         {
-            var validator = (IValidatableObject)_metadata.Model;
-            var validationResults = validator.Validate(new ValidationContext(_metadata.Model, null, null));
+            var validator = (IValidatableObject)metadata.Model;
+            var validationResults = validator.Validate(new ValidationContext(metadata.Model, null, null));
             foreach (var validationResult in validationResults)
             {
                 var clientRule = validationResult as IClientValidationRule;
@@ -74,14 +71,14 @@ namespace ComplexCommerce.Web.Mvc.Globalization
         /// </returns>
         public override IEnumerable<ModelValidationResult> Validate(object container)
         {
-            var validator = (IValidatableObject)_metadata.Model;
-            var validationResults = validator.Validate(new ValidationContext(_metadata.Model, null, null));
+            var validator = (IValidatableObject)metadata.Model;
+            var validationResults = validator.Validate(new ValidationContext(metadata.Model, null, null));
             foreach (var validationResult in validationResults)
             {
-                bool gotMemberNames = false;
+                bool hasMemberNames = false;
                 foreach (var memberName in validationResult.MemberNames)
                 {
-                    gotMemberNames = true;
+                    hasMemberNames = true;
                     var item = new ModelValidationResult
                     {
                         MemberName = memberName,
@@ -90,7 +87,7 @@ namespace ComplexCommerce.Web.Mvc.Globalization
                     yield return item;
                 }
 
-                if (!gotMemberNames)
+                if (!hasMemberNames)
                     yield return new ModelValidationResult
                     {
                         MemberName = string.Empty,
