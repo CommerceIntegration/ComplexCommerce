@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CSLA-Core.4.5.20\lib\net45\Csla.XmlSerializers.dll</HintPath>
     </Reference>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
@@ -59,12 +62,17 @@
     <Compile Include="Catalog\Category.cs" />
     <Compile Include="Catalog\CategoryProductInfo.cs" />
     <Compile Include="Catalog\CategoryProductList.cs" />
+    <Compile Include="DictionaryExtensions.cs" />
+    <Compile Include="Logging\CslaErrorLog.cs" />
     <Compile Include="Globalization\AssemblyTypeTextLocaleInfo.cs" />
     <Compile Include="Globalization\AssemblyTypeTextLocaleList.cs" />
     <Compile Include="Globalization\ValidationAttributeTypeInfo.cs" />
     <Compile Include="Globalization\ValidationAttributeTypeList.cs" />
     <Compile Include="Globalization\ViewTextLocaleInfo.cs" />
     <Compile Include="Globalization\ViewTextLocaleList.cs" />
+    <Compile Include="Logging\Error.cs" />
+    <Compile Include="Logging\ErrorInfo.cs" />
+    <Compile Include="Logging\ErrorList.cs" />
     <Compile Include="Routing\ContentTypeEnum.cs" />
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\ApplicationContextSourceEnum.cs" />

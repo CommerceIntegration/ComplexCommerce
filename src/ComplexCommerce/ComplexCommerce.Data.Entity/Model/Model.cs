@@ -34,6 +34,7 @@ namespace ComplexCommerce.Data.Entity.Model
         public IDbSet<AssemblyType> AssemblyType { get; set; }
         public IDbSet<AssemblyTypeText> AssemblyTypeText { get; set; }
         public IDbSet<AssemblyTypeTextLocale> AssemblyTypeTextLocale { get; set; }
+        public IDbSet<Error> Error { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -325,4 +326,31 @@ namespace ComplexCommerce.Data.Entity.Model
         public int LocaleId { get; set; }
         public string Value { get; set; }
     }
+
+    public class Error
+    {
+        public Guid Id { get; set; }
+        [MaxLength(60)]
+        public string Application { get; set; }
+        public int TenantId { get; set; }
+        [MaxLength(50)]
+        public string Host { get; set; }
+        [MaxLength(100)]
+        public string Type { get; set; }
+        [MaxLength(60)]
+        public string Source { get; set; }
+        [MaxLength(500)]
+        public string Message { get; set; }
+        [MaxLength(50)]
+        public string User { get; set; }
+        public int StatusCode { get; set; }
+        public DateTime UtcTime { get; set; }
+        public int Sequence { get; set; }
+        public string AllXml { get; set; }
+
+        // Navigation Properties
+        public Tenant Tenant { get; set; }
+    }
+
+
 }

@@ -29,5 +29,6 @@ namespace ComplexCommerce.Data.Entity.Model
         IDbSet<AssemblyType> AssemblyType { get; set; }
         IDbSet<AssemblyTypeText> AssemblyTypeText { get; set; }
         IDbSet<AssemblyTypeTextLocale> AssemblyTypeTextLocale { get; set; }
+        IDbSet<Error> Error { get; set; }
     }
 }

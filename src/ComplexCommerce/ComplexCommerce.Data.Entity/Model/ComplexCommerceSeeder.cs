@@ -6,8 +6,8 @@ using System.Data.Entity;
 namespace ComplexCommerce.Data.Entity.Model
 {
     public class ComplexCommerceSeeder
-        //: DropCreateDatabaseIfModelChanges<ComplexCommerce>
-        : DropCreateDatabaseAlways<ComplexCommerce>
+        : DropCreateDatabaseIfModelChanges<ComplexCommerce>
+        //: DropCreateDatabaseAlways<ComplexCommerce>
     {
         protected override void Seed(ComplexCommerce context)
         {

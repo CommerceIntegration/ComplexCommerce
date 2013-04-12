@@ -18,8 +18,8 @@ namespace ComplexCommerce.Data.Entity
             Mapper.CreateMap<Tenant, TenantDto>();
             Mapper.CreateMap<TenantDto, Tenant>();
 
-            //Mapper.CreateMap<Product, ProductDto>();
-            //Mapper.CreateMap<ProductDto, Product>();
+            Mapper.CreateMap<Error, ErrorDto>();
+            Mapper.CreateMap<ErrorDto, Error>();
 
             //Mapper.CreateMap<Article_Staged, StagedArticleDto>();
             //Mapper.CreateMap<StagedArticleDto, Article_Staged>();
