@@ -88,8 +88,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ISystemController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="DI\InjectableControllerFactory.cs" />
+    <Compile Include="ErrorHandling\ISystemErrorHandler.cs" />
     <Compile Include="Globalization\DelegateValidationAttributeAdaptorFactory.cs" />
     <Compile Include="Globalization\IClientValidationRule.cs" />
     <Compile Include="Globalization\LocalizedModelMetadataProvider.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="SiteMapProvider\VisibilityProvider.cs" />
     <Compile Include="SiteMapProvider\SiteMapBuilder.cs" />
     <Compile Include="SiteMapProvider\SiteMapCacheKeyGenerator.cs" />
+    <Compile Include="ErrorHandling\SystemErrorHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -147,6 +150,7 @@
       <Name>ComplexCommerce.Web</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

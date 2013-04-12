@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using StructureMap.Configuration.DSL;
+using Csla.Web.Mvc;
 using ComplexCommerce.Web;
 using ComplexCommerce.Web.Mvc.DI;
 using ComplexCommerce.Web.Mvc.Routing;
@@ -17,18 +18,14 @@ namespace ComplexCommerce.DI.Registries
         {
             this.Scan(scan =>
             {
+                scan.TheCallingAssembly();
                 scan.AssemblyContainingType<IContextUtilities>();
-                scan.WithDefaultConventions();
-            });
-
-            this.Scan(scan =>
-            {
                 scan.AssemblyContainingType<IRouteUtilities>();
                 scan.WithDefaultConventions();
             });
 
             //this.For<IModelBinder>()
-            //    .Use<LocalizedModelBinder>();
+            //    .Use<CslaModelBinder>();
 
 
             // Fix for controllers - need to ensure they are httpContext scoped or
@@ -49,18 +46,6 @@ namespace ComplexCommerce.DI.Registries
 
 
             // Localization
-            //this.For<ILocalizedStringProvider>()
-            //    .Use<LocalizedStringProvider>();
-            this.Scan(scan =>
-            {
-                scan.TheCallingAssembly();
-                scan.AssemblyContainingType<IValidationMessageProvider>();
-                scan.WithDefaultConventions();
-            });
-
-            this.For<LocalizedModelValidatorProvider>()
-                .Use<LocalizedModelValidatorProvider>();
-
             this.Scan(scan =>
             {
                 scan.TheCallingAssembly();
@@ -75,9 +60,6 @@ namespace ComplexCommerce.DI.Registries
                     x.Type<MvcValidationMessageProvider>();
                     x.Type<DataAnnotationDefaultStrings>();
                 });
-
-            //this.For<IValidationAttributeAdaptorFactory>()
-            //    .Use<ValidationAttributeAdaptorFactory>();
         }
     }
 }

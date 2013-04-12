@@ -6,8 +6,8 @@ using ComplexCommerce.Web;
 
 namespace ComplexCommerce.Web.Mvc.Controllers
 {
-    public class SystemController 
-        : Controller
+    public class SystemController
+        : Controller, ISystemController
     {
         //
         // GET: /System/Status301/?url=(some url)

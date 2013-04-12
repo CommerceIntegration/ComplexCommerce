@@ -23,27 +23,7 @@ namespace ComplexCommerce.Web.Mvc.DI
         {
             if (controllerType == null)
             {
-                try
-                {
-                    return base.GetControllerInstance(requestContext, controllerType);
-                }
-                catch (HttpException ex)
-                {
-                    if (ex.GetHttpCode() == 404)
-                    {
-                        var routeValues = requestContext.RouteData.Values;
-
-                        routeValues.Clear();
-                        routeValues["controller"] = "System";
-                        routeValues["action"] = "Status404";
-
-                        return container.Resolve<Controllers.SystemController>() as IController;
-                    }
-                    else
-                    {
-                        throw ex;
-                    }
-                }
+                return base.GetControllerInstance(requestContext, controllerType);
             }
             return container.Resolve(controllerType) as IController;
         }

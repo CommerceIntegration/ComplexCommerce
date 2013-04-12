@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -193,7 +194,7 @@
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\DbConfig.cs" />
-    <Compile Include="App_Start\ModelBinderConfig.cs" />
+    <Compile Include="App_Start\ModelConfig.cs" />
     <Compile Include="App_Start\DIConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\MvcSiteMapProviderConfig.cs" />
@@ -214,7 +215,6 @@
     <Compile Include="DI\Registries\MvcSiteMapProviderRegistry.cs" />
     <Compile Include="DI\Registries\PresentationRegistry.cs" />
     <Compile Include="DI\Registries\StructureMapRegistry.cs" />
-    <Compile Include="DI\SMDependencyResolver.cs" />
     <Compile Include="DI\StructureMapContainer.cs" />
     <Compile Include="DI\StructureMapResolver.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
