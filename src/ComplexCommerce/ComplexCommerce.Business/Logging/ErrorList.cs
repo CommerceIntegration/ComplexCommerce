@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Csla;
 using Csla.Core;
 using ComplexCommerce.Csla;
@@ -17,19 +14,6 @@ namespace ComplexCommerce.Business.Logging
         {
             return DataPortal.Fetch<ErrorList>(new Criteria(application, pageIndex, pageSize));
         }
-
-        // Asynchronous fetch
-        public static void GetErrorList(string application, int pageIndex, int pageSize, EventHandler<DataPortalResult<ErrorList>> callback, object userState)
-        {
-            DataPortal.BeginFetch<ErrorList>(new Criteria(application, pageIndex, pageSize), callback, userState);
-        }
-
-        //public static ErrorList GetCachedProductLocaleList(Guid productId, int tenantId)
-        //{
-        //    var cmd = new GetCachedProductLocaleListCommand(productId, tenantId);
-        //    cmd = DataPortal.Execute<GetCachedProductLocaleListCommand>(cmd);
-        //    return cmd.ProductLocaleList;
-        //}
 
         #region IReportTotalRowCount Members
 

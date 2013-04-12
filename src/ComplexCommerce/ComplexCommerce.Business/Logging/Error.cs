@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Repositories;
@@ -76,7 +73,7 @@ namespace ComplexCommerce.Business.Logging
                     var data = repository.Fetch(this.Application, this.Id);
                     if (data != null)
                     {
-                        this.Xml = data.AllXml;
+                        this.Xml = data.Xml;
                     }
                 }
             }
@@ -214,15 +211,14 @@ namespace ComplexCommerce.Business.Logging
             /// </summary>
             protected override void DataPortal_Execute()
             {
-
-
                 using (var ctx = ContextFactory.GetContext())
                 {
                     var item = new ErrorDto()
                     {
                         Id = this.Id,
-                        TenantId = this.GetTenantId(),
                         Application = this.Application,
+                        ChainId = this.GetChainId(),
+                        TenantId = this.GetTenantId(),
                         Host = this.Host,
                         Type = this.Type,
                         Source = this.Source,
@@ -230,7 +226,7 @@ namespace ComplexCommerce.Business.Logging
                         User = this.User,
                         StatusCode = this.StatusCode,
                         UtcTime = this.Time.ToUniversalTime(),
-                        AllXml = this.Xml
+                        Xml = this.Xml
                     };
                     repository.Insert(item);
                 }
@@ -241,6 +237,14 @@ namespace ComplexCommerce.Business.Logging
                 var tenant = appContext.CurrentTenant;
                 if (tenant != null)
                     return tenant.Id;
+                return 0;
+            }
+
+            private int GetChainId()
+            {
+                var tenant = appContext.CurrentTenant;
+                if (tenant != null)
+                    return tenant.ChainId;
                 return 0;
             }
 

@@ -165,6 +165,8 @@ namespace ComplexCommerce.Data.Entity.Model
         }
     }
 
+    // TODO: Setup string lengths in entities
+
     public class Chain
     {
         public int Id { get; set; }
@@ -333,6 +335,7 @@ namespace ComplexCommerce.Data.Entity.Model
         [MaxLength(60)]
         public string Application { get; set; }
         public int TenantId { get; set; }
+        public int ChainId { get; set; }
         [MaxLength(50)]
         public string Host { get; set; }
         [MaxLength(100)]
@@ -346,10 +349,7 @@ namespace ComplexCommerce.Data.Entity.Model
         public int StatusCode { get; set; }
         public DateTime UtcTime { get; set; }
         public int Sequence { get; set; }
-        public string AllXml { get; set; }
-
-        // Navigation Properties
-        public Tenant Tenant { get; set; }
+        public string Xml { get; set; }
     }
 
 

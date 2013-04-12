@@ -3,6 +3,8 @@ using CslaLibrary = Csla;
 using Csla;
 using ComplexCommerce.Data.Context;
 
+// TODO: Add SortedBindingList<T>
+
 namespace ComplexCommerce.Csla.Persistence
 {
     [Serializable]

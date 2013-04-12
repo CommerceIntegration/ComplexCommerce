@@ -98,7 +98,7 @@ namespace ComplexCommerce.Data.Entity.Repositories
                               where error.Application == application
                               select new ErrorDto
                               {
-                                  AllXml = error.AllXml
+                                  Xml = error.Xml
                               }).FirstOrDefault();
 
                 if (result == null)
@@ -109,7 +109,6 @@ namespace ComplexCommerce.Data.Entity.Repositories
 
         public void Insert(ErrorDto item)
         {
-
             using (var ctx = ((IEntityFrameworkObjectContext)contextFactory.GetContext()).ContextManager)
             {
                 var newItem = Mapper.Map<ErrorDto, Error>(item);
@@ -117,9 +116,6 @@ namespace ComplexCommerce.Data.Entity.Repositories
                 ctx.ObjectContext.Error.Add(newItem);
                 ctx.ObjectContext.SaveChanges();
                 item.Id = newItem.Id;
-
-                // For concurrency tracking
-                //item.LastChanged = newItem.LastChanged;
             }
         }
 

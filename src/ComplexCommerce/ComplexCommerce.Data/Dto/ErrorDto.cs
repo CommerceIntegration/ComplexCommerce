@@ -10,6 +10,7 @@ namespace ComplexCommerce.Data.Dto
     {
         public Guid Id { get; set; }
         public string Application { get; set; }
+        public int ChainId { get; set; }
         public int TenantId { get; set; }
         public string Host { get; set; }
         public string Type { get; set; }
@@ -19,6 +20,6 @@ namespace ComplexCommerce.Data.Dto
         public int StatusCode { get; set; }
         public DateTime UtcTime { get; set; }
         public int Sequence { get; set; }
-        public string AllXml { get; set; }
+        public string Xml { get; set; }
     }
 }

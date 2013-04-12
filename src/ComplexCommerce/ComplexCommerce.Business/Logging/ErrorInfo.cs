@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Csla;
 using ComplexCommerce.Csla;
 using ComplexCommerce.Data.Dto;
@@ -19,20 +16,25 @@ namespace ComplexCommerce.Business.Logging
             private set { LoadProperty(IdProperty, value); }
         }
 
-        // TODO: Add ChainId to the log so we can later retrieve errors by Chain
+        public static PropertyInfo<string> ApplicationProperty = RegisterProperty<string>(c => c.Application);
+        public string Application
+        {
+            get { return GetProperty(ApplicationProperty); }
+            private set { LoadProperty(ApplicationProperty, value); }
+        }
+
+        public static PropertyInfo<int> ChainIdProperty = RegisterProperty<int>(c => c.ChainId);
+        public int ChainId
+        {
+            get { return GetProperty(ChainIdProperty); }
+            private set { LoadProperty(ChainIdProperty, value); }
+        }
 
         public static PropertyInfo<int> TenantIdProperty = RegisterProperty<int>(c => c.TenantId);
         public int TenantId
         {
             get { return GetProperty(TenantIdProperty); }
             private set { LoadProperty(TenantIdProperty, value); }
-        }
-
-        public static PropertyInfo<string> ApplicationProperty = RegisterProperty<string>(c => c.Application);
-        public string Application
-        {
-            get { return GetProperty(ApplicationProperty); }
-            private set { LoadProperty(ApplicationProperty, value); }
         }
 
         public static PropertyInfo<string> HostProperty = RegisterProperty<string>(c => c.Host);
@@ -77,26 +79,26 @@ namespace ComplexCommerce.Business.Logging
             private set { LoadProperty(StatusCodeProperty, value); }
         }
 
-        public static PropertyInfo<DateTime> TimeProperty = RegisterProperty<DateTime>(c => c.Time);
-        public DateTime Time
+        public static PropertyInfo<DateTime> UtcTimeProperty = RegisterProperty<DateTime>(c => c.UtcTime);
+        public DateTime UtcTime
         {
-            get { return GetProperty(TimeProperty); }
-            private set { LoadProperty(TimeProperty, value); }
+            get { return GetProperty(UtcTimeProperty); }
+            private set { LoadProperty(UtcTimeProperty, value); }
         }
 
         private void Child_Fetch(ErrorDto item)
         {
             Id = item.Id;
-            TenantId = item.TenantId;
             Application = item.Application;
+            ChainId = item.ChainId;
+            TenantId = item.TenantId;
             Host = item.Host;
             Type = item.Type;
             Source = item.Source;
             Message = item.Message;
             User = item.User;
             StatusCode = item.StatusCode;
-            Time = item.UtcTime;
+            UtcTime = item.UtcTime;
         }
-
     }
 }
